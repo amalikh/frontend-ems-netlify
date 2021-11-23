@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Answer:
+    <span *ngFor="let i of data[0].actual_answer | keyvalue">
+        {{i.value}}
+    </span>
+</h1>
+<div mat-dialog-content>
+    <mat-list role="list">
+        <mat-list-item role="listitem" *ngFor="let item of data">
+            <span class="wth"> {{item.worker_id}} </span>
+            <span *ngFor="let i of item.submitted_answer | keyvalue">
+                {{i.value}}
+            </span>
+            <span *ngIf="item.assignment_status == false">
+                <button mat-stroked-button class="ml" (click)="approveAssignment(item)">Approve</button>
+            </span>
+        </mat-list-item>
+    </mat-list>
+</div>

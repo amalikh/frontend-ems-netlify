@@ -1,0 +1,43 @@
+<div [@routerTransition]>
+  <app-page-header [heading]="'MTURK'" [subheading]="'Block Worker'" [icon]="'fa-tasks'"></app-page-header>
+  <div class="row">
+    <div class="col-md-12">
+
+
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Num_blocker">
+            <th mat-header-cell *matHeaderCellDef> Number of Days </th>
+            <td mat-cell style="text-align: center;" *matCellDef="let row"> {{row.numofdays_block}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="CreationTime">
+            <th mat-header-cell *matHeaderCellDef> Creation Time </th>
+            <td mat-cell *matCellDef="let row"> {{row.creation_date | date:'medium'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-button mat-stroked-button type="submit" (click)="unblock(row.id)"> Un block
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+</div>

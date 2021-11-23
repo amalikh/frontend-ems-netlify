@@ -1,0 +1,89 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'EMS'" [subheading]="'Employee'" [icon]="'fa-tasks'"></app-page-header>
+    <div>
+        <form [formGroup]="createEmployee">
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Category" formControlName="name"  >
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Father's Name</mat-label>
+                <input matInput placeholder="father name" formControlName="father_name"  >
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Date Of Birth</mat-label>
+                <input matInput formControlName="dob" [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Date Of Joining</mat-label>
+                <input matInput formControlName="doj" [matDatepicker]="picker2">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Designation</mat-label>
+                <mat-select formControlName="designation">
+                    <mat-option disabled>Select</mat-option>
+                    <mat-option *ngFor="let item of employees" [value]="item">{{item}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" appearance="outline">
+                <mat-label>Communication Address</mat-label>
+                <textarea matInput placeholder="Communication Address..." formControlName="communication_add"></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" appearance="outline">
+                <mat-label>Permanent Address</mat-label>
+                <textarea matInput placeholder="Permanent Address..." formControlName="permanent_add"></textarea>
+            </mat-form-field>
+
+
+              <mat-form-field class="col-md-6" appearance="outline">
+                    <div>
+                      <mat-toolbar>
+                        <input matInput [(ngModel)]="fileAttr" readonly formControlName="current_photo" />
+                  
+                        <button mat-flat-button color="primary">
+                          Browse File
+                        </button>
+                      </mat-toolbar>
+                  
+                      <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" name="uploadFile" multiple="multiple"
+                        accept="image/*" />
+                        <img [src]="dataimage" alt="">
+                    </div>
+                  </mat-form-field>
+
+
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Contact No.</mat-label>
+                <input matInput placeholder="Contact No." formControlName="contact_no"  >
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Email Id</mat-label>
+                <input matInput placeholder="Email Id" formControlName="email"  >
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Salary</mat-label>
+                <input matInput placeholder="Salary" formControlName="salary"  >
+            </mat-form-field>
+
+            <div>
+                <button mat-raised-button color="primary" (click)="addEmployee()">Add</button>&nbsp;
+                <button mat-raised-button color="primary" id="cancel" (click)="cancelBtn()">Cancel</button>
+
+                <!-- <button [disabled]="createtask.invalid" mat-stroked-button matStepperNext>Next</button> -->
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'EMS'" [subheading]="'Leave'" [icon]="'fa-plus'"></app-page-header>
+    <div>
+        <form [formGroup]="createleave">
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Category</mat-label>
+                <input matInput placeholder="Category" formControlName="category" required>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Designation</mat-label>
+                <input matInput placeholder="Designation" formControlName="designation" required>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <!-- <mat-label>Employee Name</mat-label>
+                <input matInput placeholder="Employee Name" formControlName="emp_name" required> -->
+
+                <mat-label>Employee Name</mat-label>
+                <mat-select formControlName="employees_id">
+                    <mat-option disabled>Select Employee</mat-option>
+                    <mat-option *ngFor="let item of employees" [value]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>Leave Type</mat-label>
+                <input matInput placeholder="Leave Type" formControlName="leave_type" required>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput formControlName="from_date" [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-6" appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput formControlName="to_date" [matDatepicker]="picker2">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="col-md-12" appearance="outline">
+                <mat-label>Description</mat-label>
+                <textarea matInput placeholder="Reason for leave..." formControlName="description"></textarea>
+            </mat-form-field>
+
+            <div>
+                <button (click)="addLeave()" mat-raised-button color="primary">Add</button>&nbsp;
+                <button mat-raised-button color="primary" id="cancel" (click)="cancelBtn()">Cancel</button>
+
+                <!-- <button [disabled]="createtask.invalid" mat-stroked-button matStepperNext>Next</button> -->
+            </div>
+        </form>
+    </div>
+</div>

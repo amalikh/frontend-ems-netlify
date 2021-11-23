@@ -1,0 +1,29 @@
+<div [@routerTransition] class="login-page">
+    <br>
+    <br>
+    <div class="row m-0 justify-content-md-center">
+        <div>
+            <div class="logo">
+                <img class="user-avatar" src="assets/images/logo.jpg" width="120px" />
+            </div>
+            <h1 style="color: #09669B; text-align: center; font-weight: revert;">Login Here</h1>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="textfeild">
+                    <mat-form-field class="col-md-8" appearance="outline">
+                        <mat-label>UserNamee</mat-label>
+                        <input matInput placeholder="Email" type="text" formControlName="username" required>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-md-8" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput class="hover" placeholder="Password" type="password" formControlName="pass" required>
+                    </mat-form-field>
+                </div>
+                <a (click)="login()" class="login" class="btn rounded-btn">Log In</a>
+
+            </form>
+            <a routerLink="/signup">New user? Click to signup!!</a>
+        </div>
+    </div>
+
+</div>

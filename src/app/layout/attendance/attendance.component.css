@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  /* .example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  } */
+  
+  .example-radio-button {
+    margin-right: 5px;
+  }
+
+  .attendance-cursor{
+    cursor: pointer;
+  }

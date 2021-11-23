@@ -1,0 +1,12 @@
+.center{
+    text-align: center;
+    align-self: center;
+}
+
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+
+::ng-deep.mat-form-field-prefix{
+      top: 0 !important;
+}

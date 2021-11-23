@@ -1,0 +1,61 @@
+<h2 mat-dialog-title>Edit Details of Employee [{{data.id}}]</h2>
+
+<!-- <mat-dialog-content> -->
+    <form [formGroup]="formValue">
+    <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Emp Name" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <mat-label>Father Name</mat-label>
+        <input matInput placeholder="Father name" formControlName="father_name">
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="DOB" [matDatepicker]="picker1" formControlName="dob">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="DOJ" [matDatepicker]="picker2" formControlName="doj">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="Designation" formControlName="designation">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="Communication Add" formControlName="communication_add">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="Permanent Address" type="text"
+            formControlName="permanent_add">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="Contact No" type="number" formControlName="contact_no">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="Email ID"  type="text" formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+        <input matInput placeholder="Salary" type="number" formControlName="salary">
+    </mat-form-field>
+    </form>
+<!-- </mat-dialog-content> -->
+<div class="centerbtns">
+    <mat-dialog-actions>
+
+        <button class="mat-raised-button" (click)="close()">Close</button>
+        <button class="mat-raised-button mat-primary" (click)="update()">Save</button>
+    </mat-dialog-actions>
+
+</div>

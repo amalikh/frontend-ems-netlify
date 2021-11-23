@@ -1,0 +1,25 @@
+.btn.btn-sm.btn-outline-dark {
+    font-size: 12px;
+    border: 1px solid #828282;
+    height: 37px;
+  }
+  
+  .left {
+    text-align: left;
+  }
+  
+  .ext {
+    width: 50px;
+  }
+  
+  .font-inc {
+    font-size: 25px;
+  }
+  
+  h1#mat-dialog-title-1 {
+    text-transform: capitalize;
+  }
+
+  ::ng-deep.mat-form-field-prefix{
+    top: 0 !important;
+}

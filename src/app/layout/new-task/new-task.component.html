@@ -1,0 +1,124 @@
+<div>
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="createtask" label="Add HIT">
+
+            <form [formGroup]="createtask" [style.fontSize.px]="getFontSize()">
+
+                <mat-form-field class="col-md-7" appearance="outline">
+                    <mat-label>Title</mat-label>
+                    <input matInput placeholder="Title" formControlName="title" required>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-7" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="Description" formControlName="description" required>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>URL</mat-label>
+                    <input matInput placeholder="URL" formControlName="url" required>
+                </mat-form-field>
+
+                <h4 style="text-align: center;">Questions / Answers </h4>
+
+                <ng-container *ngFor="let i of collections">
+                    <mat-form-field class="col-md-10" appearance="outline">
+                        <mat-label id="basic-addon1">
+                            Question
+                        </mat-label>
+                        <input matInput placeholder="Question" required [(ngModel)]="i['question']" type="text"
+                            [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+
+
+
+
+                    <mat-form-field class="col-md-8" appearance="outline">
+                        <mat-label id="basic-addon1">Choices</mat-label>
+                        <input matInput required placeholder="Write Comma Seperated Choices" [(ngModel)]="i['choices']"
+                            type="text" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+
+
+                    <mat-form-field class="col-md-10" appearance="outline">
+                        <mat-label id="basic-addon1">Answer</mat-label>
+                        <input matInput placeholder="Answer" required [(ngModel)]="i['answer']" type="text"
+                            [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+
+                </ng-container>
+
+                <button class="col-md-1" class="center" mat-icon-button (click)="removeQuestion()">
+                    <span class="material-icons"> remove </span>
+                </button>
+
+                <button class="col-md-1" class="center" mat-icon-button (click)="addQuestion()">
+                    <span class="material-icons"> add </span>
+                </button>
+
+
+
+                <div align="end">
+                    <button [disabled]="createtask.invalid" mat-stroked-button matStepperNext>Next</button>
+                </div>
+            </form>
+
+        </mat-step>
+
+        <mat-step [stepControl]="addpayment" label="Setting Up Survey">
+            <form [formGroup]="addpayment" [style.fontSize.px]="getFontSize()">
+
+                <mat-form-field class="col-md-4 top" appearance="outline">
+                    <mat-label class="sub">Reward Per Response
+                    </mat-label>
+                    <input matInput type="str" required formControlName="reward">
+                    <span matPrefix class="top">$&nbsp;</span>
+                </mat-form-field>
+
+
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label id="basic-addon1">Multiple Days?</mat-label>
+                    <mat-select [(ngModel)]="parting" required [ngModelOptions]="{standalone: true}">
+                        <mat-option value="yes">Yes</mat-option>
+                        <mat-option value="no">No</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4" *ngIf="parting == 'yes'"  appearance="outline">
+                    <mat-label id="basic-addon1">How long should days Reschedule Hits work?</mat-label>
+                    <input  matInput required [(ngModel)]="days"  type="number" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>Block Workers for days</mat-label>
+                    <input matInput type="number" formControlName="workers" required>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>Max Assignments</mat-label>
+                    <input matInput type="number" formControlName="hits" required>
+                </mat-form-field>
+
+
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>Location</mat-label>
+                    <mat-select multiple formControlName="location">
+                        <mat-option *ngFor="let country of countryList" [value]="country.code">{{country.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="col-md-4" appearance="outline">
+                    <mat-label>APPROVAL RATE IS GREATER THAN</mat-label>
+                    <input matInput type="number" formControlName="rate">
+                </mat-form-field>
+
+                <div align="end">
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button [disabled]="isDisabled" mat-stroked-button type="submit" style="text-align: center;"
+                        (click)="createhit()" class="btn task"> Create Task </button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

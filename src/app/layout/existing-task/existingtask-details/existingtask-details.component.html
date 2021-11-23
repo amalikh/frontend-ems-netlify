@@ -1,0 +1,94 @@
+<h5 mat-dialog-title>Task Details</h5>
+
+<mat-dialog-content class="mat-typography">
+
+    <mat-form-field class="col-md-7" appearance="outline">
+        <mat-label>Title</mat-label>
+        <input readonly matInput [(ngModel)]="data['title']">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-7" appearance="outline">
+        <mat-label>Description</mat-label>
+        <input readonly matInput [(ngModel)]="data['description']">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-5" appearance="outline">
+        <mat-label>Url</mat-label>
+        <input readonly matInput [(ngModel)]="data['url']">
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4 top" appearance="outline">
+        <mat-label class="sub">Reward Per Response</mat-label>
+        <input readonly matInput type="str" [(ngModel)]="data['reward']">
+        <span matPrefix class="top">$&nbsp;</span>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+        <mat-label>Max Assignments</mat-label>
+        <input readonly matInput [(ngModel)]="data['max_assignments']">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+        <mat-label>Approved</mat-label>
+        <input readonly matInput [(ngModel)]="data['approved']">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+        <mat-label>Location</mat-label>
+        <input readonly matInput [(ngModel)]="data['localevalue']">
+    </mat-form-field>
+
+
+    <mat-form-field class="col-md-4" appearance="outline">
+        <mat-label>Approval Rate</mat-label>
+        <input readonly matInput [(ngModel)]="data['approval_rate']">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-4" appearance="outline">
+        <mat-label id="basic-addon1">Days of Block</mat-label>
+        <input readonly matInput [(ngModel)]="data['blockworkers']">
+    </mat-form-field>
+    
+    <mat-form-field class="col-md-4" appearance="outline">
+        <mat-label id="basic-addon1">Multiple Days</mat-label>
+        <input readonly matInput [(ngModel)]="data['parting']">
+    </mat-form-field>
+
+
+
+    <mat-form-field class="col-md-4" *ngIf="data['parting'] == 'yes'" appearance="outline">
+        <mat-label id="basic-addon1">How long should days parting work?</mat-label>
+        <input readonly matInput [(ngModel)]="data['days']">
+    </mat-form-field>
+
+
+    <mat-divider></mat-divider>
+    <br>
+
+
+    <div *ngFor="let obj of data['collections']">
+        
+        <mat-form-field class="col-md-10" appearance="outline">
+            <mat-label id="basic-addon1"> Question </mat-label>
+            <input readonly matInput [(ngModel)]="obj['question']">
+        </mat-form-field>
+
+        <mat-form-field class="col-md-8" appearance="outline">
+            <mat-label id="basic-addon1">Choices</mat-label>
+            <input readonly matInput [(ngModel)]="obj['choices']">
+        </mat-form-field>
+
+        <mat-form-field class="col-md-10" appearance="outline">
+            <mat-label id="basic-addon1">Answer</mat-label>
+            <input readonly matInput [(ngModel)]="obj['answer']">
+        </mat-form-field>
+
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" mat-dialog-close="openNewRoute">Create</button>
+</mat-dialog-actions>
