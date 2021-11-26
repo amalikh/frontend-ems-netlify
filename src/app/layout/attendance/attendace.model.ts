@@ -1,5 +1,5 @@
 export class Attendance {
-    id: number;
+    attendance_id: number;
     status: string;
     in_time: any;
     out_time: any;

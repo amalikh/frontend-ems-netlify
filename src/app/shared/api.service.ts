@@ -1,8 +1,10 @@
 import { NumberInput } from '@angular/cdk/coercion';
 import { HttpClient, HttpClientModule, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+// import { forkJoin } from "rxjs/observable/forkJoin";
+import { forkJoin } from 'rxjs'; 
 
 const HEADERS = {
   headers: {
@@ -66,7 +68,7 @@ base_url = "https://em-system-heroku.herokuapp.com/"
   }
 
   postAttendance(data: any) {
-    return this.http.post<any>(this.base_url+"attendance/daily", data)
+    return this.http.post<any>(this.base_url+"attendance/add", data, HEADERS)
       .pipe(map((res: any) => { return res; }))
   }
 
@@ -99,4 +101,17 @@ base_url = "https://em-system-heroku.herokuapp.com/"
       .pipe(map((res: any) => { return res; }))
   }
 
+  getAttendanceOfCurrentDate() {
+    return this.http.get<any>(this.base_url+"attendance/allWithCurrentDate")
+      .pipe(map((res: any) => { return res; }))
+  }
+
+  //merging data of two apis using fork join
+  requestDataFromMultipleSources(): Observable<any[]> {
+    let response1 = this.http.get(this.base_url+"employee/all");
+    let response2 = this.http.get(this.base_url+"attendance/allWithCurrentDate");
+    // let response3 = this.http.get(requestUrl3);
+    // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
+    return forkJoin([response1, response2]);
+  }
 }

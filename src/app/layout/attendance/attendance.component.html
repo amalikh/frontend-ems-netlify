@@ -1,9 +1,9 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'EMS'" [subheading]="'Attendance'" [icon]="'fa-tasks'"></app-page-header>
-    <div class="row">
-      <div class="col-md-12">
-  
-        <!-- <mat-form-field class="col-md-6">
+  <app-page-header [heading]="'EMS'" [subheading]="'Attendance'" [icon]="'fa-tasks'"></app-page-header>
+  <div class="row">
+    <div class="col-md-12">
+
+      <!-- <mat-form-field class="col-md-6">
           <mat-label>Search</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ex. XYZ" #input>
         </mat-form-field>
@@ -24,26 +24,27 @@
         <button (click)="refresh()" mat-button>
           <mat-icon aria-hidden="false" (click)="refresh()" aria-label="Example refresh icon">refresh</mat-icon>
         </button> -->
-  
-  
-  
-  
-        <div class="mat-elevation-z8">
-          <table mat-table [dataSource]="dataSource" matSort>
-  
-            <form [formGroup]="formValue">
+
+
+
+
+      <div class="mat-elevation-z8" *ngIf="isLoaded">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <form [formGroup]="formValue">
             <ng-container matColumnDef="Id">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee ID </th>
               <td mat-cell *matCellDef="let row">
                 <!-- <label formControlName="employees_id">{{row.id}}</label> -->
-              <img [src]="row.current_photo" [alt]="row.id" width="40" height="40"></td>
+                <img [src]="row.current_photo" [alt]="row.employees_id" width="40" height="40">
+              </td>
             </ng-container>
-  
+
             <ng-container matColumnDef="Name">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
               <td mat-cell *matCellDef="let row">{{row.name}}</td>
             </ng-container>
-  
+
             <!-- <ng-container matColumnDef="Email">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
               <td mat-cell *matCellDef="let row">{{row.email}}</td>
@@ -52,22 +53,42 @@
             <ng-container matColumnDef="PresentStatus">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Present Status </th>
               <td mat-cell *matCellDef="let row">
-                <mat-radio-group formControlName="status">
-                  <mat-radio-button class="example-radio-group" *ngFor="let item of status" [value]="item">{{item}}&nbsp;</mat-radio-button>
-                </mat-radio-group>
+                <span *ngIf="row.status else showRadio">{{row.status}}</span>
+                <ng-template #showRadio>
+                  <mat-radio-group formControlName="status">
+                    <mat-radio-button class="example-radio-group" *ngFor="let item of status" [value]="item" required="!status">
+                      {{item}}&nbsp;</mat-radio-button>
+                  </mat-radio-group>
+                  <!-- <input type="radio" formControlName="status"  *ngFor="let item of status" [value]="item" required> -->
+
+                </ng-template>
+
+                
               </td>
             </ng-container>
-  
+
             <ng-container matColumnDef="InTime">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>
-              <td mat-cell *matCellDef="let row"> <input type="text" formControlName="in_time"> </td>
+              <td mat-cell *matCellDef="let row">
+                <span *ngIf="row.in_time else showInput1">{{row.in_time}}</span>
+                <ng-template #showInput1>
+                  <input type="text" name="in_time" [(ngModel)]="row.in_time" [ngModelOptions]="{standalone: true}"
+                    disabled>
+                </ng-template>
+              </td>
             </ng-container>
-  
+
             <ng-container matColumnDef="OutTime">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>
-              <td mat-cell *matCellDef="let row"> <input type="text" formControlName="out_time"> </td>
+              <td mat-cell *matCellDef="let row">
+                <span *ngIf="row.out_time else showInput">{{row.out_time}}</span>
+                <ng-template #showInput>
+                  <input type="text" name="out_time" [(ngModel)]="row.out_time" [ngModelOptions]="{standalone: true}"
+                    disabled>
+                </ng-template>
+              </td>
             </ng-container>
-  
+
             <ng-container matColumnDef="Action">
               <th mat-header-cell *matHeaderCellDef> Action </th>
               <td mat-cell *matCellDef="let row">
@@ -77,7 +98,7 @@
                 </a>
               </td>
             </ng-container>
-  
+
             <ng-container matColumnDef="cancel">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
@@ -86,21 +107,21 @@
                 </a>
               </td>
             </ng-container>
-  
-  
+
+
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
+
             <!-- Row shown when there is no matching data. -->
             <tr class="mat-row" *matNoDataRow>
               <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
             </tr>
-            </form>
-          </table>
-  
-          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"></mat-paginator>
-        </div>
-  
+          </form>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"></mat-paginator>
       </div>
+
     </div>
   </div>
+</div>
