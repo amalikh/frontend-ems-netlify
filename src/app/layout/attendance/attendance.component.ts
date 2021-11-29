@@ -46,7 +46,7 @@ export class AttendanceComponent implements OnInit {
     start: new FormControl(),
     end: new FormControl()
   });
-
+  ToastText = '';
   displayedColumns: string[] = [
     'Id',
     'Name',
@@ -55,7 +55,8 @@ export class AttendanceComponent implements OnInit {
     'OutTime',
     'Action'
   ];
-
+  totalActiveEmployees:any;
+  activeEmployeeData:any;
   dataSource: MatTableDataSource<UserData> = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -93,7 +94,7 @@ export class AttendanceComponent implements OnInit {
 
 
     this.formValue = this.formbuilder.group({
-      status: ['',[Validators.required]],
+      status: ['', [Validators.required]],
       in_time: [''],
       out_time: [''],
       employees_id: ['']
@@ -140,16 +141,16 @@ export class AttendanceComponent implements OnInit {
   cancel(row) {
     this.api.deleteEmployee(row.active_child)
       .subscribe(res => {
-        this.getAllEmployee();
+        this.getAllActiveEmployee();
       })
   }
 
   refresh() {
-    this.getAllEmployee();
+    this.getAllActiveEmployee();
   }
 
-  getAllEmployee() {
-    this.api.getAllEmployee()
+  getAllActiveEmployee(){
+    this.api.getAllActiveEmployee()
       .subscribe(res => {
         this.dataSource = res;
         console.log(this.dataSource);
@@ -163,69 +164,88 @@ export class AttendanceComponent implements OnInit {
     let hours = date_ob.getHours();
     let minutes = date_ob.getMinutes();
     let TimeNow = (hours + ":" + minutes);
+    let spanValue = row.status;
+    let spanValueInTime = row.in_time;
+    let spanValueOutTime = row.out_time;
 
+    console.log("span value: " + spanValueInTime);
     if (this.formValue.valid) {
-     
+
       this.attendanceModelObj.status = this.formValue.value.status;
-      if(this.attendanceModelObj.status == "Absent" ||this.attendanceModelObj.status == "Off" ){
+      if (this.attendanceModelObj.status == "Absent" || this.attendanceModelObj.status == "Off") {
         this.attendanceModelObj.in_time = null;
         this.attendanceModelObj.out_time = null;
         this.formValue.controls['in_time'].disable();
         this.formValue.controls['out_time'].disable();
         // this.formValue.isNam
-      }else{
+      } else {
         this.attendanceModelObj.in_time = TimeNow;
         this.attendanceModelObj.out_time = null;
       }
-  
+
       this.attendanceModelObj.date_of_attendance = doa;
-      if(!row.employees_id){
-        
+      if (!row.employees_id) {
+
         this.attendanceModelObj.employees_id = row.id;
       }
-      else{
-  
+      else {
+
         this.attendanceModelObj.employees_id = row.employees_id;
       }
-  
+
       // console.log(this.attendanceModelObj);
       let textt = ''
       this.api.postAttendance(this.attendanceModelObj)
         .subscribe(res => {
-          // window.location.reload();
-          
-          textt = ' Created Successfully !'
-          // console.log(res);
-           this._snackBar.open(textt, 'Close', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'bottom',
-          });
-          // this.router.navigate([this.router.url]);
+          this.ToastText = 'Created Successfully'
+          this.ToastMsg(this.ToastText);
           this.ngOnInit();
         },
           err => {
-            textt = ' Error !'
-            this._snackBar.open(textt, 'Close', {
-              duration: 3000,
-              horizontalPosition: 'right',
-              verticalPosition: 'bottom',
-            });
-          }); 
+            this.ToastText = 'Error'
+            this.ToastMsg(this.ToastText);
+          });
     }
-    else{
-      let textt = '';
-      textt = ' Select Status [Present, Absent, Off]'
-            this._snackBar.open(textt, 'Close', {
-              duration: 3000,
-              horizontalPosition: 'right',
-              verticalPosition: 'bottom',
-            });
+    else if(spanValue == 'Present' && spanValueOutTime == null){
+      this.attendanceModelObj.date_of_attendance = doa;
+      if (!row.employees_id) {
+
+        this.attendanceModelObj.employees_id = row.id;
+      }
+      else {
+
+        this.attendanceModelObj.employees_id = row.employees_id;
+      }
+
+      // console.log(this.attendanceModelObj);
+      let textt = ''
+      this.api.postAttendance(this.attendanceModelObj)
+        .subscribe(res => {
+          this.ToastText = 'Created Successfully'
+          this.ToastMsg(this.ToastText);
+          this.ngOnInit();
+        },
+          err => {
+            this.ToastText = 'Error'
+            this.ToastMsg(this.ToastText);
+          });
+    }
+else if((spanValue == 'Absent') || (spanValue == 'Off')){
+  this.ToastText = ' You Already Marked Your attendance'
+  this.ToastMsg(this.ToastText);
+}
+else if((spanValueInTime != null && spanValueOutTime !=null)){
+  this.ToastText = ' You Already Marked Your attendance'
+  this.ToastMsg(this.ToastText);
+}
+    else {
+      this.ToastText = ' Status [Present, Absent, Off]'
+      this.ToastMsg(this.ToastText);
     }
 
 
 
-    
+
   }
 
   getAllAttendanceOfCurrentDate() {
@@ -245,7 +265,7 @@ export class AttendanceComponent implements OnInit {
         let a1 = responseList[0]
         let a2 = responseList[1]
         const a3 = a1.map(t1 => ({ ...t1, ...a2.find(t2 => t1.id === t2.employees_id) }))
-        
+
         this.dataSource.data = a3
         console.log(a3);
         this.isLoaded = true
@@ -255,5 +275,13 @@ export class AttendanceComponent implements OnInit {
 
   }
 
+  ToastMsg(msg:any){
+    // this.ToastText = ' You Already Marked Your attendance'
+  this._snackBar.open(msg, 'Close', {
+    duration: 3000,
+    horizontalPosition: 'right',
+    verticalPosition: 'bottom',
+  });
+  }
 
 }

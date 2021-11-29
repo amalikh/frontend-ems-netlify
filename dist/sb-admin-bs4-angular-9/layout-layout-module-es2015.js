@@ -87,6 +87,19 @@ HeaderComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 /***/ }),
 
+/***/ "/qSK":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/layout/modal-data/modal-data.component.html ***!
+  \***************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<!-- <h1 mat-dialog-title>Favorite Animal</h1>\n<div mat-dialog-content>\n  My favorite animal is:\n  <ul>\n    <li>\n      <span *ngIf=\"data.animal === 'panda'\">&#10003;</span> Panda\n    </li>\n    <li>\n      <span *ngIf=\"data.animal === 'unicorn'\">&#10003;</span> Unicorn\n    </li>\n    <li>\n      <span *ngIf=\"data.animal === 'lion'\">&#10003;</span> Lion\n    </li>\n  </ul>\n</div>\n<div mat-dialog-actions>\n    <button mat-button mat-dialog-close>Close</button>\n  </div> -->\n\n  <h1 mat-dialog-title>Dialog with elements</h1>\n<div mat-dialog-content>This dialog showcases the title, close, content and actions elements.</div>\n<div mat-dialog-actions>\n  <button mat-button mat-dialog-close>Close</button>\n</div>\n");
+
+/***/ }),
+
 /***/ "1UzU":
 /*!*********************************************!*\
   !*** ./src/app/layout/leave/leave.model.ts ***!
@@ -11163,6 +11176,7 @@ let AttendanceComponent = class AttendanceComponent {
             start: new _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormControl"](),
             end: new _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormControl"]()
         });
+        this.ToastText = '';
         this.displayedColumns = [
             'Id',
             'Name',
@@ -11239,6 +11253,10 @@ let AttendanceComponent = class AttendanceComponent {
         let hours = date_ob.getHours();
         let minutes = date_ob.getMinutes();
         let TimeNow = (hours + ":" + minutes);
+        let spanValue = row.status;
+        let spanValueInTime = row.in_time;
+        let spanValueOutTime = row.out_time;
+        console.log("span value: " + spanValueInTime);
         if (this.formValue.valid) {
             this.attendanceModelObj.status = this.formValue.value.status;
             if (this.attendanceModelObj.status == "Absent" || this.attendanceModelObj.status == "Off") {
@@ -11263,33 +11281,45 @@ let AttendanceComponent = class AttendanceComponent {
             let textt = '';
             this.api.postAttendance(this.attendanceModelObj)
                 .subscribe(res => {
-                // window.location.reload();
-                textt = ' Created Successfully !';
-                // console.log(res);
-                this._snackBar.open(textt, 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'right',
-                    verticalPosition: 'bottom',
-                });
-                // this.router.navigate([this.router.url]);
+                this.ToastText = 'Created Successfully';
+                this.ToastMsg(this.ToastText);
                 this.ngOnInit();
             }, err => {
-                textt = ' Error !';
-                this._snackBar.open(textt, 'Close', {
-                    duration: 3000,
-                    horizontalPosition: 'right',
-                    verticalPosition: 'bottom',
-                });
+                this.ToastText = 'Error';
+                this.ToastMsg(this.ToastText);
             });
         }
-        else {
+        else if (spanValue == 'Present' && spanValueOutTime == null) {
+            this.attendanceModelObj.date_of_attendance = doa;
+            if (!row.employees_id) {
+                this.attendanceModelObj.employees_id = row.id;
+            }
+            else {
+                this.attendanceModelObj.employees_id = row.employees_id;
+            }
+            // console.log(this.attendanceModelObj);
             let textt = '';
-            textt = ' Select Status [Present, Absent, Off]';
-            this._snackBar.open(textt, 'Close', {
-                duration: 3000,
-                horizontalPosition: 'right',
-                verticalPosition: 'bottom',
+            this.api.postAttendance(this.attendanceModelObj)
+                .subscribe(res => {
+                this.ToastText = 'Created Successfully';
+                this.ToastMsg(this.ToastText);
+                this.ngOnInit();
+            }, err => {
+                this.ToastText = 'Error';
+                this.ToastMsg(this.ToastText);
             });
+        }
+        else if ((spanValue == 'Absent') || (spanValue == 'Off')) {
+            this.ToastText = ' You Already Marked Your attendance';
+            this.ToastMsg(this.ToastText);
+        }
+        else if ((spanValueInTime != null && spanValueOutTime != null)) {
+            this.ToastText = ' You Already Marked Your attendance';
+            this.ToastMsg(this.ToastText);
+        }
+        else {
+            this.ToastText = ' Status [Present, Absent, Off]';
+            this.ToastMsg(this.ToastText);
         }
     }
     getAllAttendanceOfCurrentDate() {
@@ -11308,6 +11338,14 @@ let AttendanceComponent = class AttendanceComponent {
             this.dataSource.data = a3;
             console.log(a3);
             this.isLoaded = true;
+        });
+    }
+    ToastMsg(msg) {
+        // this.ToastText = ' You Already Marked Your attendance'
+        this._snackBar.open(msg, 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
         });
     }
 };
@@ -11344,6 +11382,19 @@ AttendanceComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 /***/ }),
 
+/***/ "8KTU":
+/*!************************************************************!*\
+  !*** ./src/app/layout/modal-data/modal-data.component.css ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJtb2RhbC1kYXRhLmNvbXBvbmVudC5jc3MifQ== */");
+
+/***/ }),
+
 /***/ "8uhK":
 /*!***********************************************************************************************************************!*\
   !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/layout/employee-edit-dialog/employee-edit-dialog.component.html ***!
@@ -11354,6 +11405,68 @@ AttendanceComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("<h2 mat-dialog-title>Edit Details of Employee [{{data.id}}]</h2>\n\n<!-- <mat-dialog-content> -->\n    <form [formGroup]=\"formValue\">\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Name</mat-label>\n        <input matInput placeholder=\"Emp Name\" formControlName=\"name\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Father Name</mat-label>\n        <input matInput placeholder=\"Father name\" formControlName=\"father_name\">\n    </mat-form-field>\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOB\" [matDatepicker]=\"picker1\" formControlName=\"dob\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOJ\" [matDatepicker]=\"picker2\" formControlName=\"doj\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Designation\" formControlName=\"designation\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Communication Add\" formControlName=\"communication_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Permanent Address\" type=\"text\"\n            formControlName=\"permanent_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Contact No\" type=\"number\" formControlName=\"contact_no\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Email ID\"  type=\"text\" formControlName=\"email\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Salary\" type=\"number\" formControlName=\"salary\">\n    </mat-form-field>\n    </form>\n<!-- </mat-dialog-content> -->\n<div class=\"centerbtns\">\n    <mat-dialog-actions>\n\n        <button class=\"mat-raised-button\" (click)=\"close()\">Close</button>\n        <button class=\"mat-raised-button mat-primary\" (click)=\"update()\">Save</button>\n    </mat-dialog-actions>\n\n</div>");
+
+/***/ }),
+
+/***/ "9U03":
+/*!***********************************************************!*\
+  !*** ./src/app/layout/modal-test/modal-test.component.ts ***!
+  \***********************************************************/
+/*! exports provided: ModalTestComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ModalTestComponent", function() { return ModalTestComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _raw_loader_modal_test_component_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! raw-loader!./modal-test.component.html */ "nVhv");
+/* harmony import */ var _modal_test_component_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modal-test.component.css */ "sWhO");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
+/* harmony import */ var _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../modal-data/modal-data.component */ "prsA");
+
+
+
+
+
+
+let ModalTestComponent = class ModalTestComponent {
+    constructor(dialog) {
+        this.dialog = dialog;
+        this.displayedColumns = [
+            'Emp Name',
+            'Basic Pay',
+            'Allowance',
+            'Current Salary',
+            'Last Increment',
+            'Last Increment Date',
+            'Last Salary Release Date',
+            'Action'
+        ];
+    }
+    ngOnInit() {
+    }
+    openDialog() {
+        this.dialog.open(_modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_5__["ModalDataComponent"], {
+            data: {
+                animal: 'panda',
+            },
+        });
+    }
+};
+ModalTestComponent.ctorParameters = () => [
+    { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialog"] }
+];
+ModalTestComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+        selector: 'app-modal-test',
+        template: _raw_loader_modal_test_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
+        styles: [_modal_test_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
+    }),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]])
+], ModalTestComponent);
+
+
 
 /***/ }),
 
@@ -11450,13 +11563,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _payroll_component_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./payroll.component.css */ "zY8B");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/paginator */ "M9IT");
-/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/sort */ "Dh3D");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var _shared_api_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../shared/api.service */ "eokG");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
+/* harmony import */ var _angular_material_paginator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/paginator */ "M9IT");
+/* harmony import */ var _angular_material_sort__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/sort */ "Dh3D");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ "tyNb");
 /* harmony import */ var _router_animations__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../router.animations */ "ZZ88");
-/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
-/* harmony import */ var _payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../payroll-dialog/payroll-dialog.component */ "pJ6Z");
+/* harmony import */ var _shared_api_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../shared/api.service */ "eokG");
+/* harmony import */ var _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../modal-data/modal-data.component */ "prsA");
 
 
 
@@ -11490,17 +11603,6 @@ let PayrollComponent = class PayrollComponent {
             'Action'
         ];
     }
-    openDialog() {
-        const dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialogConfig"]();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {
-            name: this.name
-        };
-        this.dialog.open(_payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_11__["PayrollDialogComponent"], dialogConfig);
-        const dialogRef = this.dialog.open(_payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_11__["PayrollDialogComponent"], dialogConfig);
-        dialogRef.afterClosed().subscribe(data => console.log("Dialog output:", data));
-    }
     applyFilter(event) {
         const filterValue = event.target.value;
         this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -11533,16 +11635,33 @@ let PayrollComponent = class PayrollComponent {
             this.dataSource = res;
         });
     }
+    // openDialog() {
+    //   this.dialog.open(ModalDataComponent);
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.disableClose = true;
+    // dialogConfig.autoFocus = true;
+    //   dialogConfig.data = {
+    //     name: this.name
+    // };
+    // this.dialog.open(ModalDataComponent, dialogConfig);
+    //   const dialogRef = this.dialog.open(PayrollDialogComponent, dialogConfig);
+    // dialogRef.afterClosed().subscribe(
+    //     data => console.log("Dialog output:", data)
+    // );    
+    // }
+    openDialog() {
+        this.dialog.open(_modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_11__["ModalDataComponent"]);
+    }
 };
 PayrollComponent.ctorParameters = () => [
     { type: _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"] },
-    { type: _shared_api_service__WEBPACK_IMPORTED_MODULE_8__["ApiService"] },
-    { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialog"] }
+    { type: _shared_api_service__WEBPACK_IMPORTED_MODULE_10__["ApiService"] },
+    { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"] }
 ];
 PayrollComponent.propDecorators = {
-    paginator: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_paginator__WEBPACK_IMPORTED_MODULE_5__["MatPaginator"],] }],
-    sort: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_sort__WEBPACK_IMPORTED_MODULE_6__["MatSort"],] }],
-    outlet: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_router__WEBPACK_IMPORTED_MODULE_7__["RouterOutlet"],] }]
+    paginator: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_paginator__WEBPACK_IMPORTED_MODULE_6__["MatPaginator"],] }],
+    sort: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_sort__WEBPACK_IMPORTED_MODULE_7__["MatSort"],] }],
+    outlet: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_router__WEBPACK_IMPORTED_MODULE_8__["RouterOutlet"],] }]
 };
 PayrollComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
@@ -11552,8 +11671,8 @@ PayrollComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
         styles: [_payroll_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
     }),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"],
-        _shared_api_service__WEBPACK_IMPORTED_MODULE_8__["ApiService"],
-        _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialog"]])
+        _shared_api_service__WEBPACK_IMPORTED_MODULE_10__["ApiService"],
+        _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]])
 ], PayrollComponent);
 
 
@@ -11713,7 +11832,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<h2 mat-dialog-title>Add Payroll</h2>\n\n<mat-dialog-content [formGroup]=\"createPayroll\">\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Employee Name</mat-label>\n        <mat-select formControlName=\"employees_id\">\n            <mat-option disabled>Select Employee</mat-option>\n            <mat-option *ngFor=\"let item of employees\" [value]=\"item.id\">{{item.name}}</mat-option>\n        </mat-select>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Basic Pay\" formControlName=\"basic_pay\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Allowance\" formControlName=\"allowance\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Current Salary\" formControlName=\"current_salary\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Last Increment\" formControlName=\"last_increment\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Last Increment Date\" formControlName=\"last_increment_date\"\n            [matDatepicker]=\"picker1\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Last Salary Release Date\" formControlName=\"last_salary_release_date\"\n            [matDatepicker]=\"picker2\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n\n\n\n\n\n\n\n</mat-dialog-content>\n\n<mat-dialog-actions>\n    <button class=\"mat-raised-button\" (click)=\"close()\">Close</button>\n    <button class=\"mat-raised-button mat-primary\" (click)=\"save()\">Save</button>\n</mat-dialog-actions>");
+/* harmony default export */ __webpack_exports__["default"] = ("<h2 mat-dialog-title>Add Payroll</h2>\n\n<!-- <mat-dialog-content > -->\n<!-- <form [formGroup]=\"createPayroll\">\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Employee Name</mat-label>\n                <mat-select formControlName=\"employees_id\">\n                    <mat-option disabled>Select Employee</mat-option>\n                    <mat-option *ngFor=\"let item of employees\" [value]=\"item.id\">{{item.name}}</mat-option>\n                </mat-select>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Basic Pay</mat-label>\n        <input matInput formControlName=\"basic_pay\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput formControlName=\"allowance\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput formControlName=\"current_salary\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput formControlName=\"last_increment\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput formControlName=\"last_increment_date\"\n            [matDatepicker]=\"picker1\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput formControlName=\"last_salary_release_date\"\n            [matDatepicker]=\"picker2\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field> -->\n\n\n\n\n\n<!-- </form> -->\n\n<!-- </mat-dialog-content> -->\n\n\n<div mat-dialog-actions>\n    <button mat-button mat-dialog-close>Close</button>\n  </div>\n\n");
 
 /***/ }),
 
@@ -11781,6 +11900,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
 /* harmony import */ var _payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./payroll-dialog/payroll-dialog.component */ "pJ6Z");
 /* harmony import */ var _employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./employee-edit-dialog/employee-edit-dialog.component */ "tFks");
+/* harmony import */ var _modal_test_modal_test_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./modal-test/modal-test.component */ "9U03");
+/* harmony import */ var _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./modal-data/modal-data.component */ "prsA");
+
+
 
 
 
@@ -11844,7 +11967,9 @@ LayoutModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             _employee_employee_component__WEBPACK_IMPORTED_MODULE_23__["EmployeeComponent"],
             _payroll_payroll_component__WEBPACK_IMPORTED_MODULE_24__["PayrollComponent"],
             _payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_26__["PayrollDialogComponent"],
-            _employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_27__["EmployeeEditDialogComponent"]
+            _employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_27__["EmployeeEditDialogComponent"],
+            _modal_test_modal_test_component__WEBPACK_IMPORTED_MODULE_28__["ModalTestComponent"],
+            _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_29__["ModalDataComponent"]
         ],
         entryComponents: [_payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_26__["PayrollDialogComponent"]],
         bootstrap: [_dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_19__["DashboardComponent"]]
@@ -12237,7 +12362,7 @@ SidebarComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Attendance'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n\n      <!-- <mat-form-field class=\"col-md-6\">\n          <mat-label>Search</mat-label>\n          <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n        </mat-form-field>\n  \n        <mat-form-field class=\"col-md-5\">\n          <mat-label>Enter a date range</mat-label>\n          <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n            <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n            <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n          </mat-date-range-input>\n          <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n          <mat-date-range-picker #picker></mat-date-range-picker>\n  \n          <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n          <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n        </mat-form-field>\n  \n        <button (click)=\"refresh()\" mat-button>\n          <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n        </button> -->\n\n\n\n\n      <div class=\"mat-elevation-z8\" *ngIf=\"isLoaded\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <form [formGroup]=\"formValue\">\n            <ng-container matColumnDef=\"Id\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee ID </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <label formControlName=\"employees_id\">{{row.id}}</label> -->\n                <img [src]=\"row.current_photo\" [alt]=\"row.employees_id\" width=\"40\" height=\"40\">\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Name\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.name}}</td>\n            </ng-container>\n\n            <!-- <ng-container matColumnDef=\"Email\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.email}}</td>\n            </ng-container> -->\n\n            <ng-container matColumnDef=\"PresentStatus\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Present Status </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.status else showRadio\">{{row.status}}</span>\n                <ng-template #showRadio>\n                  <mat-radio-group formControlName=\"status\">\n                    <mat-radio-button class=\"example-radio-group\" *ngFor=\"let item of status\" [value]=\"item\" required=\"!status\">\n                      {{item}}&nbsp;</mat-radio-button>\n                  </mat-radio-group>\n                  <!-- <input type=\"radio\" formControlName=\"status\"  *ngFor=\"let item of status\" [value]=\"item\" required> -->\n\n                </ng-template>\n\n                \n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"InTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.in_time else showInput1\">{{row.in_time}}</span>\n                <ng-template #showInput1>\n                  <input type=\"text\" name=\"in_time\" [(ngModel)]=\"row.in_time\" [ngModelOptions]=\"{standalone: true}\"\n                    disabled>\n                </ng-template>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"OutTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.out_time else showInput\">{{row.out_time}}</span>\n                <ng-template #showInput>\n                  <input type=\"text\" name=\"out_time\" [(ngModel)]=\"row.out_time\" [ngModelOptions]=\"{standalone: true}\"\n                    disabled>\n                </ng-template>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Action\">\n              <th mat-header-cell *matHeaderCellDef> Action </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <a (click)=\"openEdit(row)\" (click)=\"postEmployeeDetails()\"> -->\n                <a class=\"attendance-cursor\" (click)=\"markAttendance(row)\">\n                  <mat-icon>send</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"cancel\">\n              <th mat-header-cell *matHeaderCellDef></th>\n              <td mat-cell *matCellDef=\"let row\">\n                <a (click)=\"cancel(row)\">\n                  <mat-icon>delete</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n\n            <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n            <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n            <!-- Row shown when there is no matching data. -->\n            <tr class=\"mat-row\" *matNoDataRow>\n              <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n            </tr>\n          </form>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\" [pageSize]=\"10\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Attendance'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n\n      <!-- <mat-form-field class=\"col-md-6\">\n          <mat-label>Search</mat-label>\n          <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n        </mat-form-field>\n  \n        <mat-form-field class=\"col-md-5\">\n          <mat-label>Enter a date range</mat-label>\n          <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n            <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n            <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n          </mat-date-range-input>\n          <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n          <mat-date-range-picker #picker></mat-date-range-picker>\n  \n          <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n          <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n        </mat-form-field>\n  \n        <button (click)=\"refresh()\" mat-button>\n          <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n        </button> -->\n\n\n\n\n      <div class=\"mat-elevation-z8\" *ngIf=\"isLoaded\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <form [formGroup]=\"formValue\">\n            <ng-container matColumnDef=\"Id\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee ID </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <label formControlName=\"employees_id\">{{row.id}}</label> -->\n                <img [src]=\"row.current_photo\" [alt]=\"row.employees_id\" width=\"40\" height=\"40\">\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Name\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.name}}</td>\n            </ng-container>\n\n            <!-- <ng-container matColumnDef=\"Email\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.email}}</td>\n            </ng-container> -->\n\n            <ng-container matColumnDef=\"PresentStatus\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Present Status </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span id=\"spa\" *ngIf=\"row.status else showRadio\">{{row.status}}</span>\n                <!-- <input *ngIf=\"row.status else showRadio\" [value]=\"row.status\" formControlName=\"status\"> -->\n\n                <ng-template #showRadio>\n                  <mat-radio-group formControlName=\"status\">\n                    <mat-radio-button class=\"example-radio-group\" *ngFor=\"let item of status\" [value]=\"item\" required=\"!status\">\n                      {{item}}&nbsp;</mat-radio-button>\n                  </mat-radio-group>\n                  <!-- <input type=\"radio\" formControlName=\"status\"  *ngFor=\"let item of status\" [value]=\"item\" required> -->\n\n                </ng-template>\n\n                \n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"InTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.in_time else showInput1\">{{row.in_time}}</span>\n                <ng-template #showInput1>\n                  <input type=\"text\" name=\"in_time\" [(ngModel)]=\"row.in_time\" [ngModelOptions]=\"{standalone: true}\"\n                    disabled>\n                </ng-template>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"OutTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.out_time else showInput\">{{row.out_time}}</span>\n                <ng-template #showInput>\n                  <input type=\"text\" name=\"out_time\" [(ngModel)]=\"row.out_time\" [ngModelOptions]=\"{standalone: true}\"\n                    disabled>\n                </ng-template>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Action\">\n              <th mat-header-cell *matHeaderCellDef> Action </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <a (click)=\"openEdit(row)\" (click)=\"postEmployeeDetails()\"> -->\n                <a class=\"attendance-cursor\" (click)=\"markAttendance(row)\">\n                  <mat-icon>send</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"cancel\">\n              <th mat-header-cell *matHeaderCellDef></th>\n              <td mat-cell *matCellDef=\"let row\">\n                <a (click)=\"cancel(row)\">\n                  <mat-icon>delete</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n\n            <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n            <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n            <!-- Row shown when there is no matching data. -->\n            <tr class=\"mat-row\" *matNoDataRow>\n              <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n            </tr>\n          </form>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\" [pageSize]=\"10\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n</div>");
 
 /***/ }),
 
@@ -12265,7 +12390,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _attendance_attendance_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./attendance/attendance.component */ "3pqY");
 /* harmony import */ var _leave_leave_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./leave/leave.component */ "jEBV");
 /* harmony import */ var _employee_employee_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./employee/employee.component */ "qZhI");
-/* harmony import */ var _payroll_payroll_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./payroll/payroll.component */ "If5j");
+/* harmony import */ var _modal_test_modal_test_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./modal-test/modal-test.component */ "9U03");
 
 
 
@@ -12298,7 +12423,8 @@ const routes = [
             { path: 'attendance', component: _attendance_attendance_component__WEBPACK_IMPORTED_MODULE_11__["AttendanceComponent"] },
             { path: 'leave', component: _leave_leave_component__WEBPACK_IMPORTED_MODULE_12__["LeaveComponent"] },
             { path: 'employee', component: _employee_employee_component__WEBPACK_IMPORTED_MODULE_13__["EmployeeComponent"] },
-            { path: 'payroll', component: _payroll_payroll_component__WEBPACK_IMPORTED_MODULE_14__["PayrollComponent"] },
+            // { path: 'payroll', component: PayrollComponent },
+            { path: 'modal-test', component: _modal_test_modal_test_component__WEBPACK_IMPORTED_MODULE_14__["ModalTestComponent"] },
             { path: 'details/:id', component: _existing_task_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_6__["ExistingtaskDetailsComponent"] },
             { path: 'blockworker', component: _blockworkers_blockworkers_component__WEBPACK_IMPORTED_MODULE_8__["BlockworkersComponent"] },
             { path: 'assignments', component: _assignments_assignments_component__WEBPACK_IMPORTED_MODULE_9__["AssignmentsComponent"] }
@@ -12883,6 +13009,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "nVhv":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/layout/modal-test/modal-test.component.html ***!
+  \***************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("\n<button mat-button (click)=\"openDialog()\">Open dialog</button>");
+
+/***/ }),
+
 /***/ "pJ6Z":
 /*!*******************************************************************!*\
   !*** ./src/app/layout/payroll-dialog/payroll-dialog.component.ts ***!
@@ -12912,17 +13051,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let PayrollDialogComponent = class PayrollDialogComponent {
-    constructor(formbuilder, api, dialogRef, data) {
+    constructor(formbuilder, api, 
+    // private dialogRef: MatDialogRef<PayrollDialogComponent>,
+    data) {
         this.formbuilder = formbuilder;
         this.api = api;
-        this.dialogRef = dialogRef;
         this.payrollModelObj = new _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_8__["Payroll"]();
         this.basic_pay = data.basic_pay;
     }
     ngOnInit() {
         this.getAllEmployee();
         this.createPayroll = this.formbuilder.group({
-            basic_pay: [this.basic_pay, []],
+            basic_pay: [''],
             allowance: [''],
             current_salary: [''],
             last_increment: [''],
@@ -12941,8 +13081,8 @@ let PayrollDialogComponent = class PayrollDialogComponent {
     //   this.dialogRef.close(this.createPayroll.value);
     // }
     save() {
-        const fromDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createPayroll.value.last_increment_date, 'yyyy-MM-dd', 'en-US');
-        const toDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createPayroll.value.last_salary_release_date, 'yyyy-MM-dd', 'en-US');
+        let fromDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createPayroll.value.last_increment_date, 'yyyy-MM-dd', 'en-US');
+        let toDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createPayroll.value.last_salary_release_date, 'yyyy-MM-dd', 'en-US');
         this.payrollModelObj.basic_pay = this.createPayroll.value.basic_pay;
         this.payrollModelObj.allowance = this.createPayroll.value.allowance;
         this.payrollModelObj.current_salary = this.createPayroll.value.current_salary;
@@ -12955,18 +13095,16 @@ let PayrollDialogComponent = class PayrollDialogComponent {
             .subscribe(res => {
             console.log(res);
             alert("Added payroll successfully");
+            // let ref = document.getElementById('cancel')
+            // ref?.click();
         }, err => {
             alert("something wrong");
         });
-    }
-    close() {
-        this.dialogRef.close();
     }
 };
 PayrollDialogComponent.ctorParameters = () => [
     { type: _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormBuilder"] },
     { type: _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"] },
-    { type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__["MatDialogRef"] },
     { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Inject"], args: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__["MAT_DIALOG_DATA"],] }] }
 ];
 PayrollDialogComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
@@ -12976,8 +13114,7 @@ PayrollDialogComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]
         styles: [_payroll_dialog_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
     }),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormBuilder"],
-        _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"],
-        _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__["MatDialogRef"], Object])
+        _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"], Object])
 ], PayrollDialogComponent);
 
 
@@ -13027,6 +13164,51 @@ ExistingtaskDetailsComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__deco
     }),
     Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Object, _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialog"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
 ], ExistingtaskDetailsComponent);
+
+
+
+/***/ }),
+
+/***/ "prsA":
+/*!***********************************************************!*\
+  !*** ./src/app/layout/modal-data/modal-data.component.ts ***!
+  \***********************************************************/
+/*! exports provided: ModalDataComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ModalDataComponent", function() { return ModalDataComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _raw_loader_modal_data_component_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! raw-loader!./modal-data.component.html */ "/qSK");
+/* harmony import */ var _modal_data_component_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modal-data.component.css */ "8KTU");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/dialog */ "0IaG");
+
+
+
+
+
+let ModalDataComponent = class ModalDataComponent {
+    constructor(
+    // public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
+    data) {
+        this.data = data;
+    }
+    ngOnInit() {
+    }
+};
+ModalDataComponent.ctorParameters = () => [
+    { type: undefined, decorators: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"], args: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MAT_DIALOG_DATA"],] }] }
+];
+ModalDataComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
+        selector: 'app-modal-data',
+        template: _raw_loader_modal_data_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
+        styles: [_modal_data_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
+    }),
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Object])
+], ModalDataComponent);
 
 
 
@@ -13339,6 +13521,19 @@ EmployeeComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 ], EmployeeComponent);
 
 
+
+/***/ }),
+
+/***/ "sWhO":
+/*!************************************************************!*\
+  !*** ./src/app/layout/modal-test/modal-test.component.css ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJtb2RhbC10ZXN0LmNvbXBvbmVudC5jc3MifQ== */");
 
 /***/ }),
 
@@ -13892,7 +14087,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"btnadd\">\n    <button (click)=\"openDialog()\" class=\"btn btn-success\" type=\"button\">Add Payroll\n      <i class=\"fa fa-fw fa-plus\"></i>\n    </button>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n<!-- \n      <mat-form-field class=\"col-md-6\">\n        <mat-label>Search</mat-label>\n        <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n      </mat-form-field>\n\n      <mat-form-field class=\"col-md-5\">\n        <mat-label>Enter a date range</mat-label>\n        <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n          <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n          <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n        </mat-date-range-input>\n        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n        <mat-date-range-picker #picker></mat-date-range-picker>\n\n        <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n        <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n      </mat-form-field>\n      <button (click)=\"refresh()\" mat-button>\n        <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n      </button> -->\n\n\n      <div class=\"mat-elevation-z8\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <ng-container matColumnDef=\"Emp Name\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Basic Pay\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Allowance\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Current Salary\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Increment\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n          </ng-container>\n          <ng-container matColumnDef=\"Last Increment Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Salary Release Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Action\">\n            <th mat-header-cell *matHeaderCellDef>Action</th>\n            <td mat-cell *matCellDef=\"let row\">\n\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>edit</mat-icon>\n              </a>&nbsp;\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>delete</mat-icon>\n              </a>\n                <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n                <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n            \n            </td>\n          </ng-container>\n\n          <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n          <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n          <!-- Row shown when there is no matching data. -->\n          <tr class=\"mat-row\" *matNoDataRow>\n            <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n          </tr>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n\n    <!-- Modal -->\n    <!-- <div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"exampleModalLabel\">Employee Detail</h5>\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n          </div>\n          <div class=\"modal-body\">\n              <form [formGroup]=\"formValue\">\n                  <div class=\"mb-3\">\n                      <label for=\"exampleInputName1\" class=\"form-label\">Name</label>\n                      <input type=\"text\" formControlName=\"name\" class=\"form-control\" id=\"inputName\" aria-describedby=\"nameHelp\">\n                    </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputEmail1\" class=\"form-label\">Email</label>\n                    <input type=\"email\" formControlName=\"email\" class=\"form-control\" id=\"inputemail\" aria-describedby=\"emailHelp\">\n                  </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputPassword1\" class=\"form-label\">Password</label>\n                    <input type=\"password\" formControlName=\"password\" class=\"form-control\" id=\"inputPass\">\n                  </div>\n                </form>\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" id=\"cancel\" data-bs-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showAdd\" (click)=\"postEmployeeDetails()\">Add</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showUpdate\" (click)=\"updateEmployeeDetails()\">Update</button>\n          </div>\n        </div>\n      </div>\n    </div> -->\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"btnadd\">\n    <button (click)=\"openDialog()\" mat-raised-button>Add Payroll\n      <i class=\"fa fa-fw fa-plus\"></i>\n    </button>\n<!-- <button mat-button (click)=\"openDialog()\">Open dialog</button> -->\n\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n<!-- \n      <mat-form-field class=\"col-md-6\">\n        <mat-label>Search</mat-label>\n        <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n      </mat-form-field>\n\n      <mat-form-field class=\"col-md-5\">\n        <mat-label>Enter a date range</mat-label>\n        <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n          <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n          <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n        </mat-date-range-input>\n        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n        <mat-date-range-picker #picker></mat-date-range-picker>\n\n        <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n        <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n      </mat-form-field>\n      <button (click)=\"refresh()\" mat-button>\n        <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n      </button> -->\n\n\n      <div class=\"mat-elevation-z8\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <ng-container matColumnDef=\"Emp Name\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Basic Pay\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Allowance\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Current Salary\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Increment\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n          </ng-container>\n          <ng-container matColumnDef=\"Last Increment Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Salary Release Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Action\">\n            <th mat-header-cell *matHeaderCellDef>Action</th>\n            <td mat-cell *matCellDef=\"let row\">\n\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>edit</mat-icon>\n              </a>&nbsp;\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>delete</mat-icon>\n              </a>\n                <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n                <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n            \n            </td>\n          </ng-container>\n\n          <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n          <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n          <!-- Row shown when there is no matching data. -->\n          <tr class=\"mat-row\" *matNoDataRow>\n            <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n          </tr>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n\n    <!-- Modal -->\n    <!-- <div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"exampleModalLabel\">Employee Detail</h5>\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n          </div>\n          <div class=\"modal-body\">\n              <form [formGroup]=\"formValue\">\n                  <div class=\"mb-3\">\n                      <label for=\"exampleInputName1\" class=\"form-label\">Name</label>\n                      <input type=\"text\" formControlName=\"name\" class=\"form-control\" id=\"inputName\" aria-describedby=\"nameHelp\">\n                    </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputEmail1\" class=\"form-label\">Email</label>\n                    <input type=\"email\" formControlName=\"email\" class=\"form-control\" id=\"inputemail\" aria-describedby=\"emailHelp\">\n                  </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputPassword1\" class=\"form-label\">Password</label>\n                    <input type=\"password\" formControlName=\"password\" class=\"form-control\" id=\"inputPass\">\n                  </div>\n                </form>\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" id=\"cancel\" data-bs-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showAdd\" (click)=\"postEmployeeDetails()\">Add</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showUpdate\" (click)=\"updateEmployeeDetails()\">Update</button>\n          </div>\n        </div>\n      </div>\n    </div> -->\n</div>");
 
 /***/ }),
 

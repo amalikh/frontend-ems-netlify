@@ -51,46 +51,41 @@
             </ng-container> -->
 
             <ng-container matColumnDef="PresentStatus">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Present Status </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
               <td mat-cell *matCellDef="let row">
-                <span *ngIf="row.status else showRadio">{{row.status}}</span>
+                <span id="spa" *ngIf="row.status else showRadio">{{row.status}}</span>
+                <!-- <input *ngIf="row.status else showRadio" [value]="row.status" formControlName="status"> -->
+
                 <ng-template #showRadio>
                   <mat-radio-group formControlName="status">
-                    <mat-radio-button class="example-radio-group" *ngFor="let item of status" [value]="item" required="!status">
+                    <mat-radio-button class="example-radio-group" *ngFor="let item of status" [value]="item"
+                      required="!status">
                       {{item}}&nbsp;</mat-radio-button>
                   </mat-radio-group>
                   <!-- <input type="radio" formControlName="status"  *ngFor="let item of status" [value]="item" required> -->
 
                 </ng-template>
 
-                
+
               </td>
             </ng-container>
 
             <ng-container matColumnDef="InTime">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>
               <td mat-cell *matCellDef="let row">
-                <span *ngIf="row.in_time else showInput1">{{row.in_time}}</span>
-                <ng-template #showInput1>
-                  <input type="text" name="in_time" [(ngModel)]="row.in_time" [ngModelOptions]="{standalone: true}"
-                    disabled>
-                </ng-template>
+                {{row.in_time}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="OutTime">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>
               <td mat-cell *matCellDef="let row">
-                <span *ngIf="row.out_time else showInput">{{row.out_time}}</span>
-                <ng-template #showInput>
-                  <input type="text" name="out_time" [(ngModel)]="row.out_time" [ngModelOptions]="{standalone: true}"
-                    disabled>
-                </ng-template>
+                {{row.out_time}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="Action">
-              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <th mat-header-cell *matHeaderCellDef> </th>
               <td mat-cell *matCellDef="let row">
                 <!-- <a (click)="openEdit(row)" (click)="postEmployeeDetails()"> -->
                 <a class="attendance-cursor" (click)="markAttendance(row)">
@@ -99,14 +94,6 @@
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="cancel">
-              <th mat-header-cell *matHeaderCellDef></th>
-              <td mat-cell *matCellDef="let row">
-                <a (click)="cancel(row)">
-                  <mat-icon>delete</mat-icon>
-                </a>
-              </td>
-            </ng-container>
 
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

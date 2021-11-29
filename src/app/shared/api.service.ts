@@ -31,6 +31,13 @@ base_url = "https://em-system-heroku.herokuapp.com/"
       }))
   }
 
+  getAllActiveEmployee() {
+    return this.http.get<any>(this.base_url+"employee/allActive")
+      .pipe(map((res: any) => {
+        return res;
+      }))
+  }
+
   postUser(data: any) {
     return this.http.post<any>(this.base_url+ "user/signup", data)
       .pipe(map((res: any) => { return res; }))
@@ -108,7 +115,7 @@ base_url = "https://em-system-heroku.herokuapp.com/"
 
   //merging data of two apis using fork join
   requestDataFromMultipleSources(): Observable<any[]> {
-    let response1 = this.http.get(this.base_url+"employee/all");
+    let response1 = this.http.get(this.base_url+"employee/allActive");
     let response2 = this.http.get(this.base_url+"attendance/allWithCurrentDate");
     // let response3 = this.http.get(requestUrl3);
     // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6

@@ -43,7 +43,7 @@
       </div>
       <div class="content">
         <div class="text">ACTIVE</div>
-        <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{totalEmployees}}</div>
+        <div class="number count-to" data-from="0" data-to="125" data-speed="15" data-fresh-interval="20">{{totalActiveEmployees}}</div>
       </div>
     </div>
   </div>
@@ -61,7 +61,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of employeeData">
+    <tr *ngFor="let item of activeEmployeeData">
       <td>{{item.id}}</td>
       <td>{{item.name}}</td>
       <td>{{item.email}}</td>

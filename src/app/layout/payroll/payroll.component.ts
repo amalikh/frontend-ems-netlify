@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { RouterOutlet } from '@angular/router';
-import { ApiService } from '../../shared/api.service';
 import { routerTransition } from '../../router.animations';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { PayrollDialogComponent } from '../payroll-dialog/payroll-dialog.component';
+import { ApiService } from '../../shared/api.service';
+import { ModalDataComponent } from '../modal-data/modal-data.component';
 
 export interface PayrollData {
   Id: string;
@@ -57,28 +57,9 @@ export class PayrollComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private api: ApiService,
-    private dialog: MatDialog) { }
+    public dialog: MatDialog) { }
 
-    openDialog() {
-
-      const dialogConfig = new MatDialogConfig();
-
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-
-      dialogConfig.data = {
-        name: this.name
-    };
-
-      this.dialog.open(PayrollDialogComponent, dialogConfig);
-
-      const dialogRef = this.dialog.open(PayrollDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-        data => console.log("Dialog output:", data)
-    );    
-  }
-
+ 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -122,5 +103,27 @@ export class PayrollComponent implements OnInit {
       })
   }
   
+  // openDialog() {
+   
+  //   this.dialog.open(ModalDataComponent);
 
+  // const dialogConfig = new MatDialogConfig();
+
+  // dialogConfig.disableClose = true;
+  // dialogConfig.autoFocus = true;
+
+//   dialogConfig.data = {
+//     name: this.name
+// };
+
+  // this.dialog.open(ModalDataComponent, dialogConfig);
+//   const dialogRef = this.dialog.open(PayrollDialogComponent, dialogConfig);
+// dialogRef.afterClosed().subscribe(
+//     data => console.log("Dialog output:", data)
+// );    
+// }
+
+
+openDialog(){
+  this.dialog.open(ModalDataComponent)}
 }

@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit {
   totalEmployees:any;
   totalAttendance:any;
   totalLeave:any;
+  totalActiveEmployees:any;
+  activeEmployeeData:any;
   employeeModelObj: EmployeeModel = new EmployeeModel();
   employeeData: any;
   showAdd: boolean;
@@ -43,6 +45,7 @@ export class DashboardComponent implements OnInit {
     this.getAllEmployee();
     this.getAllAttendance();
     this.getAllLeave();
+    this.getAllActiveEmployee();
   }
   clickAddEmployee() {
     // this.formValue.reset();
@@ -73,7 +76,6 @@ export class DashboardComponent implements OnInit {
       .subscribe(res => {
         this.employeeData = res;
         this.totalEmployees = res.length;
-        
       })
   }
 
@@ -90,11 +92,19 @@ export class DashboardComponent implements OnInit {
       })
   }
 
+  getAllActiveEmployee(){
+    this.api.getAllActiveEmployee()
+    .subscribe(res => {
+      this.activeEmployeeData = res;
+      this.totalActiveEmployees = res.length;
+    })
+  }
+
   deleteEmployee(item: any) {
     this.api.deleteEmployee(item.id)
       .subscribe(res => {
         alert("deleted!");
-        this.getAllEmployee();
+        this.getAllActiveEmployee();
       })
   }
 

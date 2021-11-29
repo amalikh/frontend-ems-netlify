@@ -26,6 +26,9 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { PayrollDialogComponent } from './payroll-dialog/payroll-dialog.component';
 import { EmployeeEditDialogComponent } from './employee-edit-dialog/employee-edit-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalTestComponent } from './modal-test/modal-test.component';
+import { ModalDataComponent } from './modal-data/modal-data.component';
+
 
 @NgModule({
     imports: [
@@ -40,7 +43,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         MatRadioModule,
         MatDialogModule,
         NgbModule,
-  
+
     ],
     declarations: [
         LayoutComponent,
@@ -59,7 +62,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         EmployeeComponent,
         PayrollComponent,
         PayrollDialogComponent,
-        EmployeeEditDialogComponent
+        EmployeeEditDialogComponent,
+        ModalTestComponent,
+        ModalDataComponent
     ],
     entryComponents: [PayrollDialogComponent],
     bootstrap: [DashboardComponent]

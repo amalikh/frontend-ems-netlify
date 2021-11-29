@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from '../../shared/api.service';
 import { Payroll } from '../payroll/payroll.model';
 
@@ -22,8 +22,8 @@ export class PayrollDialogComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private api: ApiService,
-    private dialogRef: MatDialogRef<PayrollDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data) {
+    // private dialogRef: MatDialogRef<PayrollDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) data:any) {
     this.basic_pay = data.basic_pay;
   }
 
@@ -31,7 +31,7 @@ export class PayrollDialogComponent implements OnInit {
     this.getAllEmployee();
 
     this.createPayroll = this.formbuilder.group({
-      basic_pay: [this.basic_pay, []],
+      basic_pay: [''],
       allowance: [''],
       current_salary: [''],
       last_increment: [''],
@@ -53,8 +53,8 @@ export class PayrollDialogComponent implements OnInit {
   // }
 
   save(){
-    const fromDate = formatDate(this.createPayroll.value.last_increment_date, 'yyyy-MM-dd', 'en-US');
-    const toDate = formatDate(this.createPayroll.value.last_salary_release_date, 'yyyy-MM-dd', 'en-US');
+    let fromDate = formatDate(this.createPayroll.value.last_increment_date, 'yyyy-MM-dd', 'en-US');
+    let toDate = formatDate(this.createPayroll.value.last_salary_release_date, 'yyyy-MM-dd', 'en-US');
     
       this.payrollModelObj.basic_pay = this.createPayroll.value.basic_pay;
       this.payrollModelObj.allowance = this.createPayroll.value.allowance;
@@ -69,6 +69,8 @@ export class PayrollDialogComponent implements OnInit {
       .subscribe(res =>{
         console.log(res);
         alert("Added payroll successfully");
+        // let ref = document.getElementById('cancel')
+        // ref?.click();
       },
       err =>{
         alert("something wrong");
@@ -77,8 +79,8 @@ export class PayrollDialogComponent implements OnInit {
     }
 
 
-  close() {
-    this.dialogRef.close();
-  }
+    // closee(): void {
+    //   this.dialogRef.close();
+    // }
 
 }

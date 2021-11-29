@@ -12,6 +12,7 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { LeaveComponent } from './leave/leave.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { PayrollComponent } from './payroll/payroll.component';
+import { ModalTestComponent } from './modal-test/modal-test.component';
 
 const routes: Routes = [
     {
@@ -30,7 +31,8 @@ const routes: Routes = [
             { path: 'attendance', component: AttendanceComponent },
             { path: 'leave', component: LeaveComponent },
             { path: 'employee', component: EmployeeComponent },
-            { path: 'payroll', component: PayrollComponent },
+            // { path: 'payroll', component: PayrollComponent },
+            { path: 'modal-test', component: ModalTestComponent },
 
 
 

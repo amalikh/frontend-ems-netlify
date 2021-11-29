@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Payroll</h1>
+<div mat-dialog-content>
+
+  <form [formGroup]="createPayroll">
+
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Employee Name</mat-label>
+      <mat-select formControlName="employees_id" [disabled]="isEdit">
+        <mat-option disabled>Select Employee</mat-option>
+        <mat-option *ngFor="let item of employees" [disabled]="isEdit" [value]="item.id">{{item.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Basic Pay</mat-label>
+      <input matInput formControlName="basic_pay" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Allowance</mat-label>
+
+      <input matInput formControlName="allowance" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Current Salary</mat-label>
+      <input matInput formControlName="current_salary" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Last Increment</mat-label>
+      <input matInput formControlName="last_increment" type="number">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Last Increment Date</mat-label>
+      <input matInput formControlName="last_increment_date" [matDatepicker]="picker1">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6" appearance="outline">
+      <mat-label>Last Salary Release</mat-label>
+      <input matInput formControlName="last_salary_release_date" [matDatepicker]="picker2">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button (click)="save()">Save</button>
+
+</div>

@@ -1,10 +1,14 @@
 <div [@routerTransition]>
   <app-page-header [heading]="'EMS'" [subheading]="'Payroll'" [icon]="'fa-tasks'"></app-page-header>
   <div class="btnadd">
-    <button (click)="openDialog()" class="btn btn-success" type="button">Add Payroll
+    <button (click)="openDialog()" mat-raised-button>Add Payroll
       <i class="fa fa-fw fa-plus"></i>
     </button>
+<!-- <button mat-button (click)="openDialog()">Open dialog</button> -->
+
   </div>
+
+  
   <div class="row">
     <div class="col-md-12">
 <!-- 
