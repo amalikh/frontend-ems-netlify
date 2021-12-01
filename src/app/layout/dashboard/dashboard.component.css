@@ -52,3 +52,20 @@
       font-size: 26px;
       margin-top: -4px;
       color: #fff; }
+
+      table {
+        width: 100%;
+      }
+    
+      .mat-form-field {
+        font-size: 14px;
+        width: 100%;
+      }
+    
+      th{
+      font: 1em calibri;
+    }
+    
+    td{
+      font: 1em calibri;
+    }

@@ -195,6 +195,13 @@
             }));
           }
         }, {
+          key: "getAllActiveEmployee",
+          value: function getAllActiveEmployee() {
+            return this.http.get(this.base_url + "employee/allActive").pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res;
+            }));
+          }
+        }, {
           key: "postUser",
           value: function postUser(data) {
             return this.http.post(this.base_url + "user/signup", data).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
@@ -218,7 +225,7 @@
         }, {
           key: "login",
           value: function login(data) {
-            return this.http.post(this.base_url + "user/login", data).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+            return this.http.post(this.base_url + "user/login", data, HEADERS).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res;
             }));
           }
@@ -291,7 +298,7 @@
         }, {
           key: "requestDataFromMultipleSources",
           value: function requestDataFromMultipleSources() {
-            var response1 = this.http.get(this.base_url + "employee/all");
+            var response1 = this.http.get(this.base_url + "employee/allActive");
             var response2 = this.http.get(this.base_url + "attendance/allWithCurrentDate"); // let response3 = this.http.get(requestUrl3);
             // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
 

@@ -1,5 +1,5 @@
 <div [@routerTransition]>
-  <app-page-header [heading]="'EMS'" [subheading]="'Attendance'" [icon]="'fa-tasks'"></app-page-header>
+  <app-page-header [heading]="'EMS'" [subheading]="'Attendance [ ' + doa + ' ]'" [icon]="'fa-tasks'"></app-page-header>
   <div class="row">
     <div class="col-md-12">
 
@@ -50,37 +50,48 @@
               <td mat-cell *matCellDef="let row">{{row.email}}</td>
             </ng-container> -->
 
-            <ng-container matColumnDef="PresentStatus">
+            <!-- <ng-container matColumnDef="PresentStatus">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
               <td mat-cell *matCellDef="let row">
-                <span id="spa" *ngIf="row.status else showRadio">{{row.status}}</span>
+                <span id="spa" *ngIf="row.status else showRadio">{{row.status}}</span> -->
                 <!-- <input *ngIf="row.status else showRadio" [value]="row.status" formControlName="status"> -->
 
-                <ng-template #showRadio>
+                <!-- <ng-template #showRadio>
                   <mat-radio-group formControlName="status">
                     <mat-radio-button class="example-radio-group" *ngFor="let item of status" [value]="item"
                       required="!status">
                       {{item}}&nbsp;</mat-radio-button>
-                  </mat-radio-group>
+                  </mat-radio-group> -->
                   <!-- <input type="radio" formControlName="status"  *ngFor="let item of status" [value]="item" required> -->
-
-                </ng-template>
-
-
+                <!-- </ng-template>
               </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let row">
+                <span id="spa" *ngIf="row.status else showRadio">{{row.status}}</span>
+
+                <ng-template #showRadio>
+                <mat-select formControlName="status">
+                  <mat-option disabled>Select</mat-option>
+                    <mat-option *ngFor="let item of status" [value]="item" required="!status">{{item}}</mat-option>
+                </mat-select>
+                </ng-template>
+          </td>
             </ng-container>
 
             <ng-container matColumnDef="InTime">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>
               <td mat-cell *matCellDef="let row">
-                {{row.in_time}}
+                {{row.in_time | date:'shortTime'}}
               </td>
             </ng-container>
 
             <ng-container matColumnDef="OutTime">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>
               <td mat-cell *matCellDef="let row">
-                {{row.out_time}}
+                {{row.out_time | date:'shortTime'}}
               </td>
             </ng-container>
 

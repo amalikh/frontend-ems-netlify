@@ -558,7 +558,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<!-- <h1 mat-dialog-title>Favorite Animal</h1>\n<div mat-dialog-content>\n  My favorite animal is:\n  <ul>\n    <li>\n      <span *ngIf=\"data.animal === 'panda'\">&#10003;</span> Panda\n    </li>\n    <li>\n      <span *ngIf=\"data.animal === 'unicorn'\">&#10003;</span> Unicorn\n    </li>\n    <li>\n      <span *ngIf=\"data.animal === 'lion'\">&#10003;</span> Lion\n    </li>\n  </ul>\n</div>\n<div mat-dialog-actions>\n    <button mat-button mat-dialog-close>Close</button>\n  </div> -->\n\n  <h1 mat-dialog-title>Dialog with elements</h1>\n<div mat-dialog-content>This dialog showcases the title, close, content and actions elements.</div>\n<div mat-dialog-actions>\n  <button mat-button mat-dialog-close>Close</button>\n</div>\n";
+      __webpack_exports__["default"] = "<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Payroll</h1>\n<div mat-dialog-content>\n\n  <form [formGroup]=\"createPayroll\">\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Employee Name</mat-label>\n      <mat-select formControlName=\"employees_id\" [disabled]=\"isEdit\">\n        <mat-option disabled>Select Employee</mat-option>\n        <mat-option *ngFor=\"let item of employees\" [disabled]=\"isEdit\" [value]=\"item.id\">{{item.name}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Basic Pay</mat-label>\n      <input matInput formControlName=\"basic_pay\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Allowance</mat-label>\n\n      <input matInput formControlName=\"allowance\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Current Salary</mat-label>\n      <input matInput formControlName=\"current_salary\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Increment</mat-label>\n      <input matInput formControlName=\"last_increment\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Increment Date</mat-label>\n      <input matInput formControlName=\"last_increment_date\" [matDatepicker]=\"picker1\">\n      <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n      <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Salary Release</mat-label>\n      <input matInput formControlName=\"last_salary_release_date\" [matDatepicker]=\"picker2\">\n      <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n      <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n  </form>\n</div>\n\n<div mat-dialog-actions>\n  <button mat-button mat-dialog-close>Close</button>\n  <button mat-button (click)=\"save()\">Save</button>\n\n</div>";
       /***/
     },
 
@@ -20066,7 +20066,9 @@
             end: new _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormControl"]()
           });
           this.ToastText = '';
-          this.displayedColumns = ['Id', 'Name', 'PresentStatus', 'InTime', 'OutTime', 'Action'];
+          this.displayedColumns = ['Id', 'Name', // 'PresentStatus',
+          'Status', 'InTime', 'OutTime', 'Action'];
+          this.doa = Object(_angular_common__WEBPACK_IMPORTED_MODULE_14__["formatDate"])(this.todaysDate, 'yyyy-MM-dd', 'en-US');
           this.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_9__["MatTableDataSource"]([]);
           this.isLoaded = false;
         }
@@ -20083,6 +20085,7 @@
               if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this45.outlet.deactivate();
             });
             this.formValue = this.formbuilder.group({
+              // status: ['', [Validators.required]],
               status: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_10__["Validators"].required]],
               in_time: [''],
               out_time: [''],
@@ -20127,20 +20130,20 @@
             var _this46 = this;
 
             this.api.deleteEmployee(row.active_child).subscribe(function (res) {
-              _this46.getAllEmployee();
+              _this46.getAllActiveEmployee();
             });
           }
         }, {
           key: "refresh",
           value: function refresh() {
-            this.getAllEmployee();
+            this.getAllActiveEmployee();
           }
         }, {
-          key: "getAllEmployee",
-          value: function getAllEmployee() {
+          key: "getAllActiveEmployee",
+          value: function getAllActiveEmployee() {
             var _this47 = this;
 
-            this.api.getAllEmployee().subscribe(function (res) {
+            this.api.getAllActiveEmployee().subscribe(function (res) {
               _this47.dataSource = res;
               console.log(_this47.dataSource);
             });
@@ -20150,11 +20153,11 @@
           value: function markAttendance(row) {
             var _this48 = this;
 
-            var doa = Object(_angular_common__WEBPACK_IMPORTED_MODULE_14__["formatDate"])(this.todaysDate, 'yyyy-MM-dd', 'en-US');
-            var date_ob = new Date();
-            var hours = date_ob.getHours();
-            var minutes = date_ob.getMinutes();
-            var TimeNow = hours + ":" + minutes;
+            var date_ob = new Date(); // let hours = date_ob.getHours();
+            // let minutes = date_ob.getMinutes();
+            // let TimeNow = (hours + ":" + minutes);
+
+            var TimeNow = Date.now();
             var spanValue = row.status;
             var spanValueInTime = row.in_time;
             var spanValueOutTime = row.out_time;
@@ -20173,15 +20176,15 @@
                 this.attendanceModelObj.out_time = null;
               }
 
-              this.attendanceModelObj.date_of_attendance = doa;
+              this.attendanceModelObj.date_of_attendance = this.doa;
 
               if (!row.employees_id) {
                 this.attendanceModelObj.employees_id = row.id;
               } else {
                 this.attendanceModelObj.employees_id = row.employees_id;
-              } // console.log(this.attendanceModelObj);
+              }
 
-
+              console.log(this.attendanceModelObj);
               var textt = '';
               this.api.postAttendance(this.attendanceModelObj).subscribe(function (res) {
                 _this48.ToastText = 'Created Successfully';
@@ -20195,15 +20198,15 @@
                 _this48.ToastMsg(_this48.ToastText);
               });
             } else if (spanValue == 'Present' && spanValueOutTime == null) {
-              this.attendanceModelObj.date_of_attendance = doa;
+              this.attendanceModelObj.date_of_attendance = this.doa;
 
               if (!row.employees_id) {
                 this.attendanceModelObj.employees_id = row.id;
               } else {
                 this.attendanceModelObj.employees_id = row.employees_id;
-              } // console.log(this.attendanceModelObj);
+              }
 
-
+              console.log(this.attendanceModelObj);
               var _textt = '';
               this.api.postAttendance(this.attendanceModelObj).subscribe(function (res) {
                 _this48.ToastText = 'Created Successfully';
@@ -20212,7 +20215,7 @@
 
                 _this48.ngOnInit();
               }, function (err) {
-                _this48.ToastText = 'Error';
+                _this48.ToastText = 'Error in updating';
 
                 _this48.ToastMsg(_this48.ToastText);
               });
@@ -20398,35 +20401,90 @@
       /* harmony import */
 
 
-      var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! @angular/forms */
+      "3Pt+");
+      /* harmony import */
+
+
+      var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! @angular/material/dialog */
       "0IaG");
       /* harmony import */
 
 
-      var _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      var _router_animations__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! ../../router.animations */
+      "ZZ88");
+      /* harmony import */
+
+
+      var _shared_api_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! ../../shared/api.service */
+      "eokG");
+      /* harmony import */
+
+
+      var _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
       /*! ../modal-data/modal-data.component */
       "prsA");
 
       var ModalTestComponent = /*#__PURE__*/function () {
-        function ModalTestComponent(dialog) {
+        // dataSource: MatTableDataSource<PayrollData>;
+        function ModalTestComponent(dialog, formbuilder, api) {
           _classCallCheck(this, ModalTestComponent);
 
           this.dialog = dialog;
+          this.formbuilder = formbuilder;
+          this.api = api;
           this.displayedColumns = ['Emp Name', 'Basic Pay', 'Allowance', 'Current Salary', 'Last Increment', 'Last Increment Date', 'Last Salary Release Date', 'Action'];
         }
 
         _createClass(ModalTestComponent, [{
           key: "ngOnInit",
-          value: function ngOnInit() {}
+          value: function ngOnInit() {
+            this.getAllPayrolls();
+          }
         }, {
           key: "openDialog",
           value: function openDialog() {
-            this.dialog.open(_modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_5__["ModalDataComponent"], {
+            this.dialog.open(_modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_8__["ModalDataComponent"], {
               data: {
-                animal: 'panda'
+                type: 'add'
               }
             });
+          }
+        }, {
+          key: "getAllPayrolls",
+          value: function getAllPayrolls() {
+            var _this51 = this;
+
+            this.api.getPayrolls().subscribe(function (res) {
+              _this51.payrollData = res;
+              console.log(_this51.payrollData);
+            });
+          }
+        }, {
+          key: "onEdit",
+          value: function onEdit(item) {
+            // this.showAdd = false;
+            // this.showUpdate = true;
+            var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialogConfig"]();
+            dialogConfig.disableClose = true;
+            dialogConfig.autoFocus = true;
+            dialogConfig.data = {
+              type: 'edit',
+              id: item.employees_id,
+              name: item.employee.name,
+              basic_pay: item.basic_pay,
+              allowance: item.allowance,
+              current_salary: item.current_salary,
+              last_increment: item.last_increment,
+              last_increment_date: item.last_increment_date,
+              last_salary_release_date: item.last_salary_release_date
+            };
+            console.log(dialogConfig.data);
+            this.dialog.open(_modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_8__["ModalDataComponent"], dialogConfig);
           }
         }]);
 
@@ -20435,15 +20493,20 @@
 
       ModalTestComponent.ctorParameters = function () {
         return [{
-          type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]
+          type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]
+        }, {
+          type: _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"]
+        }, {
+          type: _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"]
         }];
       };
 
       ModalTestComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"])({
         selector: 'app-modal-test',
         template: _raw_loader_modal_test_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
+        animations: [Object(_router_animations__WEBPACK_IMPORTED_MODULE_6__["routerTransition"])()],
         styles: [_modal_test_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
-      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MatDialog"]])], ModalTestComponent);
+      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"]])], ModalTestComponent);
       /***/
     },
 
@@ -20483,7 +20546,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "table {\r\n    width: 100%;\r\n  }\r\n  \r\n  .mat-form-field {\r\n    font-size: 14px;\r\n    width: 100%;\r\n  }\r\n  \r\n  /* .example-radio-group {\r\n    display: flex;\r\n    flex-direction: column;\r\n    margin: 15px 0;\r\n  } */\r\n  \r\n  .example-radio-button {\r\n    margin-right: 5px;\r\n  }\r\n  \r\n  .attendance-cursor{\r\n    cursor: pointer;\r\n  }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0dGVuZGFuY2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7RUFDYjs7RUFFQTtJQUNFLGVBQWU7SUFDZixXQUFXO0VBQ2I7O0VBQ0E7Ozs7S0FJRzs7RUFFSDtJQUNFLGlCQUFpQjtFQUNuQjs7RUFFQTtJQUNFLGVBQWU7RUFDakIiLCJmaWxlIjoiYXR0ZW5kYW5jZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGFibGUge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgfVxyXG4gIFxyXG4gIC5tYXQtZm9ybS1maWVsZCB7XHJcbiAgICBmb250LXNpemU6IDE0cHg7XHJcbiAgICB3aWR0aDogMTAwJTtcclxuICB9XHJcbiAgLyogLmV4YW1wbGUtcmFkaW8tZ3JvdXAge1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XHJcbiAgICBtYXJnaW46IDE1cHggMDtcclxuICB9ICovXHJcbiAgXHJcbiAgLmV4YW1wbGUtcmFkaW8tYnV0dG9uIHtcclxuICAgIG1hcmdpbi1yaWdodDogNXB4O1xyXG4gIH1cclxuXHJcbiAgLmF0dGVuZGFuY2UtY3Vyc29ye1xyXG4gICAgY3Vyc29yOiBwb2ludGVyO1xyXG4gIH0iXX0= */";
+      __webpack_exports__["default"] = "table {\r\n    width: 100%;\r\n  }\r\n    \r\n  th{\r\n    font: 1em calibri;\r\n  }\r\n    \r\n  td{\r\n    font: 1em calibri;\r\n  }\r\n    \r\n  .mat-form-field {\r\n    /* font-size: 14px; */\r\n    width: 100%;\r\n  }\r\n    \r\n  .example-radio-group {\r\n    margin-right: 5px;\r\n    font: 1em calibri;\r\n\r\n  }\r\n    \r\n  .attendance-cursor{\r\n    cursor: pointer;\r\n  }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImF0dGVuZGFuY2UuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7RUFDYjs7RUFFQTtJQUNFLGlCQUFpQjtFQUNuQjs7RUFFQTtJQUNFLGlCQUFpQjtFQUNuQjs7RUFFQTtJQUNFLHFCQUFxQjtJQUNyQixXQUFXO0VBQ2I7O0VBRUY7SUFDSSxpQkFBaUI7SUFDakIsaUJBQWlCOztFQUVuQjs7RUFFQTtJQUNFLGVBQWU7RUFDakIiLCJmaWxlIjoiYXR0ZW5kYW5jZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsidGFibGUge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgfVxyXG4gICAgXHJcbiAgdGh7XHJcbiAgICBmb250OiAxZW0gY2FsaWJyaTtcclxuICB9XHJcbiAgXHJcbiAgdGR7XHJcbiAgICBmb250OiAxZW0gY2FsaWJyaTtcclxuICB9XHJcbiAgXHJcbiAgLm1hdC1mb3JtLWZpZWxkIHtcclxuICAgIC8qIGZvbnQtc2l6ZTogMTRweDsgKi9cclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuICBcclxuLmV4YW1wbGUtcmFkaW8tZ3JvdXAge1xyXG4gICAgbWFyZ2luLXJpZ2h0OiA1cHg7XHJcbiAgICBmb250OiAxZW0gY2FsaWJyaTtcclxuXHJcbiAgfVxyXG5cclxuICAuYXR0ZW5kYW5jZS1jdXJzb3J7XHJcbiAgICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgfSJdfQ== */";
       /***/
     },
 
@@ -20543,7 +20606,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<app-header></app-header>\n\n<div class=\"row\">\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-pink hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">people</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">EMPLOYEES</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalEmployees}}</div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-cyan hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">timer</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">ATTENDANCE</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalAttendance}}</div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-light-green hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">event_note</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">LEAVE</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalLeave}}</div>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-orange hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">playlist_add_check</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">ACTIVE</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalEmployees}}</div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<table class=\"table mt-3\">\n  <thead>\n    <tr>\n      <th scope=\"col\">Employee ID</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Email</th>\n      <th scope=\"col\">Image</th>\n      <th scope=\"col\">Action</th>\n\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let item of employeeData\">\n      <td>{{item.id}}</td>\n      <td>{{item.name}}</td>\n      <td>{{item.email}}</td>\n      <td><img src=\"{{item.current_photo}}\" /></td>\n      <td>\n        <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\"\n          data-bs-target=\"#exampleModal\">Edit</button>\n        <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button>\n      </td>\n    </tr>\n  </tbody>\n</table>";
+      __webpack_exports__["default"] = "<app-header></app-header>\n\n<div class=\"row\">\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-pink hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">people</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">EMPLOYEES</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalEmployees}}</div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-cyan hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">timer</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">ATTENDANCE</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalAttendance}}</div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-light-green hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">event_note</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">LEAVE</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalLeave}}</div>\n      </div>\n    </div>\n  </div>\n  <div class=\"col-md-3\">\n    <div class=\"info-box bg-orange hover-expand-effect\">\n      <div class=\"icon\">\n        <i class=\"material-icons\">playlist_add_check</i>\n      </div>\n      <div class=\"content\">\n        <div class=\"text\">ACTIVE</div>\n        <div class=\"number count-to\" data-from=\"0\" data-to=\"125\" data-speed=\"15\" data-fresh-interval=\"20\">{{totalActiveEmployees}}</div>\n      </div>\n    </div>\n  </div>\n</div>\n\n<table class=\"table mt-3\">\n  <thead>\n    <tr>\n      <th scope=\"col\">Employee ID</th>\n      <th scope=\"col\">Image</th>\n      <th scope=\"col\">Name</th>\n      <th scope=\"col\">Email</th>\n      <th scope=\"col\"></th>\n\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let item of activeEmployeeData\">\n      <td>{{item.id}}</td>\n      <td><img src=\"{{item.current_photo}}\" width=\"100\" height=\"100\"/></td>\n      <td>{{item.name}}</td>\n      <td>{{item.email}}</td>\n      <td>\n        <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\"\n          data-bs-target=\"#exampleModal\">Edit</button>\n        <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button>\n      </td>\n    </tr>\n  </tbody>\n</table>";
       /***/
     },
 
@@ -20563,7 +20626,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<nav [ngClass]=\"{ sidebarPushRight: isActive, collapsed: collapsed }\" class=\"sidebar\">\n    <div class=\"list-group\">\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\" routerLink=\"/dashboard\">\n            <i class=\"fa fa-fw fa-dashboard\"></i>&nbsp;\n            <span>{{ 'Dashboard' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/charts']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-bar-chart-o\"></i>&nbsp;\n            <span>{{ 'Charts' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/tables']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-table\"></i>&nbsp;\n            <span>{{ 'Tables' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/forms']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-edit\"></i>&nbsp;\n            <span>{{ 'Forms' | translate }}</span>\n        </a> -->\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/dashboard']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-home\"></i>&nbsp;\n            <span>{{ 'Dashboard' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/attendance']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-edit\"></i>&nbsp;\n            <span>{{ 'Attendance' | translate }}</span>\n        </a>\n\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/leave']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-plus\"></i>&nbsp;\n            <span>{{ 'Leave' | translate }}</span>\n        </a>\n\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/payroll']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-list-alt\"></i>&nbsp;\n            <span>{{ 'Payroll' | translate }}</span>\n        </a>\n\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/employee']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-plus\"></i>&nbsp;\n            <span>{{ 'Employee' | translate }}</span>\n        </a>\n\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/newtask']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-edit\"></i>&nbsp;\n            <span>{{ 'New Task' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/existingtask']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-tasks\"></i>&nbsp;\n            <span>{{ 'Existing Tasks' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/completedtask']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-check\"></i>&nbsp;\n            <span>{{ 'Completed Tasks' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/assignments']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-wrench\"></i>&nbsp;\n            <span>{{ 'Assignments' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/blockworker']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-unlock\"></i>&nbsp;\n            <span>{{ 'Block Workers' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/bs-element']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-desktop\"></i>&nbsp;\n            <span>{{ 'Bootstrap Element' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/grid']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-wrench\"></i>&nbsp;\n            <span>{{ 'Bootstrap Grid' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/components']\" class=\"list-group-item\">\n            <i class=\"fa fa-th-list\"></i>&nbsp;\n            <span>{{ 'Component' | translate }}</span>\n        </a> -->\n        <!-- <div class=\"nested-menu\">\n            <a (click)=\"addExpandClass('pages')\" class=\"list-group-item\">\n                <i class=\"fa fa-plus\"></i>&nbsp;\n                <span>{{ 'Menu' | translate }}</span>\n            </a>\n            <li [class.expand]=\"showMenu === 'pages'\" class=\"nested\">\n                <ul class=\"submenu\">\n                    <li>\n                        <a href=\"javascript:void(0)\">\n                            <i class=\"fa fa-monument\"></i>&nbsp;\n                            <span>{{ 'Submenu' | translate }}</span>\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"javascript:void(0)\">\n                            <i class=\"fa fa-monument\"></i>&nbsp;\n                            <span>{{ 'Submenu' | translate }}</span>\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"javascript:void(0)\">\n                            <i class=\"fa fa-monument\"></i>&nbsp;\n                            <span>{{ 'Submenu' | translate }}</span>\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </div> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/blank-page']\" class=\"list-group-item\">\n            <i class=\"fa fa-file-o\"></i>&nbsp;\n            <span>{{ 'Blank Page' | translate }}</span>\n        </a> -->\n        <!-- <a class=\"list-group-item\" href=\"http://www.strapui.com/\">\n            <i class=\"fa fa-caret-down\"></i>&nbsp;\n            <span>{{ 'More Themes' | translate }}</span>\n        </a> -->\n\n        <!-- <div class=\"header-fields\">\n            <a (click)=\"rltAndLtr()\" class=\"list-group-item\">\n                <span><i class=\"fa fa-arrows-h\"></i>&nbsp; RTL/LTR</span>\n            </a>\n            <div class=\"nested-menu\">\n                <a (click)=\"addExpandClass('languages')\" class=\"list-group-item\">\n                    <span><i class=\"fa fa-language\"></i>&nbsp; {{ 'Language' | translate }} <b class=\"caret\"></b></span>\n                </a>\n                <li [class.expand]=\"showMenu === 'languages'\" class=\"nested\">\n                    <ul class=\"submenu\">\n                        <li>\n                            <a (click)=\"changeLang('en')\" href=\"javascript:void(0)\">\n                                {{ 'English' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('fr')\" href=\"javascript:void(0)\">\n                                {{ 'French' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('ur')\" href=\"javascript:void(0)\">\n                                {{ 'Urdu' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('es')\" href=\"javascript:void(0)\">\n                                {{ 'Spanish' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('it')\" href=\"javascript:void(0)\">\n                                {{ 'Italian' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('fa')\" href=\"javascript:void(0)\">\n                                {{ 'Farsi' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('de')\" href=\"javascript:void(0)\">\n                                {{ 'German' | translate }}\n                            </a>\n                        </li>\n                    </ul>\n                </li>\n            </div>\n            <div class=\"nested-menu\">\n                <a (click)=\"addExpandClass('profile')\" class=\"list-group-item\">\n                    <span><i class=\"fa fa-user\"></i>&nbsp; John Smith</span>\n                </a>\n                <li [class.expand]=\"showMenu === 'profile'\" class=\"nested\">\n                    <ul class=\"submenu\">\n                        <li>\n                            <a href=\"javascript:void(0)\">\n                                <span><i class=\"fa fa-fw fa-user\"></i> {{ 'Profile' | translate }}</span>\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"javascript:void(0)\">\n                                <span><i class=\"fa fa-fw fa-envelope\"></i> {{ 'Inbox' | translate }}</span>\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"javascript:void(0)\">\n                                <span><i class=\"fa fa-fw fa-gear\"></i> {{ 'Settings' | translate }}</span>\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"onLoggedout()\" [routerLink]=\"['/login']\">\n                                <span><i class=\"fa fa-fw fa-power-off\"></i> {{ 'Log Out' | translate }}</span>\n                            </a>\n                        </li>\n                    </ul>\n                </li>\n            </div>\n        </div> -->\n    </div>\n    <div (click)=\"toggleCollapsed()\" [ngClass]=\"{ collapsed: collapsed }\" class=\"toggle-button\">\n        <i class=\"fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}\"></i>&nbsp;\n        <span>{{ 'Collapse Sidebar' | translate }}</span>\n    </div>\n</nav>\n";
+      __webpack_exports__["default"] = "<nav [ngClass]=\"{ sidebarPushRight: isActive, collapsed: collapsed }\" class=\"sidebar\">\n    <div class=\"list-group\">\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" class=\"list-group-item\" routerLink=\"/dashboard\">\n            <i class=\"fa fa-fw fa-dashboard\"></i>&nbsp;\n            <span>{{ 'Dashboard' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/charts']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-bar-chart-o\"></i>&nbsp;\n            <span>{{ 'Charts' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/tables']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-table\"></i>&nbsp;\n            <span>{{ 'Tables' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/forms']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-edit\"></i>&nbsp;\n            <span>{{ 'Forms' | translate }}</span>\n        </a> -->\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/dashboard']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-home\"></i>&nbsp;\n            <span>{{ 'Dashboard' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/attendance']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-edit\"></i>&nbsp;\n            <span>{{ 'Attendance' | translate }}</span>\n        </a>\n\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/leave']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-plus\"></i>&nbsp;\n            <span>{{ 'Leave' | translate }}</span>\n        </a>\n\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/modal-test']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-list-alt\"></i>&nbsp;\n            <span>{{ 'Payroll' | translate }}</span>\n        </a>\n\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/employee']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-plus\"></i>&nbsp;\n            <span>{{ 'Employee' | translate }}</span>\n        </a>\n\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/newtask']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-edit\"></i>&nbsp;\n            <span>{{ 'New Task' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/existingtask']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-tasks\"></i>&nbsp;\n            <span>{{ 'Existing Tasks' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/completedtask']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-check\"></i>&nbsp;\n            <span>{{ 'Completed Tasks' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/assignments']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-wrench\"></i>&nbsp;\n            <span>{{ 'Assignments' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/blockworker']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-unlock\"></i>&nbsp;\n            <span>{{ 'Block Workers' | translate }}</span>\n        </a> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/bs-element']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-desktop\"></i>&nbsp;\n            <span>{{ 'Bootstrap Element' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/grid']\" class=\"list-group-item\">\n            <i class=\"fa fa-fw fa-wrench\"></i>&nbsp;\n            <span>{{ 'Bootstrap Grid' | translate }}</span>\n        </a>\n        <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/components']\" class=\"list-group-item\">\n            <i class=\"fa fa-th-list\"></i>&nbsp;\n            <span>{{ 'Component' | translate }}</span>\n        </a> -->\n        <!-- <div class=\"nested-menu\">\n            <a (click)=\"addExpandClass('pages')\" class=\"list-group-item\">\n                <i class=\"fa fa-plus\"></i>&nbsp;\n                <span>{{ 'Menu' | translate }}</span>\n            </a>\n            <li [class.expand]=\"showMenu === 'pages'\" class=\"nested\">\n                <ul class=\"submenu\">\n                    <li>\n                        <a href=\"javascript:void(0)\">\n                            <i class=\"fa fa-monument\"></i>&nbsp;\n                            <span>{{ 'Submenu' | translate }}</span>\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"javascript:void(0)\">\n                            <i class=\"fa fa-monument\"></i>&nbsp;\n                            <span>{{ 'Submenu' | translate }}</span>\n                        </a>\n                    </li>\n                    <li>\n                        <a href=\"javascript:void(0)\">\n                            <i class=\"fa fa-monument\"></i>&nbsp;\n                            <span>{{ 'Submenu' | translate }}</span>\n                        </a>\n                    </li>\n                </ul>\n            </li>\n        </div> -->\n        <!-- <a [routerLinkActive]=\"['router-link-active']\" [routerLink]=\"['/blank-page']\" class=\"list-group-item\">\n            <i class=\"fa fa-file-o\"></i>&nbsp;\n            <span>{{ 'Blank Page' | translate }}</span>\n        </a> -->\n        <!-- <a class=\"list-group-item\" href=\"http://www.strapui.com/\">\n            <i class=\"fa fa-caret-down\"></i>&nbsp;\n            <span>{{ 'More Themes' | translate }}</span>\n        </a> -->\n\n        <!-- <div class=\"header-fields\">\n            <a (click)=\"rltAndLtr()\" class=\"list-group-item\">\n                <span><i class=\"fa fa-arrows-h\"></i>&nbsp; RTL/LTR</span>\n            </a>\n            <div class=\"nested-menu\">\n                <a (click)=\"addExpandClass('languages')\" class=\"list-group-item\">\n                    <span><i class=\"fa fa-language\"></i>&nbsp; {{ 'Language' | translate }} <b class=\"caret\"></b></span>\n                </a>\n                <li [class.expand]=\"showMenu === 'languages'\" class=\"nested\">\n                    <ul class=\"submenu\">\n                        <li>\n                            <a (click)=\"changeLang('en')\" href=\"javascript:void(0)\">\n                                {{ 'English' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('fr')\" href=\"javascript:void(0)\">\n                                {{ 'French' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('ur')\" href=\"javascript:void(0)\">\n                                {{ 'Urdu' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('es')\" href=\"javascript:void(0)\">\n                                {{ 'Spanish' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('it')\" href=\"javascript:void(0)\">\n                                {{ 'Italian' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('fa')\" href=\"javascript:void(0)\">\n                                {{ 'Farsi' | translate }}\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"changeLang('de')\" href=\"javascript:void(0)\">\n                                {{ 'German' | translate }}\n                            </a>\n                        </li>\n                    </ul>\n                </li>\n            </div>\n            <div class=\"nested-menu\">\n                <a (click)=\"addExpandClass('profile')\" class=\"list-group-item\">\n                    <span><i class=\"fa fa-user\"></i>&nbsp; John Smith</span>\n                </a>\n                <li [class.expand]=\"showMenu === 'profile'\" class=\"nested\">\n                    <ul class=\"submenu\">\n                        <li>\n                            <a href=\"javascript:void(0)\">\n                                <span><i class=\"fa fa-fw fa-user\"></i> {{ 'Profile' | translate }}</span>\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"javascript:void(0)\">\n                                <span><i class=\"fa fa-fw fa-envelope\"></i> {{ 'Inbox' | translate }}</span>\n                            </a>\n                        </li>\n                        <li>\n                            <a href=\"javascript:void(0)\">\n                                <span><i class=\"fa fa-fw fa-gear\"></i> {{ 'Settings' | translate }}</span>\n                            </a>\n                        </li>\n                        <li>\n                            <a (click)=\"onLoggedout()\" [routerLink]=\"['/login']\">\n                                <span><i class=\"fa fa-fw fa-power-off\"></i> {{ 'Log Out' | translate }}</span>\n                            </a>\n                        </li>\n                    </ul>\n                </li>\n            </div>\n        </div> -->\n    </div>\n    <div (click)=\"toggleCollapsed()\" [ngClass]=\"{ collapsed: collapsed }\" class=\"toggle-button\">\n        <i class=\"fa fa-fw fa-angle-double-{{ collapsed ? 'right' : 'left' }}\"></i>&nbsp;\n        <span>{{ 'Collapse Sidebar' | translate }}</span>\n    </div>\n</nav>\n";
       /***/
     },
 
@@ -20712,10 +20775,10 @@
         }, {
           key: "getAllPayrolls",
           value: function getAllPayrolls() {
-            var _this51 = this;
+            var _this52 = this;
 
             this.api.getPayrolls().subscribe(function (res) {
-              _this51.dataSource = res;
+              _this52.dataSource = res;
             });
           } // openDialog() {
           //   this.dialog.open(ModalDataComponent);
@@ -20896,30 +20959,30 @@
         _createClass(BlockworkersComponent, [{
           key: "getBlockedWorkers",
           value: function getBlockedWorkers() {
-            var _this52 = this;
+            var _this53 = this;
 
             this.dataservice.getBlockedWorkers().subscribe(function (res) {
-              _this52.blockWorkers = res['data'];
-              _this52.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this52.blockWorkers);
+              _this53.blockWorkers = res['data'];
+              _this53.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this53.blockWorkers);
             });
           }
         }, {
           key: "unblock",
           value: function unblock(id) {
-            var _this53 = this;
+            var _this54 = this;
 
             this.dataservice.unblockWorker(id).subscribe(function (res) {
-              _this53.getBlockedWorkers();
+              _this54.getBlockedWorkers();
             });
           }
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this54 = this;
+            var _this55 = this;
 
             this.getBlockedWorkers();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this54.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this55.outlet.deactivate();
             });
           }
         }]);
@@ -20966,7 +21029,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = ".info-box {\r\n    box-shadow: 0 2px 10px rgb(0 0 0 / 20%);\r\n    height: 80px;\r\n    display: flex;\r\n    cursor: default;\r\n    /* background-color: #fff; */\r\n    position: relative;\r\n    overflow: hidden;\r\n    margin-bottom: 30px;\r\n}\r\n\r\n.info-box .icon {\r\n    display: inline-block;\r\n    text-align: center;\r\n    background-color: rgba(0, 0, 0, 0.12);\r\n    width: 80px; }\r\n\r\n.info-box .icon i {\r\n        color: #fff;\r\n        font-size: 50px;\r\n        line-height: 80px;\r\n    }\r\n\r\n.bg-pink {\r\n    background-color: #E91E63 !important;\r\n    color: #fff;\r\n}\r\n\r\n.bg-cyan {\r\n    background-color: #00BCD4 !important;\r\n    color: #fff;\r\n}\r\n\r\n.bg-light-green {\r\n    background-color: #8BC34A !important;\r\n    color: #fff;\r\n}\r\n\r\n.bg-orange {\r\n    background-color: #FF9800 !important;\r\n    color: #fff;\r\n}\r\n\r\n.info-box .content {\r\n    display: inline-block;\r\n    padding: 7px 10px; \r\n}\r\n\r\n.info-box .content .text {\r\n      font-size: 13px;\r\n      margin-top: 11px;\r\n      color: #fff;\r\n    }\r\n\r\n.info-box .content .number {\r\n      font-weight: normal;\r\n      font-size: 26px;\r\n      margin-top: -4px;\r\n      color: #fff; }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImRhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksdUNBQXVDO0lBQ3ZDLFlBQVk7SUFDWixhQUFhO0lBQ2IsZUFBZTtJQUNmLDRCQUE0QjtJQUM1QixrQkFBa0I7SUFDbEIsZ0JBQWdCO0lBQ2hCLG1CQUFtQjtBQUN2Qjs7QUFFQTtJQUNJLHFCQUFxQjtJQUNyQixrQkFBa0I7SUFDbEIscUNBQXFDO0lBQ3JDLFdBQVcsRUFBRTs7QUFFYjtRQUNJLFdBQVc7UUFDWCxlQUFlO1FBQ2YsaUJBQWlCO0lBQ3JCOztBQUNKO0lBQ0ksb0NBQW9DO0lBQ3BDLFdBQVc7QUFDZjs7QUFDQTtJQUNJLG9DQUFvQztJQUNwQyxXQUFXO0FBQ2Y7O0FBRUE7SUFDSSxvQ0FBb0M7SUFDcEMsV0FBVztBQUNmOztBQUNBO0lBQ0ksb0NBQW9DO0lBQ3BDLFdBQVc7QUFDZjs7QUFFQTtJQUNJLHFCQUFxQjtJQUNyQixpQkFBaUI7QUFDckI7O0FBQ0E7TUFDTSxlQUFlO01BQ2YsZ0JBQWdCO01BQ2hCLFdBQVc7SUFDYjs7QUFDQTtNQUNFLG1CQUFtQjtNQUNuQixlQUFlO01BQ2YsZ0JBQWdCO01BQ2hCLFdBQVcsRUFBRSIsImZpbGUiOiJkYXNoYm9hcmQuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5pbmZvLWJveCB7XHJcbiAgICBib3gtc2hhZG93OiAwIDJweCAxMHB4IHJnYigwIDAgMCAvIDIwJSk7XHJcbiAgICBoZWlnaHQ6IDgwcHg7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG4gICAgY3Vyc29yOiBkZWZhdWx0O1xyXG4gICAgLyogYmFja2dyb3VuZC1jb2xvcjogI2ZmZjsgKi9cclxuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcclxuICAgIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgICBtYXJnaW4tYm90dG9tOiAzMHB4O1xyXG59XHJcblxyXG4uaW5mby1ib3ggLmljb24ge1xyXG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSgwLCAwLCAwLCAwLjEyKTtcclxuICAgIHdpZHRoOiA4MHB4OyB9XHJcblxyXG4gICAgLmluZm8tYm94IC5pY29uIGkge1xyXG4gICAgICAgIGNvbG9yOiAjZmZmO1xyXG4gICAgICAgIGZvbnQtc2l6ZTogNTBweDtcclxuICAgICAgICBsaW5lLWhlaWdodDogODBweDtcclxuICAgIH1cclxuLmJnLXBpbmsge1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogI0U5MUU2MyAhaW1wb3J0YW50O1xyXG4gICAgY29sb3I6ICNmZmY7XHJcbn1cclxuLmJnLWN5YW4ge1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzAwQkNENCAhaW1wb3J0YW50O1xyXG4gICAgY29sb3I6ICNmZmY7XHJcbn1cclxuXHJcbi5iZy1saWdodC1ncmVlbiB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjOEJDMzRBICFpbXBvcnRhbnQ7XHJcbiAgICBjb2xvcjogI2ZmZjtcclxufVxyXG4uYmctb3JhbmdlIHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNGRjk4MDAgIWltcG9ydGFudDtcclxuICAgIGNvbG9yOiAjZmZmO1xyXG59XHJcblxyXG4uaW5mby1ib3ggLmNvbnRlbnQge1xyXG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xyXG4gICAgcGFkZGluZzogN3B4IDEwcHg7IFxyXG59XHJcbi5pbmZvLWJveCAuY29udGVudCAudGV4dCB7XHJcbiAgICAgIGZvbnQtc2l6ZTogMTNweDtcclxuICAgICAgbWFyZ2luLXRvcDogMTFweDtcclxuICAgICAgY29sb3I6ICNmZmY7XHJcbiAgICB9XHJcbiAgICAuaW5mby1ib3ggLmNvbnRlbnQgLm51bWJlciB7XHJcbiAgICAgIGZvbnQtd2VpZ2h0OiBub3JtYWw7XHJcbiAgICAgIGZvbnQtc2l6ZTogMjZweDtcclxuICAgICAgbWFyZ2luLXRvcDogLTRweDtcclxuICAgICAgY29sb3I6ICNmZmY7IH0iXX0= */";
+      __webpack_exports__["default"] = ".info-box {\r\n    box-shadow: 0 2px 10px rgb(0 0 0 / 20%);\r\n    height: 80px;\r\n    display: flex;\r\n    cursor: default;\r\n    /* background-color: #fff; */\r\n    position: relative;\r\n    overflow: hidden;\r\n    margin-bottom: 30px;\r\n}\r\n\r\n.info-box .icon {\r\n    display: inline-block;\r\n    text-align: center;\r\n    background-color: rgba(0, 0, 0, 0.12);\r\n    width: 80px; }\r\n\r\n.info-box .icon i {\r\n        color: #fff;\r\n        font-size: 50px;\r\n        line-height: 80px;\r\n    }\r\n\r\n.bg-pink {\r\n    background-color: #E91E63 !important;\r\n    color: #fff;\r\n}\r\n\r\n.bg-cyan {\r\n    background-color: #00BCD4 !important;\r\n    color: #fff;\r\n}\r\n\r\n.bg-light-green {\r\n    background-color: #8BC34A !important;\r\n    color: #fff;\r\n}\r\n\r\n.bg-orange {\r\n    background-color: #FF9800 !important;\r\n    color: #fff;\r\n}\r\n\r\n.info-box .content {\r\n    display: inline-block;\r\n    padding: 7px 10px; \r\n}\r\n\r\n.info-box .content .text {\r\n      font-size: 13px;\r\n      margin-top: 11px;\r\n      color: #fff;\r\n    }\r\n\r\n.info-box .content .number {\r\n      font-weight: normal;\r\n      font-size: 26px;\r\n      margin-top: -4px;\r\n      color: #fff; }\r\n\r\ntable {\r\n        width: 100%;\r\n      }\r\n\r\n.mat-form-field {\r\n        font-size: 14px;\r\n        width: 100%;\r\n      }\r\n\r\nth{\r\n      font: 1em calibri;\r\n    }\r\n\r\ntd{\r\n      font: 1em calibri;\r\n    }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImRhc2hib2FyZC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksdUNBQXVDO0lBQ3ZDLFlBQVk7SUFDWixhQUFhO0lBQ2IsZUFBZTtJQUNmLDRCQUE0QjtJQUM1QixrQkFBa0I7SUFDbEIsZ0JBQWdCO0lBQ2hCLG1CQUFtQjtBQUN2Qjs7QUFFQTtJQUNJLHFCQUFxQjtJQUNyQixrQkFBa0I7SUFDbEIscUNBQXFDO0lBQ3JDLFdBQVcsRUFBRTs7QUFFYjtRQUNJLFdBQVc7UUFDWCxlQUFlO1FBQ2YsaUJBQWlCO0lBQ3JCOztBQUNKO0lBQ0ksb0NBQW9DO0lBQ3BDLFdBQVc7QUFDZjs7QUFDQTtJQUNJLG9DQUFvQztJQUNwQyxXQUFXO0FBQ2Y7O0FBRUE7SUFDSSxvQ0FBb0M7SUFDcEMsV0FBVztBQUNmOztBQUNBO0lBQ0ksb0NBQW9DO0lBQ3BDLFdBQVc7QUFDZjs7QUFFQTtJQUNJLHFCQUFxQjtJQUNyQixpQkFBaUI7QUFDckI7O0FBQ0E7TUFDTSxlQUFlO01BQ2YsZ0JBQWdCO01BQ2hCLFdBQVc7SUFDYjs7QUFDQTtNQUNFLG1CQUFtQjtNQUNuQixlQUFlO01BQ2YsZ0JBQWdCO01BQ2hCLFdBQVcsRUFBRTs7QUFFYjtRQUNFLFdBQVc7TUFDYjs7QUFFQTtRQUNFLGVBQWU7UUFDZixXQUFXO01BQ2I7O0FBRUE7TUFDQSxpQkFBaUI7SUFDbkI7O0FBRUE7TUFDRSxpQkFBaUI7SUFDbkIiLCJmaWxlIjoiZGFzaGJvYXJkLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuaW5mby1ib3gge1xyXG4gICAgYm94LXNoYWRvdzogMCAycHggMTBweCByZ2IoMCAwIDAgLyAyMCUpO1xyXG4gICAgaGVpZ2h0OiA4MHB4O1xyXG4gICAgZGlzcGxheTogZmxleDtcclxuICAgIGN1cnNvcjogZGVmYXVsdDtcclxuICAgIC8qIGJhY2tncm91bmQtY29sb3I6ICNmZmY7ICovXHJcbiAgICBwb3NpdGlvbjogcmVsYXRpdmU7XHJcbiAgICBvdmVyZmxvdzogaGlkZGVuO1xyXG4gICAgbWFyZ2luLWJvdHRvbTogMzBweDtcclxufVxyXG5cclxuLmluZm8tYm94IC5pY29uIHtcclxuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcclxuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMCwgMCwgMCwgMC4xMik7XHJcbiAgICB3aWR0aDogODBweDsgfVxyXG5cclxuICAgIC5pbmZvLWJveCAuaWNvbiBpIHtcclxuICAgICAgICBjb2xvcjogI2ZmZjtcclxuICAgICAgICBmb250LXNpemU6IDUwcHg7XHJcbiAgICAgICAgbGluZS1oZWlnaHQ6IDgwcHg7XHJcbiAgICB9XHJcbi5iZy1waW5rIHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICNFOTFFNjMgIWltcG9ydGFudDtcclxuICAgIGNvbG9yOiAjZmZmO1xyXG59XHJcbi5iZy1jeWFuIHtcclxuICAgIGJhY2tncm91bmQtY29sb3I6ICMwMEJDRDQgIWltcG9ydGFudDtcclxuICAgIGNvbG9yOiAjZmZmO1xyXG59XHJcblxyXG4uYmctbGlnaHQtZ3JlZW4ge1xyXG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzhCQzM0QSAhaW1wb3J0YW50O1xyXG4gICAgY29sb3I6ICNmZmY7XHJcbn1cclxuLmJnLW9yYW5nZSB7XHJcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjRkY5ODAwICFpbXBvcnRhbnQ7XHJcbiAgICBjb2xvcjogI2ZmZjtcclxufVxyXG5cclxuLmluZm8tYm94IC5jb250ZW50IHtcclxuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcclxuICAgIHBhZGRpbmc6IDdweCAxMHB4OyBcclxufVxyXG4uaW5mby1ib3ggLmNvbnRlbnQgLnRleHQge1xyXG4gICAgICBmb250LXNpemU6IDEzcHg7XHJcbiAgICAgIG1hcmdpbi10b3A6IDExcHg7XHJcbiAgICAgIGNvbG9yOiAjZmZmO1xyXG4gICAgfVxyXG4gICAgLmluZm8tYm94IC5jb250ZW50IC5udW1iZXIge1xyXG4gICAgICBmb250LXdlaWdodDogbm9ybWFsO1xyXG4gICAgICBmb250LXNpemU6IDI2cHg7XHJcbiAgICAgIG1hcmdpbi10b3A6IC00cHg7XHJcbiAgICAgIGNvbG9yOiAjZmZmOyB9XHJcblxyXG4gICAgICB0YWJsZSB7XHJcbiAgICAgICAgd2lkdGg6IDEwMCU7XHJcbiAgICAgIH1cclxuICAgIFxyXG4gICAgICAubWF0LWZvcm0tZmllbGQge1xyXG4gICAgICAgIGZvbnQtc2l6ZTogMTRweDtcclxuICAgICAgICB3aWR0aDogMTAwJTtcclxuICAgICAgfVxyXG4gICAgXHJcbiAgICAgIHRoe1xyXG4gICAgICBmb250OiAxZW0gY2FsaWJyaTtcclxuICAgIH1cclxuICAgIFxyXG4gICAgdGR7XHJcbiAgICAgIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG4gICAgfSJdfQ== */";
       /***/
     },
 
@@ -21479,16 +21542,16 @@
         _createClass(CompletedTaskComponent, [{
           key: "getallCompletedHITS",
           value: function getallCompletedHITS() {
-            var _this55 = this;
+            var _this56 = this;
 
             this.dataservice.fetchCompletedHits().subscribe(function (res) {
               res['data'].forEach(function (element) {
                 element['approved'] = parseInt(element['max_assignments']) - parseInt(element['assignments_remaining']);
               });
-              _this55.completedhits = res['data'];
-              _this55.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this55.completedhits);
+              _this56.completedhits = res['data'];
+              _this56.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this56.completedhits);
 
-              _this55.applyThis();
+              _this56.applyThis();
             });
           }
         }, {
@@ -21504,11 +21567,11 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this56 = this;
+            var _this57 = this;
 
             this.getallCompletedHITS();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet == 'administration') _this56.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet == 'administration') _this57.outlet.deactivate();
             });
           }
         }, {
@@ -21520,7 +21583,7 @@
         }, {
           key: "openEdit",
           value: function openEdit(row) {
-            var _this57 = this;
+            var _this58 = this;
 
             this.selectedRow = row;
             var dialogRef = this.dialog.open(_existing_task_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_12__["ExistingtaskDetailsComponent"], {
@@ -21528,9 +21591,9 @@
             });
             dialogRef.afterClosed().subscribe(function (data) {
               if (data) {
-                _this57.dataservice.selectedTask = _this57.selectedRow;
+                _this58.dataservice.selectedTask = _this58.selectedRow;
 
-                _this57.router.navigate(['/newtask'], {
+                _this58.router.navigate(['/newtask'], {
                   queryParams: {
                     isPreDefined: true
                   }
@@ -21694,36 +21757,36 @@
         _createClass(AssignmentsComponent, [{
           key: "getAllTasks",
           value: function getAllTasks() {
-            var _this58 = this;
+            var _this59 = this;
 
             this.dataService.fetchAllHits().subscribe(function (res) {
-              _this58.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](res['data']);
+              _this59.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](res['data']);
             });
           }
         }, {
           key: "openAssignmentsModal",
           value: function openAssignmentsModal(parent_id) {
-            var _this59 = this;
+            var _this60 = this;
 
             this.dataService.fetchAssignmentsForParent(parent_id).subscribe(function (res) {
-              var dialogRef = _this59.dialog.open(_assignments_dialog_assignments_dialog_component__WEBPACK_IMPORTED_MODULE_9__["AssignmentsDialogComponent"], {
+              var dialogRef = _this60.dialog.open(_assignments_dialog_assignments_dialog_component__WEBPACK_IMPORTED_MODULE_9__["AssignmentsDialogComponent"], {
                 minWidth: "400px",
                 data: res['data']
               });
 
               dialogRef.afterClosed().subscribe(function () {
-                _this59.getAllTasks();
+                _this60.getAllTasks();
               });
             });
           }
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this60 = this;
+            var _this61 = this;
 
             this.getAllTasks();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this60.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this61.outlet.deactivate();
             });
           }
         }]);
@@ -21814,7 +21877,7 @@
 
       var SidebarComponent = /*#__PURE__*/function () {
         function SidebarComponent(translate, router) {
-          var _this61 = this;
+          var _this62 = this;
 
           _classCallCheck(this, SidebarComponent);
 
@@ -21822,8 +21885,8 @@
           this.router = router;
           this.collapsedEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
           this.router.events.subscribe(function (val) {
-            if (val instanceof _angular_router__WEBPACK_IMPORTED_MODULE_4__["NavigationEnd"] && window.innerWidth <= 992 && _this61.isToggled()) {
-              _this61.toggleSidebar();
+            if (val instanceof _angular_router__WEBPACK_IMPORTED_MODULE_4__["NavigationEnd"] && window.innerWidth <= 992 && _this62.isToggled()) {
+              _this62.toggleSidebar();
             }
           });
         }
@@ -21926,7 +21989,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Attendance'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n\n      <!-- <mat-form-field class=\"col-md-6\">\n          <mat-label>Search</mat-label>\n          <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n        </mat-form-field>\n  \n        <mat-form-field class=\"col-md-5\">\n          <mat-label>Enter a date range</mat-label>\n          <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n            <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n            <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n          </mat-date-range-input>\n          <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n          <mat-date-range-picker #picker></mat-date-range-picker>\n  \n          <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n          <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n        </mat-form-field>\n  \n        <button (click)=\"refresh()\" mat-button>\n          <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n        </button> -->\n\n\n\n\n      <div class=\"mat-elevation-z8\" *ngIf=\"isLoaded\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <form [formGroup]=\"formValue\">\n            <ng-container matColumnDef=\"Id\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee ID </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <label formControlName=\"employees_id\">{{row.id}}</label> -->\n                <img [src]=\"row.current_photo\" [alt]=\"row.employees_id\" width=\"40\" height=\"40\">\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Name\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.name}}</td>\n            </ng-container>\n\n            <!-- <ng-container matColumnDef=\"Email\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.email}}</td>\n            </ng-container> -->\n\n            <ng-container matColumnDef=\"PresentStatus\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Present Status </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span id=\"spa\" *ngIf=\"row.status else showRadio\">{{row.status}}</span>\n                <!-- <input *ngIf=\"row.status else showRadio\" [value]=\"row.status\" formControlName=\"status\"> -->\n\n                <ng-template #showRadio>\n                  <mat-radio-group formControlName=\"status\">\n                    <mat-radio-button class=\"example-radio-group\" *ngFor=\"let item of status\" [value]=\"item\" required=\"!status\">\n                      {{item}}&nbsp;</mat-radio-button>\n                  </mat-radio-group>\n                  <!-- <input type=\"radio\" formControlName=\"status\"  *ngFor=\"let item of status\" [value]=\"item\" required> -->\n\n                </ng-template>\n\n                \n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"InTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.in_time else showInput1\">{{row.in_time}}</span>\n                <ng-template #showInput1>\n                  <input type=\"text\" name=\"in_time\" [(ngModel)]=\"row.in_time\" [ngModelOptions]=\"{standalone: true}\"\n                    disabled>\n                </ng-template>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"OutTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span *ngIf=\"row.out_time else showInput\">{{row.out_time}}</span>\n                <ng-template #showInput>\n                  <input type=\"text\" name=\"out_time\" [(ngModel)]=\"row.out_time\" [ngModelOptions]=\"{standalone: true}\"\n                    disabled>\n                </ng-template>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Action\">\n              <th mat-header-cell *matHeaderCellDef> Action </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <a (click)=\"openEdit(row)\" (click)=\"postEmployeeDetails()\"> -->\n                <a class=\"attendance-cursor\" (click)=\"markAttendance(row)\">\n                  <mat-icon>send</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"cancel\">\n              <th mat-header-cell *matHeaderCellDef></th>\n              <td mat-cell *matCellDef=\"let row\">\n                <a (click)=\"cancel(row)\">\n                  <mat-icon>delete</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n\n            <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n            <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n            <!-- Row shown when there is no matching data. -->\n            <tr class=\"mat-row\" *matNoDataRow>\n              <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n            </tr>\n          </form>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\" [pageSize]=\"10\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n</div>";
+      __webpack_exports__["default"] = "<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Attendance [ ' + doa + ' ]'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n\n      <!-- <mat-form-field class=\"col-md-6\">\n          <mat-label>Search</mat-label>\n          <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n        </mat-form-field>\n  \n        <mat-form-field class=\"col-md-5\">\n          <mat-label>Enter a date range</mat-label>\n          <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n            <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n            <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n          </mat-date-range-input>\n          <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n          <mat-date-range-picker #picker></mat-date-range-picker>\n  \n          <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n          <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n        </mat-form-field>\n  \n        <button (click)=\"refresh()\" mat-button>\n          <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n        </button> -->\n\n\n\n\n      <div class=\"mat-elevation-z8\" *ngIf=\"isLoaded\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <form [formGroup]=\"formValue\">\n            <ng-container matColumnDef=\"Id\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee ID </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <label formControlName=\"employees_id\">{{row.id}}</label> -->\n                <img [src]=\"row.current_photo\" [alt]=\"row.employees_id\" width=\"40\" height=\"40\">\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Name\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.name}}</td>\n            </ng-container>\n\n            <!-- <ng-container matColumnDef=\"Email\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>\n              <td mat-cell *matCellDef=\"let row\">{{row.email}}</td>\n            </ng-container> -->\n\n            <!-- <ng-container matColumnDef=\"PresentStatus\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span id=\"spa\" *ngIf=\"row.status else showRadio\">{{row.status}}</span> -->\n                <!-- <input *ngIf=\"row.status else showRadio\" [value]=\"row.status\" formControlName=\"status\"> -->\n\n                <!-- <ng-template #showRadio>\n                  <mat-radio-group formControlName=\"status\">\n                    <mat-radio-button class=\"example-radio-group\" *ngFor=\"let item of status\" [value]=\"item\"\n                      required=\"!status\">\n                      {{item}}&nbsp;</mat-radio-button>\n                  </mat-radio-group> -->\n                  <!-- <input type=\"radio\" formControlName=\"status\"  *ngFor=\"let item of status\" [value]=\"item\" required> -->\n                <!-- </ng-template>\n              </td>\n            </ng-container> -->\n\n            <ng-container matColumnDef=\"Status\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <span id=\"spa\" *ngIf=\"row.status else showRadio\">{{row.status}}</span>\n\n                <ng-template #showRadio>\n                <mat-select formControlName=\"status\">\n                  <mat-option disabled>Select</mat-option>\n                    <mat-option *ngFor=\"let item of status\" [value]=\"item\" required=\"!status\">{{item}}</mat-option>\n                </mat-select>\n                </ng-template>\n          </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"InTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> In Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                {{row.in_time | date:'shortTime'}}\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"OutTime\">\n              <th mat-header-cell *matHeaderCellDef mat-sort-header> Out Time </th>\n              <td mat-cell *matCellDef=\"let row\">\n                {{row.out_time | date:'shortTime'}}\n              </td>\n            </ng-container>\n\n            <ng-container matColumnDef=\"Action\">\n              <th mat-header-cell *matHeaderCellDef> </th>\n              <td mat-cell *matCellDef=\"let row\">\n                <!-- <a (click)=\"openEdit(row)\" (click)=\"postEmployeeDetails()\"> -->\n                <a class=\"attendance-cursor\" (click)=\"markAttendance(row)\">\n                  <mat-icon>send</mat-icon>\n                </a>\n              </td>\n            </ng-container>\n\n\n\n            <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n            <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n            <!-- Row shown when there is no matching data. -->\n            <tr class=\"mat-row\" *matNoDataRow>\n              <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n            </tr>\n          </form>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\" [pageSize]=\"10\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n</div>";
       /***/
     },
 
@@ -23115,10 +23178,10 @@
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this62 = this;
+            var _this63 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this62.employees = res;
+              _this63.employees = res;
             });
           }
         }, {
@@ -23243,12 +23306,12 @@
         _createClass(AssignmentsDialogComponent, [{
           key: "approveAssignment",
           value: function approveAssignment(row) {
-            var _this63 = this;
+            var _this64 = this;
 
             this.dataService.approveAssigment(row.id, row.parent_id).subscribe(function (res) {
               row.assignment_status = true;
 
-              _this63._snackBar.open('Assignment Approved', 'Close', {
+              _this64._snackBar.open('Assignment Approved', 'Close', {
                 duration: 3000
               });
             });
@@ -23386,7 +23449,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "\n<button mat-button (click)=\"openDialog()\">Open dialog</button>";
+      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n    <div class=\"btnadd\">\n        <button (click)=\"openDialog()\" mat-raised-button>Add Payroll\n            <i class=\"fa fa-fw fa-plus\"></i>\n        </button>\n        \n\n\n    </div>\n\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n\n            <table class=\"table mt-3\">\n                <thead>\n                  <tr>\n                    <th scope=\"col\">Employee ID</th>\n                    <th scope=\"col\">Name</th>\n                    <th scope=\"col\">Basic Pay</th>\n                    <th scope=\"col\">Allowance</th>\n                    <th scope=\"col\">Current Salary</th>\n                    <th scope=\"col\">Last Increment</th>\n                    <th scope=\"col\">Last Increment Date</th>\n                    <th scope=\"col\">Last Salary Release Date</th>\n                    <th scope=\"col\">Action</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let item of payrollData\">\n                    <td>{{item.id}}</td>\n                    <td>{{item.employee.name}}</td>\n                    <td>{{item.basic_pay}}</td>\n                    <td>{{item.allowance}}</td>\n                    <td>{{item.current_salary}}</td>\n                    <td>{{item.last_increment}}</td>\n                    <td>{{item.last_increment_date}}</td>\n                    <td>{{item.last_salary_release_date}}</td>\n                    <!-- <td><img src=\"{{item.current_photo}}\" /></td> -->\n                    <td>\n                      <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\"\n                        data-bs-target=\"#exampleModal\">\n                        <i class=\"fa fa-fw fa-edit\"></i>\n                    \n                    </button>\n                      <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">\n                          <i class=\"fa fa-fw fa-times\"></i>\n                      </button>\n                    </td>\n                  </tr>\n                </tbody>\n              </table>\n            <!-- <div class=\"mat-elevation-z8\">\n                <table mat-table *ngFor=\"let item of payrollData\">\n\n                    <ng-container matColumnDef=\"Emp Name\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Basic Pay\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Allowance\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Current Salary\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Last Increment\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n                    </ng-container>\n                    <ng-container matColumnDef=\"Last Increment Date\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Last Salary Release Date\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Action\">\n                        <th mat-header-cell *matHeaderCellDef>Action</th>\n                        <td mat-cell *matCellDef=\"let row\">\n\n                            <a (click)=\"openEdit(row)\">\n                                <mat-icon>edit</mat-icon>\n                            </a>&nbsp;\n                            <a (click)=\"openEdit(row)\">\n                                <mat-icon>delete</mat-icon>\n                            </a>\n                            <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n                            <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n\n                        <!-- </td>\n                    </ng-container>\n\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr> -->\n\n                    <!-- Row shown when there is no matching data. -->\n                    <!-- <tr class=\"mat-row\" *matNoDataRow>\n                        <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n                    </tr>\n                </table> -->\n\n                <!-- <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n            </div> --> \n\n        </div>\n    </div>\n</div>";
       /***/
     },
 
@@ -23492,10 +23555,10 @@
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this64 = this;
+            var _this65 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this64.employees = res;
+              _this65.employees = res;
             });
           } // save() {
           //   this.dialogRef.close(this.createPayroll.value);
@@ -23690,21 +23753,106 @@
       /* harmony import */
 
 
-      var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! @angular/forms */
+      "3Pt+");
+      /* harmony import */
+
+
+      var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
       /*! @angular/material/dialog */
       "0IaG");
+      /* harmony import */
+
+
+      var _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! ../payroll/payroll.model */
+      "yGEY");
+      /* harmony import */
+
+
+      var _shared_api_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! ../../shared/api.service */
+      "eokG");
+      /* harmony import */
+
+
+      var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+      /*! @angular/common */
+      "ofXK");
 
       var ModalDataComponent = /*#__PURE__*/function () {
-        function ModalDataComponent( // public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
-        data) {
+        function ModalDataComponent(formbuilder, api, data) {
           _classCallCheck(this, ModalDataComponent);
 
+          this.formbuilder = formbuilder;
+          this.api = api;
           this.data = data;
+          this.payrollModelObj = new _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_6__["Payroll"]();
+          this.isEdit = false;
+
+          if (data['type'] == 'edit') {
+            this.isEdit = true;
+          }
         }
 
         _createClass(ModalDataComponent, [{
           key: "ngOnInit",
-          value: function ngOnInit() {}
+          value: function ngOnInit() {
+            this.createPayroll = this.formbuilder.group({
+              basic_pay: [''],
+              allowance: [''],
+              current_salary: [''],
+              last_increment: [''],
+              last_increment_date: [''],
+              last_salary_release_date: [''],
+              employees_id: ['']
+            });
+            this.getAllEmployee();
+
+            if (this.isEdit) {
+              console.log("I am here");
+              this.createPayroll.setValue({
+                employees_id: this.data.id,
+                basic_pay: this.data.basic_pay,
+                allowance: this.data.allowance,
+                current_salary: this.data.current_salary,
+                last_increment: this.data.last_increment,
+                last_increment_date: this.data.last_increment_date,
+                last_salary_release_date: this.data.last_salary_release_date
+              });
+            }
+          }
+        }, {
+          key: "getAllEmployee",
+          value: function getAllEmployee() {
+            var _this66 = this;
+
+            this.api.getAllEmployee().subscribe(function (res) {
+              _this66.employees = res;
+            });
+          }
+        }, {
+          key: "save",
+          value: function save() {
+            var fromDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_8__["formatDate"])(this.createPayroll.value.last_increment_date, 'yyyy-MM-dd', 'en-US');
+            var toDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_8__["formatDate"])(this.createPayroll.value.last_salary_release_date, 'yyyy-MM-dd', 'en-US');
+            this.payrollModelObj.basic_pay = this.createPayroll.value.basic_pay;
+            this.payrollModelObj.allowance = this.createPayroll.value.allowance;
+            this.payrollModelObj.current_salary = this.createPayroll.value.current_salary;
+            this.payrollModelObj.last_increment = this.createPayroll.value.last_increment;
+            this.payrollModelObj.last_increment_date = fromDate;
+            this.payrollModelObj.last_salary_release_date = toDate;
+            this.payrollModelObj.employees_id = this.createPayroll.value.employees_id;
+            console.log(this.payrollModelObj);
+            this.api.postPayroll(this.payrollModelObj).subscribe(function (res) {
+              console.log(res);
+              alert("Added payroll successfully"); // let ref = document.getElementById('cancel')
+              // ref?.click();
+            }, function (err) {
+              alert("something wrong");
+            });
+          }
         }]);
 
         return ModalDataComponent;
@@ -23712,10 +23860,14 @@
 
       ModalDataComponent.ctorParameters = function () {
         return [{
+          type: _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"]
+        }, {
+          type: _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"]
+        }, {
           type: undefined,
           decorators: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Inject"],
-            args: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_4__["MAT_DIALOG_DATA"]]
+            args: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MAT_DIALOG_DATA"]]
           }]
         }];
       };
@@ -23724,7 +23876,7 @@
         selector: 'app-modal-data',
         template: _raw_loader_modal_data_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
         styles: [_modal_data_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
-      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Object])], ModalDataComponent);
+      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"], Object])], ModalDataComponent);
       /***/
     },
 
@@ -23864,16 +24016,16 @@
         _createClass(ExistingTaskComponent, [{
           key: "getallExists",
           value: function getallExists() {
-            var _this65 = this;
+            var _this67 = this;
 
             this.dataservice.fetchExistingHits().subscribe(function (res) {
               res['data'].forEach(function (element) {
                 element['approved'] = parseInt(element['max_assignments']) - parseInt(element['assignments_remaining']);
               });
-              _this65.existslist = res['data'];
-              _this65.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this65.existslist);
+              _this67.existslist = res['data'];
+              _this67.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this67.existslist);
 
-              _this65.applyThis();
+              _this67.applyThis();
             });
           }
         }, {
@@ -23889,7 +24041,7 @@
         }, {
           key: "openEdit",
           value: function openEdit(row) {
-            var _this66 = this;
+            var _this68 = this;
 
             this.selectedRow = row;
             var dialogRef = this.dialog.open(_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_12__["ExistingtaskDetailsComponent"], {
@@ -23897,9 +24049,9 @@
             });
             dialogRef.afterClosed().subscribe(function (data) {
               if (data) {
-                _this66.dataservice.selectedTask = _this66.selectedRow;
+                _this68.dataservice.selectedTask = _this68.selectedRow;
 
-                _this66.router.navigate(['/newtask'], {
+                _this68.router.navigate(['/newtask'], {
                   queryParams: {
                     isPreDefined: true
                   }
@@ -23916,20 +24068,20 @@
         }, {
           key: "cancel",
           value: function cancel(row) {
-            var _this67 = this;
+            var _this69 = this;
 
             this.dataservice["delete"](row.active_child).subscribe(function (res) {
-              _this67.getallExists();
+              _this69.getallExists();
             });
           }
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this68 = this;
+            var _this70 = this;
 
             this.getallExists();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet === 'administration') _this68.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet === 'administration') _this70.outlet.deactivate();
             });
           }
         }, {
@@ -24088,13 +24240,13 @@
         }, {
           key: "uploadFileEvt",
           value: function uploadFileEvt(imgFile) {
-            var _this69 = this;
+            var _this71 = this;
 
             if (imgFile.target.files && imgFile.target.files[0]) {
               this.fileAttr = '';
               Array.from(imgFile.target.files).forEach(function (file) {
-                _this69.fileAttr += file.name;
-                console.log(_this69.fileAttr);
+                _this71.fileAttr += file.name;
+                console.log(_this71.fileAttr);
               }); // HTML5 FileReader API
 
               var reader = new FileReader();
@@ -24102,7 +24254,7 @@
               reader.onload = function (e) {
                 var image = new Image();
                 image.src = e.target.result;
-                _this69.dataimage = image.src;
+                _this71.dataimage = image.src;
                 console.log("image.src", image.src);
 
                 image.onload = function (rs) {
@@ -24223,7 +24375,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJtb2RhbC10ZXN0LmNvbXBvbmVudC5jc3MifQ== */";
+      __webpack_exports__["default"] = "table {\r\n    width: 100%;\r\n  }\r\n\r\n  .mat-form-field {\r\n    font-size: 14px;\r\n    width: 100%;\r\n  }\r\n\r\n  .btnadd{\r\n    text-align: right;\r\n    margin-bottom: 10px;\r\n  }\r\n\r\n  th{\r\n  font: 1em calibri;\r\n}\r\n\r\n  td{\r\n  font: 1em calibri;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1vZGFsLXRlc3QuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7RUFDYjs7RUFFQTtJQUNFLGVBQWU7SUFDZixXQUFXO0VBQ2I7O0VBQ0E7SUFDRSxpQkFBaUI7SUFDakIsbUJBQW1CO0VBQ3JCOztFQUVBO0VBQ0EsaUJBQWlCO0FBQ25COztFQUVBO0VBQ0UsaUJBQWlCO0FBQ25CIiwiZmlsZSI6Im1vZGFsLXRlc3QuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuXHJcbiAgLm1hdC1mb3JtLWZpZWxkIHtcclxuICAgIGZvbnQtc2l6ZTogMTRweDtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuICAuYnRuYWRke1xyXG4gICAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xyXG4gIH1cclxuXHJcbiAgdGh7XHJcbiAgZm9udDogMWVtIGNhbGlicmk7XHJcbn1cclxuXHJcbnRke1xyXG4gIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG59Il19 */";
       /***/
     },
 
@@ -24359,7 +24511,7 @@
         }, {
           key: "update",
           value: function update() {
-            var _this70 = this;
+            var _this72 = this;
 
             this.employeeModelObj.name = this.formValue.value.name;
             this.employeeModelObj.father_name = this.formValue.value.fathername;
@@ -24378,18 +24530,18 @@
               var ref = document.getElementById('cancel');
               ref === null || ref === void 0 ? void 0 : ref.click();
 
-              _this70.formValue.reset();
+              _this72.formValue.reset();
 
-              _this70.getAllEmployee();
+              _this72.getAllEmployee();
             });
           }
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this71 = this;
+            var _this73 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this71.employeeData = res;
+              _this73.employeeData = res;
             });
           }
         }, {
@@ -24535,7 +24687,7 @@
 
       var DashboardComponent = /*#__PURE__*/function () {
         function DashboardComponent(formbuilder, api, router, dialog, modalService) {
-          var _this72 = this;
+          var _this74 = this;
 
           _classCallCheck(this, DashboardComponent);
 
@@ -24548,9 +24700,9 @@
           this.name = '';
           this.baseurl = "https://em-system-heroku.herokuapp.com/";
           this.api.getusername().subscribe(function (data) {
-            return _this72.name = data.toString();
+            return _this74.name = data.toString();
           }, function (error) {
-            return _this72.router.navigate(['/login']);
+            return _this74.router.navigate(['/login']);
           });
         }
 
@@ -24560,6 +24712,7 @@
             this.getAllEmployee();
             this.getAllAttendance();
             this.getAllLeave();
+            this.getAllActiveEmployee();
           }
         }, {
           key: "clickAddEmployee",
@@ -24588,40 +24741,50 @@
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this73 = this;
+            var _this75 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this73.employeeData = res;
-              _this73.totalEmployees = res.length;
+              _this75.employeeData = res;
+              _this75.totalEmployees = res.length;
             });
           }
         }, {
           key: "getAllAttendance",
           value: function getAllAttendance() {
-            var _this74 = this;
+            var _this76 = this;
 
             this.api.getAllAttendance().subscribe(function (res) {
-              _this74.totalAttendance = res.length;
+              _this76.totalAttendance = res.length;
             });
           }
         }, {
           key: "getAllLeave",
           value: function getAllLeave() {
-            var _this75 = this;
+            var _this77 = this;
 
             this.api.getAllLeave().subscribe(function (res) {
-              _this75.totalLeave = res.length;
+              _this77.totalLeave = res.length;
+            });
+          }
+        }, {
+          key: "getAllActiveEmployee",
+          value: function getAllActiveEmployee() {
+            var _this78 = this;
+
+            this.api.getAllActiveEmployee().subscribe(function (res) {
+              _this78.activeEmployeeData = res;
+              _this78.totalActiveEmployees = res.length;
             });
           }
         }, {
           key: "deleteEmployee",
           value: function deleteEmployee(item) {
-            var _this76 = this;
+            var _this79 = this;
 
             this.api.deleteEmployee(item.id).subscribe(function (res) {
               alert("deleted!");
 
-              _this76.getAllEmployee();
+              _this79.getAllActiveEmployee();
             });
           }
         }, {
@@ -24658,14 +24821,14 @@
         }, {
           key: "triggerModal",
           value: function triggerModal(content) {
-            var _this77 = this;
+            var _this80 = this;
 
             this.modalService.open(content, {
               ariaLabelledBy: 'modal-basic-title'
             }).result.then(function (res) {
-              _this77.closeModal = "Closed with: ".concat(res);
+              _this80.closeModal = "Closed with: ".concat(res);
             }, function (res) {
-              _this77.closeModal = "Dismissed ".concat(_this77.getDismissReason(res));
+              _this80.closeModal = "Dismissed ".concat(_this80.getDismissReason(res));
             });
           }
         }, {
@@ -24892,7 +25055,7 @@
         }, {
           key: "createhit",
           value: function createhit() {
-            var _this78 = this;
+            var _this81 = this;
 
             this.isDisabled = true;
             var data = {};
@@ -24919,7 +25082,7 @@
             }
 
             this.dataservice.createTask(data).subscribe(function (result) {
-              _this78.isDisabled = false;
+              _this81.isDisabled = false;
               var text = '';
 
               if (result['error']) {
@@ -24928,16 +25091,16 @@
                 text = ' Create Successfully !';
               }
 
-              _this78._snackBar.open(text, 'Close', {
+              _this81._snackBar.open(text, 'Close', {
                 duration: 2000,
                 horizontalPosition: 'left',
                 verticalPosition: 'bottom'
               });
 
-              _this78.alert = true;
+              _this81.alert = true;
 
               if (result['error']) {} else {
-                _this78.router.navigate(["/existingtask"]);
+                _this81.router.navigate(["/existingtask"]);
               }
             });
           }
@@ -25076,7 +25239,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"btnadd\">\n    <button (click)=\"openDialog()\" mat-raised-button>Add Payroll\n      <i class=\"fa fa-fw fa-plus\"></i>\n    </button>\n<!-- <button mat-button (click)=\"openDialog()\">Open dialog</button> -->\n\n  </div>\n  <div class=\"row\">\n    <div class=\"col-md-12\">\n<!-- \n      <mat-form-field class=\"col-md-6\">\n        <mat-label>Search</mat-label>\n        <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n      </mat-form-field>\n\n      <mat-form-field class=\"col-md-5\">\n        <mat-label>Enter a date range</mat-label>\n        <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n          <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n          <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n        </mat-date-range-input>\n        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n        <mat-date-range-picker #picker></mat-date-range-picker>\n\n        <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n        <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n      </mat-form-field>\n      <button (click)=\"refresh()\" mat-button>\n        <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n      </button> -->\n\n\n      <div class=\"mat-elevation-z8\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <ng-container matColumnDef=\"Emp Name\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Basic Pay\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Allowance\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Current Salary\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Increment\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n          </ng-container>\n          <ng-container matColumnDef=\"Last Increment Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Salary Release Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Action\">\n            <th mat-header-cell *matHeaderCellDef>Action</th>\n            <td mat-cell *matCellDef=\"let row\">\n\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>edit</mat-icon>\n              </a>&nbsp;\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>delete</mat-icon>\n              </a>\n                <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n                <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n            \n            </td>\n          </ng-container>\n\n          <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n          <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n          <!-- Row shown when there is no matching data. -->\n          <tr class=\"mat-row\" *matNoDataRow>\n            <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n          </tr>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n\n    <!-- Modal -->\n    <!-- <div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"exampleModalLabel\">Employee Detail</h5>\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n          </div>\n          <div class=\"modal-body\">\n              <form [formGroup]=\"formValue\">\n                  <div class=\"mb-3\">\n                      <label for=\"exampleInputName1\" class=\"form-label\">Name</label>\n                      <input type=\"text\" formControlName=\"name\" class=\"form-control\" id=\"inputName\" aria-describedby=\"nameHelp\">\n                    </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputEmail1\" class=\"form-label\">Email</label>\n                    <input type=\"email\" formControlName=\"email\" class=\"form-control\" id=\"inputemail\" aria-describedby=\"emailHelp\">\n                  </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputPassword1\" class=\"form-label\">Password</label>\n                    <input type=\"password\" formControlName=\"password\" class=\"form-control\" id=\"inputPass\">\n                  </div>\n                </form>\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" id=\"cancel\" data-bs-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showAdd\" (click)=\"postEmployeeDetails()\">Add</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showUpdate\" (click)=\"updateEmployeeDetails()\">Update</button>\n          </div>\n        </div>\n      </div>\n    </div> -->\n</div>";
+      __webpack_exports__["default"] = "<div [@routerTransition]>\n  <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n  <div class=\"btnadd\">\n    <button (click)=\"openDialog()\" mat-raised-button>Add Payroll\n      <i class=\"fa fa-fw fa-plus\"></i>\n    </button>\n<!-- <button mat-button (click)=\"openDialog()\">Open dialog</button> -->\n\n  </div>\n\n  \n  <div class=\"row\">\n    <div class=\"col-md-12\">\n<!-- \n      <mat-form-field class=\"col-md-6\">\n        <mat-label>Search</mat-label>\n        <input matInput (keyup)=\"applyFilter($event)\" placeholder=\"Ex. XYZ\" #input>\n      </mat-form-field>\n\n      <mat-form-field class=\"col-md-5\">\n        <mat-label>Enter a date range</mat-label>\n        <mat-date-range-input [formGroup]=\"range\" [rangePicker]=\"picker\">\n          <input matStartDate formControlName=\"start\" placeholder=\"Start date\">\n          <input matEndDate formControlName=\"end\" placeholder=\"End date\">\n        </mat-date-range-input>\n        <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n        <mat-date-range-picker #picker></mat-date-range-picker>\n\n        <mat-error *ngIf=\"range.controls.start.hasError('matStartDateInvalid')\">Invalid start date</mat-error>\n        <mat-error *ngIf=\"range.controls.end.hasError('matEndDateInvalid')\">Invalid end date</mat-error>\n      </mat-form-field>\n      <button (click)=\"refresh()\" mat-button>\n        <mat-icon aria-hidden=\"false\" (click)=\"refresh()\" aria-label=\"Example refresh icon\">refresh</mat-icon>\n      </button> -->\n\n\n      <div class=\"mat-elevation-z8\">\n        <table mat-table [dataSource]=\"dataSource\" matSort>\n\n          <ng-container matColumnDef=\"Emp Name\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Basic Pay\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Allowance\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Current Salary\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Increment\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n          </ng-container>\n          <ng-container matColumnDef=\"Last Increment Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Last Salary Release Date\">\n            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n            <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n          </ng-container>\n\n          <ng-container matColumnDef=\"Action\">\n            <th mat-header-cell *matHeaderCellDef>Action</th>\n            <td mat-cell *matCellDef=\"let row\">\n\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>edit</mat-icon>\n              </a>&nbsp;\n              <a (click)=\"openEdit(row)\">\n                <mat-icon>delete</mat-icon>\n              </a>\n                <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n                <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n            \n            </td>\n          </ng-container>\n\n          <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n          <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr>\n\n          <!-- Row shown when there is no matching data. -->\n          <tr class=\"mat-row\" *matNoDataRow>\n            <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n          </tr>\n        </table>\n\n        <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n      </div>\n\n    </div>\n  </div>\n\n    <!-- Modal -->\n    <!-- <div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n      <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <h5 class=\"modal-title\" id=\"exampleModalLabel\">Employee Detail</h5>\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\n          </div>\n          <div class=\"modal-body\">\n              <form [formGroup]=\"formValue\">\n                  <div class=\"mb-3\">\n                      <label for=\"exampleInputName1\" class=\"form-label\">Name</label>\n                      <input type=\"text\" formControlName=\"name\" class=\"form-control\" id=\"inputName\" aria-describedby=\"nameHelp\">\n                    </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputEmail1\" class=\"form-label\">Email</label>\n                    <input type=\"email\" formControlName=\"email\" class=\"form-control\" id=\"inputemail\" aria-describedby=\"emailHelp\">\n                  </div>\n                  <div class=\"mb-3\">\n                    <label for=\"exampleInputPassword1\" class=\"form-label\">Password</label>\n                    <input type=\"password\" formControlName=\"password\" class=\"form-control\" id=\"inputPass\">\n                  </div>\n                </form>\n          </div>\n          <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-secondary\" id=\"cancel\" data-bs-dismiss=\"modal\">Close</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showAdd\" (click)=\"postEmployeeDetails()\">Add</button>\n            <button type=\"button\" class=\"btn btn-primary\" *ngIf=\"showUpdate\" (click)=\"updateEmployeeDetails()\">Update</button>\n          </div>\n        </div>\n      </div>\n    </div> -->\n</div>";
       /***/
     },
 

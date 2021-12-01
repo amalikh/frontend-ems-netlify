@@ -50,13 +50,16 @@ export class AttendanceComponent implements OnInit {
   displayedColumns: string[] = [
     'Id',
     'Name',
-    'PresentStatus',
+    // 'PresentStatus',
+    'Status',
     'InTime',
     'OutTime',
     'Action'
   ];
   totalActiveEmployees:any;
   activeEmployeeData:any;
+  doa = formatDate(this.todaysDate, 'yyyy-MM-dd', 'en-US');
+
   dataSource: MatTableDataSource<UserData> = new MatTableDataSource([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -94,6 +97,7 @@ export class AttendanceComponent implements OnInit {
 
 
     this.formValue = this.formbuilder.group({
+      // status: ['', [Validators.required]],
       status: ['', [Validators.required]],
       in_time: [''],
       out_time: [''],
@@ -159,11 +163,11 @@ export class AttendanceComponent implements OnInit {
   }
 
   markAttendance(row: any) {
-    const doa = formatDate(this.todaysDate, 'yyyy-MM-dd', 'en-US');
     let date_ob = new Date();
-    let hours = date_ob.getHours();
-    let minutes = date_ob.getMinutes();
-    let TimeNow = (hours + ":" + minutes);
+    // let hours = date_ob.getHours();
+    // let minutes = date_ob.getMinutes();
+    // let TimeNow = (hours + ":" + minutes);
+    let TimeNow = Date.now();
     let spanValue = row.status;
     let spanValueInTime = row.in_time;
     let spanValueOutTime = row.out_time;
@@ -183,7 +187,7 @@ export class AttendanceComponent implements OnInit {
         this.attendanceModelObj.out_time = null;
       }
 
-      this.attendanceModelObj.date_of_attendance = doa;
+      this.attendanceModelObj.date_of_attendance = this.doa;
       if (!row.employees_id) {
 
         this.attendanceModelObj.employees_id = row.id;
@@ -193,7 +197,7 @@ export class AttendanceComponent implements OnInit {
         this.attendanceModelObj.employees_id = row.employees_id;
       }
 
-      // console.log(this.attendanceModelObj);
+      console.log(this.attendanceModelObj);
       let textt = ''
       this.api.postAttendance(this.attendanceModelObj)
         .subscribe(res => {
@@ -207,7 +211,7 @@ export class AttendanceComponent implements OnInit {
           });
     }
     else if(spanValue == 'Present' && spanValueOutTime == null){
-      this.attendanceModelObj.date_of_attendance = doa;
+      this.attendanceModelObj.date_of_attendance = this.doa;
       if (!row.employees_id) {
 
         this.attendanceModelObj.employees_id = row.id;
@@ -217,7 +221,7 @@ export class AttendanceComponent implements OnInit {
         this.attendanceModelObj.employees_id = row.employees_id;
       }
 
-      // console.log(this.attendanceModelObj);
+      console.log(this.attendanceModelObj);
       let textt = ''
       this.api.postAttendance(this.attendanceModelObj)
         .subscribe(res => {
@@ -226,7 +230,7 @@ export class AttendanceComponent implements OnInit {
           this.ngOnInit();
         },
           err => {
-            this.ToastText = 'Error'
+            this.ToastText = 'Error in updating'
             this.ToastMsg(this.ToastText);
           });
     }

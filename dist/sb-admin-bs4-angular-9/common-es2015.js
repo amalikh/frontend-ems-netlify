@@ -121,6 +121,12 @@ let ApiService = class ApiService {
             return res;
         }));
     }
+    getAllActiveEmployee() {
+        return this.http.get(this.base_url + "employee/allActive")
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => {
+            return res;
+        }));
+    }
     postUser(data) {
         return this.http.post(this.base_url + "user/signup", data)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => { return res; }));
@@ -138,7 +144,7 @@ let ApiService = class ApiService {
         }));
     }
     login(data) {
-        return this.http.post(this.base_url + "user/login", data)
+        return this.http.post(this.base_url + "user/login", data, HEADERS)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => {
             return res;
         }));
@@ -184,7 +190,7 @@ let ApiService = class ApiService {
     }
     //merging data of two apis using fork join
     requestDataFromMultipleSources() {
-        let response1 = this.http.get(this.base_url + "employee/all");
+        let response1 = this.http.get(this.base_url + "employee/allActive");
         let response2 = this.http.get(this.base_url + "attendance/allWithCurrentDate");
         // let response3 = this.http.get(requestUrl3);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
