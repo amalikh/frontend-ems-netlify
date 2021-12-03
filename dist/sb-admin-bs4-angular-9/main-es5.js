@@ -320,7 +320,7 @@
 
       var environment = {
         production: false,
-        BASE_URL: 'http://127.0.0.1:5000/api'
+        BASE_URL: "http://localhost:3000/"
       };
       /*
        * For easier debugging in development mode, you can import the following file

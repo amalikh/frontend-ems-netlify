@@ -558,7 +558,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Payroll</h1>\n<div mat-dialog-content>\n\n  <form [formGroup]=\"createPayroll\">\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Employee Name</mat-label>\n      <mat-select formControlName=\"employees_id\" [disabled]=\"isEdit\">\n        <mat-option disabled>Select Employee</mat-option>\n        <mat-option *ngFor=\"let item of employees\" [disabled]=\"isEdit\" [value]=\"item.id\">{{item.name}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Basic Pay</mat-label>\n      <input matInput formControlName=\"basic_pay\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Allowance</mat-label>\n\n      <input matInput formControlName=\"allowance\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Current Salary</mat-label>\n      <input matInput formControlName=\"current_salary\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Increment</mat-label>\n      <input matInput formControlName=\"last_increment\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Increment Date</mat-label>\n      <input matInput formControlName=\"last_increment_date\" [matDatepicker]=\"picker1\">\n      <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n      <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Salary Release</mat-label>\n      <input matInput formControlName=\"last_salary_release_date\" [matDatepicker]=\"picker2\">\n      <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n      <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n  </form>\n</div>\n\n<div mat-dialog-actions>\n  <button mat-button mat-dialog-close>Close</button>\n  <button mat-button (click)=\"save()\">Save</button>\n\n</div>";
+      __webpack_exports__["default"] = "<h1 mat-dialog-title>{{isEdit ? 'Edit' : 'Add'}} Payroll</h1>\n<div mat-dialog-content>\n\n  <form [formGroup]=\"createPayroll\">\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Employee Name</mat-label>\n      <mat-select formControlName=\"employees_id\" [disabled]=\"isEdit\">\n        <mat-option disabled>Select Employee</mat-option>\n        <mat-option *ngFor=\"let item of employees\" [disabled]=\"isEdit\" [value]=\"item.id\">{{item.name}}</mat-option>\n      </mat-select>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Basic Pay</mat-label>\n      <input matInput formControlName=\"basic_pay\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Allowance</mat-label>\n\n      <input matInput formControlName=\"allowance\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Current Salary</mat-label>\n      <input matInput formControlName=\"current_salary\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Increment</mat-label>\n      <input matInput formControlName=\"last_increment\" type=\"number\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Increment Date</mat-label>\n      <input matInput formControlName=\"last_increment_date\" [matDatepicker]=\"picker1\">\n      <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n      <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n      <mat-label>Last Salary Release</mat-label>\n      <input matInput formControlName=\"last_salary_release_date\" [matDatepicker]=\"picker2\">\n      <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n      <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n  </form>\n</div>\n\n<div mat-dialog-actions>\n  <button mat-button mat-dialog-close>Close</button>\n  <button mat-button (click)=\"save()\">Save</button>\n</div>";
       /***/
     },
 
@@ -20080,6 +20080,7 @@
 
             // this.getAllEmployee();
             // this.getAllAttendanceOfCurrentDate();
+            console.log("combine function");
             this.combine();
             this.router.events.subscribe(function (e) {
               if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this45.outlet.deactivate();
@@ -20123,16 +20124,13 @@
           value: function applyThis() {
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;
-          }
-        }, {
-          key: "cancel",
-          value: function cancel(row) {
-            var _this46 = this;
+          } // cancel(row) {
+          //   this.api.deleteEmployee(row.active_child)
+          //     .subscribe(res => {
+          //       this.getAllActiveEmployee();
+          //     })
+          // }
 
-            this.api.deleteEmployee(row.active_child).subscribe(function (res) {
-              _this46.getAllActiveEmployee();
-            });
-          }
         }, {
           key: "refresh",
           value: function refresh() {
@@ -20141,17 +20139,17 @@
         }, {
           key: "getAllActiveEmployee",
           value: function getAllActiveEmployee() {
-            var _this47 = this;
+            var _this46 = this;
 
             this.api.getAllActiveEmployee().subscribe(function (res) {
-              _this47.dataSource = res;
-              console.log(_this47.dataSource);
+              _this46.dataSource = res;
+              console.log(_this46.dataSource);
             });
           }
         }, {
           key: "markAttendance",
           value: function markAttendance(row) {
-            var _this48 = this;
+            var _this47 = this;
 
             var date_ob = new Date(); // let hours = date_ob.getHours();
             // let minutes = date_ob.getMinutes();
@@ -20187,15 +20185,15 @@
               console.log(this.attendanceModelObj);
               var textt = '';
               this.api.postAttendance(this.attendanceModelObj).subscribe(function (res) {
-                _this48.ToastText = 'Created Successfully';
+                _this47.ToastText = 'Created Successfully';
 
-                _this48.ToastMsg(_this48.ToastText);
+                _this47.ToastMsg(_this47.ToastText);
 
-                _this48.ngOnInit();
+                _this47.ngOnInit();
               }, function (err) {
-                _this48.ToastText = 'Error';
+                _this47.ToastText = 'Error';
 
-                _this48.ToastMsg(_this48.ToastText);
+                _this47.ToastMsg(_this47.ToastText);
               });
             } else if (spanValue == 'Present' && spanValueOutTime == null) {
               this.attendanceModelObj.date_of_attendance = this.doa;
@@ -20209,15 +20207,15 @@
               console.log(this.attendanceModelObj);
               var _textt = '';
               this.api.postAttendance(this.attendanceModelObj).subscribe(function (res) {
-                _this48.ToastText = 'Created Successfully';
+                _this47.ToastText = 'Created Successfully';
 
-                _this48.ToastMsg(_this48.ToastText);
+                _this47.ToastMsg(_this47.ToastText);
 
-                _this48.ngOnInit();
+                _this47.ngOnInit();
               }, function (err) {
-                _this48.ToastText = 'Error in updating';
+                _this47.ToastText = 'Error in updating';
 
-                _this48.ToastMsg(_this48.ToastText);
+                _this47.ToastMsg(_this47.ToastText);
               });
             } else if (spanValue == 'Absent' || spanValue == 'Off') {
               this.ToastText = ' You Already Marked Your attendance';
@@ -20233,17 +20231,17 @@
         }, {
           key: "getAllAttendanceOfCurrentDate",
           value: function getAllAttendanceOfCurrentDate() {
-            var _this49 = this;
+            var _this48 = this;
 
             this.api.getAttendanceOfCurrentDate().subscribe(function (res) {
-              _this49.dataSource = res;
-              console.log(_this49.dataSource);
+              _this48.dataSource = res;
+              console.log(_this48.dataSource);
             });
           }
         }, {
           key: "combine",
           value: function combine() {
-            var _this50 = this;
+            var _this49 = this;
 
             this.api.requestDataFromMultipleSources().subscribe(function (responseList) {
               var a1 = responseList[0];
@@ -20253,9 +20251,9 @@
                   return t1.id === t2.employees_id;
                 }));
               });
-              _this50.dataSource.data = a3;
+              _this49.dataSource.data = a3;
               console.log(a3);
-              _this50.isLoaded = true;
+              _this49.isLoaded = true;
             });
           }
         }, {
@@ -20312,6 +20310,260 @@
         animations: [Object(_router_animations__WEBPACK_IMPORTED_MODULE_4__["routerTransition"])()],
         styles: [_attendance_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
       }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_shared_api_service__WEBPACK_IMPORTED_MODULE_11__["ApiService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _angular_forms__WEBPACK_IMPORTED_MODULE_10__["FormBuilder"], _angular_common_http__WEBPACK_IMPORTED_MODULE_15__["HttpClient"], _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_16__["MatSnackBar"]])], AttendanceComponent);
+      /***/
+    },
+
+    /***/
+    "5E1g":
+    /*!***********************************************************************!*\
+      !*** ./src/app/layout/leave-modal-data/leave-modal-data.component.ts ***!
+      \***********************************************************************/
+
+    /*! exports provided: LeaveModalDataComponent */
+
+    /***/
+    function E1g(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony export (binding) */
+
+
+      __webpack_require__.d(__webpack_exports__, "LeaveModalDataComponent", function () {
+        return LeaveModalDataComponent;
+      });
+      /* harmony import */
+
+
+      var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+      /*! tslib */
+      "mrSG");
+      /* harmony import */
+
+
+      var _raw_loader_leave_modal_data_component_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(
+      /*! raw-loader!./leave-modal-data.component.html */
+      "oIPp");
+      /* harmony import */
+
+
+      var _leave_modal_data_component_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+      /*! ./leave-modal-data.component.css */
+      "XDmx");
+      /* harmony import */
+
+
+      var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(
+      /*! @angular/common */
+      "ofXK");
+      /* harmony import */
+
+
+      var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
+      /*! @angular/core */
+      "fXoL");
+      /* harmony import */
+
+
+      var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! @angular/forms */
+      "3Pt+");
+      /* harmony import */
+
+
+      var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! @angular/material/dialog */
+      "0IaG");
+      /* harmony import */
+
+
+      var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
+      /*! @angular/material/snack-bar */
+      "dNgK");
+      /* harmony import */
+
+
+      var _shared_api_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+      /*! ../../shared/api.service */
+      "eokG");
+      /* harmony import */
+
+
+      var _employee_employee_model__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+      /*! ../employee/employee.model */
+      "+5+S");
+      /* harmony import */
+
+
+      var _leave_leave_model__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
+      /*! ../leave/leave.model */
+      "1UzU");
+
+      var LeaveModalDataComponent = /*#__PURE__*/function () {
+        function LeaveModalDataComponent(formbuilder, api, data, _snackBar) {
+          _classCallCheck(this, LeaveModalDataComponent);
+
+          this.formbuilder = formbuilder;
+          this.api = api;
+          this.data = data;
+          this._snackBar = _snackBar;
+          this.leaveModelObj = new _leave_leave_model__WEBPACK_IMPORTED_MODULE_10__["Leave"]();
+          this.employeeModelObj = new _employee_employee_model__WEBPACK_IMPORTED_MODULE_9__["EmployeeModel"]();
+          this.isEdit = false;
+          this.showAdd = true;
+          this.ToastText = '';
+          this.leaveType = ['sick', 'casual', 'annual', 'marriage'];
+
+          if (data['type'] == 'edit') {
+            this.isEdit = true, this.showAdd = false, this.showUpdate = true;
+          }
+        }
+
+        _createClass(LeaveModalDataComponent, [{
+          key: "ngOnInit",
+          value: function ngOnInit() {
+            this.getAllEmployee();
+            this.createleave = this.formbuilder.group({
+              // status: [''],
+              leave_type: [''],
+              from_date: [''],
+              to_date: [''],
+              description: [''],
+              employees_id: ['']
+            });
+
+            if (this.isEdit) {
+              console.log("I am here");
+              console.log(this.data);
+              this.createleave.setValue({
+                employees_id: this.data.employees_id,
+                status: this.data.status,
+                leave_type: this.data.leave_type,
+                from_date: this.data.from_date,
+                to_date: this.data.to_date,
+                description: this.data.description
+              });
+            }
+          }
+        }, {
+          key: "getFontSize",
+          value: function getFontSize() {
+            return 13;
+          }
+        }, {
+          key: "getAllEmployee",
+          value: function getAllEmployee() {
+            var _this50 = this;
+
+            this.api.getAllActiveEmployee().subscribe(function (res) {
+              _this50.employees = res;
+            });
+          }
+        }, {
+          key: "getAllLeaves",
+          value: function getAllLeaves() {
+            var _this51 = this;
+
+            this.api.getAllLeave().subscribe(function (res) {
+              _this51.leaveData = res;
+              console.log(_this51.leaveData);
+            });
+          }
+        }, {
+          key: "addLeave",
+          value: function addLeave() {
+            var _this52 = this;
+
+            var fromDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createleave.value.from_date, 'yyyy-MM-dd', 'en-US');
+            var toDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createleave.value.to_date, 'yyyy-MM-dd', 'en-US');
+            this.leaveModelObj.status = 'Pending';
+            this.leaveModelObj.leave_type = this.createleave.value.leave_type;
+            this.leaveModelObj.from_date = fromDate;
+            this.leaveModelObj.to_date = toDate;
+            this.leaveModelObj.description = this.createleave.value.description;
+            this.leaveModelObj.employees_id = this.createleave.value.employees_id; // console.log(this.leaveModelObj);
+
+            this.api.postLeave(this.leaveModelObj).subscribe(function (res) {
+              console.log(res);
+              alert("Add successfully");
+
+              _this52.createleave.reset();
+            }, function (err) {
+              alert("something wrong");
+            });
+          }
+        }, {
+          key: "cancelBtn",
+          value: function cancelBtn() {
+            var ref = document.getElementById('cancel');
+            ref === null || ref === void 0 ? void 0 : ref.click();
+            this.createleave.reset();
+          }
+        }, {
+          key: "update",
+          value: function update() {
+            var _this53 = this;
+
+            var fromDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createleave.value.from_date, 'yyyy-MM-dd', 'en-US');
+            var toDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_3__["formatDate"])(this.createleave.value.to_date, 'yyyy-MM-dd', 'en-US');
+            this.leaveModelObj.status = this.createleave.value.status;
+            this.leaveModelObj.leave_type = this.createleave.value.leave_type;
+            this.leaveModelObj.from_date = fromDate;
+            this.leaveModelObj.to_date = toDate;
+            this.leaveModelObj.description = this.createleave.value.description;
+            this.leaveModelObj.employees_id = this.createleave.value.employees_id;
+            this.leaveModelObj.id = this.data.id;
+            console.log(this.leaveModelObj);
+            this.api.updateLeave(this.leaveModelObj, this.data.id).subscribe(function (res) {
+              _this53.ToastText = 'Updated Successfully';
+
+              _this53.ToastMsg(_this53.ToastText);
+
+              _this53.getAllLeaves();
+
+              _this53.createleave.reset();
+            });
+          }
+        }, {
+          key: "refresh",
+          value: function refresh() {
+            this.getAllLeaves();
+          }
+        }, {
+          key: "ToastMsg",
+          value: function ToastMsg(msg) {
+            this._snackBar.open(msg, '', {
+              duration: 2000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom'
+            });
+          }
+        }]);
+
+        return LeaveModalDataComponent;
+      }();
+
+      LeaveModalDataComponent.ctorParameters = function () {
+        return [{
+          type: _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormBuilder"]
+        }, {
+          type: _shared_api_service__WEBPACK_IMPORTED_MODULE_8__["ApiService"]
+        }, {
+          type: undefined,
+          decorators: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Inject"],
+            args: [_angular_material_dialog__WEBPACK_IMPORTED_MODULE_6__["MAT_DIALOG_DATA"]]
+          }]
+        }, {
+          type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"]
+        }];
+      };
+
+      LeaveModalDataComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"])({
+        selector: 'app-leave-modal-data',
+        template: _raw_loader_leave_modal_data_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
+        styles: [_leave_modal_data_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
+      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_8__["ApiService"], Object, _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__["MatSnackBar"]])], LeaveModalDataComponent);
       /***/
     },
 
@@ -20438,12 +20690,13 @@
           this.formbuilder = formbuilder;
           this.api = api;
           this.displayedColumns = ['Emp Name', 'Basic Pay', 'Allowance', 'Current Salary', 'Last Increment', 'Last Increment Date', 'Last Salary Release Date', 'Action'];
+          this.isLoading = true;
         }
 
         _createClass(ModalTestComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
-            this.getAllPayrolls();
+            this.getAllPayrolls(); // this.combine();
           }
         }, {
           key: "openDialog",
@@ -20457,11 +20710,12 @@
         }, {
           key: "getAllPayrolls",
           value: function getAllPayrolls() {
-            var _this51 = this;
+            var _this54 = this;
 
             this.api.getPayrolls().subscribe(function (res) {
-              _this51.payrollData = res;
-              console.log(_this51.payrollData);
+              _this54.isLoading = false;
+              _this54.payrollData = res;
+              console.log(_this54.payrollData);
             });
           }
         }, {
@@ -20476,7 +20730,7 @@
               type: 'edit',
               id: item.employees_id,
               name: item.employee.name,
-              basic_pay: item.basic_pay,
+              basic_pay: item.employee.basic_pay,
               allowance: item.allowance,
               current_salary: item.current_salary,
               last_increment: item.last_increment,
@@ -20775,10 +21029,10 @@
         }, {
           key: "getAllPayrolls",
           value: function getAllPayrolls() {
-            var _this52 = this;
+            var _this55 = this;
 
             this.api.getPayrolls().subscribe(function (res) {
-              _this52.dataSource = res;
+              _this55.dataSource = res;
             });
           } // openDialog() {
           //   this.dialog.open(ModalDataComponent);
@@ -20874,7 +21128,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Employee'\" [icon]=\"'fa-tasks'\"></app-page-header>\n    <div>\n        <form [formGroup]=\"createEmployee\">\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Name</mat-label>\n                <input matInput placeholder=\"Category\" formControlName=\"name\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Father's Name</mat-label>\n                <input matInput placeholder=\"father name\" formControlName=\"father_name\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Date Of Birth</mat-label>\n                <input matInput formControlName=\"dob\" [matDatepicker]=\"picker\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker #picker></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Date Of Joining</mat-label>\n                <input matInput formControlName=\"doj\" [matDatepicker]=\"picker2\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n                <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Designation</mat-label>\n                <mat-select formControlName=\"designation\">\n                    <mat-option disabled>Select</mat-option>\n                    <mat-option *ngFor=\"let item of employees\" [value]=\"item\">{{item}}</mat-option>\n                </mat-select>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n                <mat-label>Communication Address</mat-label>\n                <textarea matInput placeholder=\"Communication Address...\" formControlName=\"communication_add\"></textarea>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n                <mat-label>Permanent Address</mat-label>\n                <textarea matInput placeholder=\"Permanent Address...\" formControlName=\"permanent_add\"></textarea>\n            </mat-form-field>\n\n\n              <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                    <div>\n                      <mat-toolbar>\n                        <input matInput [(ngModel)]=\"fileAttr\" readonly formControlName=\"current_photo\" />\n                  \n                        <button mat-flat-button color=\"primary\">\n                          Browse File\n                        </button>\n                      </mat-toolbar>\n                  \n                      <input type=\"file\" #fileInput id=\"uploadFile\" (change)=\"uploadFileEvt($event)\" name=\"uploadFile\" multiple=\"multiple\"\n                        accept=\"image/*\" />\n                        <img [src]=\"dataimage\" alt=\"\">\n                    </div>\n                  </mat-form-field>\n\n\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Contact No.</mat-label>\n                <input matInput placeholder=\"Contact No.\" formControlName=\"contact_no\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Email Id</mat-label>\n                <input matInput placeholder=\"Email Id\" formControlName=\"email\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Salary</mat-label>\n                <input matInput placeholder=\"Salary\" formControlName=\"salary\"  >\n            </mat-form-field>\n\n            <div>\n                <button mat-raised-button color=\"primary\" (click)=\"addEmployee()\">Add</button>&nbsp;\n                <button mat-raised-button color=\"primary\" id=\"cancel\" (click)=\"cancelBtn()\">Cancel</button>\n\n                <!-- <button [disabled]=\"createtask.invalid\" mat-stroked-button matStepperNext>Next</button> -->\n            </div>\n        </form>\n    </div>\n</div>";
+      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Employee'\" [icon]=\"'fa-tasks'\"></app-page-header>\n    <div>\n        <form [formGroup]=\"createEmployee\">\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Name</mat-label>\n                <input matInput placeholder=\"Category\" formControlName=\"name\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Father's Name</mat-label>\n                <input matInput placeholder=\"father name\" formControlName=\"father_name\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Date Of Birth</mat-label>\n                <input matInput formControlName=\"dob\" [matDatepicker]=\"picker\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker #picker></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Date Of Joining</mat-label>\n                <input matInput formControlName=\"doj\" [matDatepicker]=\"picker2\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n                <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Designation</mat-label>\n                <mat-select formControlName=\"designation\">\n                    <mat-option disabled>Select</mat-option>\n                    <mat-option *ngFor=\"let item of employees\" [value]=\"item\">{{item}}</mat-option>\n                </mat-select>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n                <mat-label>Communication Address</mat-label>\n                <textarea matInput placeholder=\"Communication Address...\" formControlName=\"communication_add\"></textarea>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n                <mat-label>Permanent Address</mat-label>\n                <textarea matInput placeholder=\"Permanent Address...\" formControlName=\"permanent_add\"></textarea>\n            </mat-form-field>\n\n\n              <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                    <div>\n                      <mat-toolbar>\n                        <input matInput [(ngModel)]=\"fileAttr\" readonly formControlName=\"current_photo\" />\n                  \n                        <button mat-flat-button color=\"primary\">\n                          Browse File\n                        </button>\n                      </mat-toolbar>\n                  \n                      <input type=\"file\" #fileInput id=\"uploadFile\" (change)=\"uploadFileEvt($event)\" name=\"uploadFile\" multiple=\"multiple\"\n                        accept=\"image/*\" />\n                        <img [src]=\"dataimage\" alt=\"\">\n                    </div>\n                  </mat-form-field>\n\n\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Contact No.</mat-label>\n                <input matInput placeholder=\"Contact No.\" formControlName=\"contact_no\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Email Id</mat-label>\n                <input matInput placeholder=\"Email Id\" formControlName=\"email\"  >\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Salary</mat-label>\n                <input matInput placeholder=\"Salary\" type=\"number\" formControlName=\"basic_pay\"  >\n            </mat-form-field>\n\n            <div>\n                <button mat-raised-button color=\"primary\" (click)=\"addEmployee()\">Add</button>&nbsp;\n                <button mat-raised-button color=\"primary\" id=\"cancel\" (click)=\"cancelBtn()\">Cancel</button>\n\n                <!-- <button [disabled]=\"createtask.invalid\" mat-stroked-button matStepperNext>Next</button> -->\n            </div>\n        </form>\n    </div>\n</div>";
       /***/
     },
 
@@ -20959,30 +21213,30 @@
         _createClass(BlockworkersComponent, [{
           key: "getBlockedWorkers",
           value: function getBlockedWorkers() {
-            var _this53 = this;
+            var _this56 = this;
 
             this.dataservice.getBlockedWorkers().subscribe(function (res) {
-              _this53.blockWorkers = res['data'];
-              _this53.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this53.blockWorkers);
+              _this56.blockWorkers = res['data'];
+              _this56.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](_this56.blockWorkers);
             });
           }
         }, {
           key: "unblock",
           value: function unblock(id) {
-            var _this54 = this;
+            var _this57 = this;
 
             this.dataservice.unblockWorker(id).subscribe(function (res) {
-              _this54.getBlockedWorkers();
+              _this57.getBlockedWorkers();
             });
           }
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this55 = this;
+            var _this58 = this;
 
             this.getBlockedWorkers();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this55.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this58.outlet.deactivate();
             });
           }
         }]);
@@ -21011,6 +21265,33 @@
         styles: [_blockworkers_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
       }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_shared_services_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"]])], BlockworkersComponent);
       /***/
+    },
+
+    /***/
+    "MwDE":
+    /*!****************************************************!*\
+      !*** ./src/app/layout/modal-test/payroll.model.ts ***!
+      \****************************************************/
+
+    /*! exports provided: Payroll */
+
+    /***/
+    function MwDE(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony export (binding) */
+
+
+      __webpack_require__.d(__webpack_exports__, "Payroll", function () {
+        return Payroll;
+      });
+
+      var Payroll = function Payroll() {
+        _classCallCheck(this, Payroll);
+      };
+      /***/
+
     },
 
     /***/
@@ -21109,7 +21390,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = ".center{\r\n    text-align: center;\r\n    align-self: center;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxlYXZlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxrQkFBa0I7SUFDbEIsa0JBQWtCO0FBQ3RCIiwiZmlsZSI6ImxlYXZlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY2VudGVye1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gICAgYWxpZ24tc2VsZjogY2VudGVyO1xyXG59Il19 */";
+      __webpack_exports__["default"] = ".center{\r\n    text-align: center;\r\n    align-self: center;\r\n}\r\n.btnadd{\r\n    text-align: right;\r\n    margin-bottom: 10px;\r\n  }\r\ntable {\r\n    width: 100%;\r\n  }\r\nth{\r\n    font: 1em calibri;\r\n  }\r\ntd{\r\n    font: 1em calibri;\r\n  }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxlYXZlLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxrQkFBa0I7SUFDbEIsa0JBQWtCO0FBQ3RCO0FBQ0E7SUFDSSxpQkFBaUI7SUFDakIsbUJBQW1CO0VBQ3JCO0FBQ0E7SUFDRSxXQUFXO0VBQ2I7QUFFQTtJQUNFLGlCQUFpQjtFQUNuQjtBQUVBO0lBQ0UsaUJBQWlCO0VBQ25CIiwiZmlsZSI6ImxlYXZlLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIuY2VudGVye1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gICAgYWxpZ24tc2VsZjogY2VudGVyO1xyXG59XHJcbi5idG5hZGR7XHJcbiAgICB0ZXh0LWFsaWduOiByaWdodDtcclxuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XHJcbiAgfVxyXG4gIHRhYmxlIHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuICBcclxuICB0aHtcclxuICAgIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG4gIH1cclxuICBcclxuICB0ZHtcclxuICAgIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG4gIH0iXX0= */";
       /***/
     },
 
@@ -21332,6 +21613,12 @@
       var _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(
       /*! ./modal-data/modal-data.component */
       "prsA");
+      /* harmony import */
+
+
+      var _leave_modal_data_leave_modal_data_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(
+      /*! ./leave-modal-data/leave-modal-data.component */
+      "5E1g");
 
       var LayoutModule = function LayoutModule() {
         _classCallCheck(this, LayoutModule);
@@ -21339,7 +21626,7 @@
 
       LayoutModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
         imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _layout_routing_module__WEBPACK_IMPORTED_MODULE_8__["LayoutRoutingModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_14__["FormsModule"], _angular_forms__WEBPACK_IMPORTED_MODULE_14__["ReactiveFormsModule"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_4__["TranslateModule"], _shared__WEBPACK_IMPORTED_MODULE_7__["PageHeaderModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbDropdownModule"], _material_material_module__WEBPACK_IMPORTED_MODULE_10__["MaterialModule"], _angular_material_radio__WEBPACK_IMPORTED_MODULE_21__["MatRadioModule"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_25__["MatDialogModule"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbModule"]],
-        declarations: [_layout_component__WEBPACK_IMPORTED_MODULE_9__["LayoutComponent"], _new_task_new_task_component__WEBPACK_IMPORTED_MODULE_11__["NewTaskComponent"], _existing_task_existing_task_component__WEBPACK_IMPORTED_MODULE_12__["ExistingTaskComponent"], _completed_task_completed_task_component__WEBPACK_IMPORTED_MODULE_13__["CompletedTaskComponent"], _components_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_6__["SidebarComponent"], _components_header_header_component__WEBPACK_IMPORTED_MODULE_5__["HeaderComponent"], _existing_task_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_16__["ExistingtaskDetailsComponent"], _blockworkers_blockworkers_component__WEBPACK_IMPORTED_MODULE_15__["BlockworkersComponent"], _assignments_assignments_component__WEBPACK_IMPORTED_MODULE_17__["AssignmentsComponent"], _assignments_dialog_assignments_dialog_component__WEBPACK_IMPORTED_MODULE_18__["AssignmentsDialogComponent"], _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_19__["DashboardComponent"], _attendance_attendance_component__WEBPACK_IMPORTED_MODULE_20__["AttendanceComponent"], _leave_leave_component__WEBPACK_IMPORTED_MODULE_22__["LeaveComponent"], _employee_employee_component__WEBPACK_IMPORTED_MODULE_23__["EmployeeComponent"], _payroll_payroll_component__WEBPACK_IMPORTED_MODULE_24__["PayrollComponent"], _payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_26__["PayrollDialogComponent"], _employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_27__["EmployeeEditDialogComponent"], _modal_test_modal_test_component__WEBPACK_IMPORTED_MODULE_28__["ModalTestComponent"], _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_29__["ModalDataComponent"]],
+        declarations: [_layout_component__WEBPACK_IMPORTED_MODULE_9__["LayoutComponent"], _new_task_new_task_component__WEBPACK_IMPORTED_MODULE_11__["NewTaskComponent"], _existing_task_existing_task_component__WEBPACK_IMPORTED_MODULE_12__["ExistingTaskComponent"], _completed_task_completed_task_component__WEBPACK_IMPORTED_MODULE_13__["CompletedTaskComponent"], _components_sidebar_sidebar_component__WEBPACK_IMPORTED_MODULE_6__["SidebarComponent"], _components_header_header_component__WEBPACK_IMPORTED_MODULE_5__["HeaderComponent"], _existing_task_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_16__["ExistingtaskDetailsComponent"], _blockworkers_blockworkers_component__WEBPACK_IMPORTED_MODULE_15__["BlockworkersComponent"], _assignments_assignments_component__WEBPACK_IMPORTED_MODULE_17__["AssignmentsComponent"], _assignments_dialog_assignments_dialog_component__WEBPACK_IMPORTED_MODULE_18__["AssignmentsDialogComponent"], _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_19__["DashboardComponent"], _attendance_attendance_component__WEBPACK_IMPORTED_MODULE_20__["AttendanceComponent"], _leave_leave_component__WEBPACK_IMPORTED_MODULE_22__["LeaveComponent"], _employee_employee_component__WEBPACK_IMPORTED_MODULE_23__["EmployeeComponent"], _payroll_payroll_component__WEBPACK_IMPORTED_MODULE_24__["PayrollComponent"], _payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_26__["PayrollDialogComponent"], _employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_27__["EmployeeEditDialogComponent"], _modal_test_modal_test_component__WEBPACK_IMPORTED_MODULE_28__["ModalTestComponent"], _modal_data_modal_data_component__WEBPACK_IMPORTED_MODULE_29__["ModalDataComponent"], _leave_modal_data_leave_modal_data_component__WEBPACK_IMPORTED_MODULE_30__["LeaveModalDataComponent"]],
         entryComponents: [_payroll_dialog_payroll_dialog_component__WEBPACK_IMPORTED_MODULE_26__["PayrollDialogComponent"]],
         bootstrap: [_dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_19__["DashboardComponent"]]
       })], LayoutModule);
@@ -21363,6 +21650,26 @@
 
 
       __webpack_exports__["default"] = "table {\n  width: 100%;\n}\n\n.mat-form-field {\n  font-size: 14px;\n  width: 100%;\n}\n\ntd, th {\n  width: 25%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbXBsZXRlZC10YXNrLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxXQUFXO0FBQ2I7O0FBRUE7RUFDRSxlQUFlO0VBQ2YsV0FBVztBQUNiOztBQUVBO0VBQ0UsVUFBVTtBQUNaIiwiZmlsZSI6ImNvbXBsZXRlZC10YXNrLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJ0YWJsZSB7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4ubWF0LWZvcm0tZmllbGQge1xuICBmb250LXNpemU6IDE0cHg7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG50ZCwgdGgge1xuICB3aWR0aDogMjUlO1xufSJdfQ== */";
+      /***/
+    },
+
+    /***/
+    "XDmx":
+    /*!************************************************************************!*\
+      !*** ./src/app/layout/leave-modal-data/leave-modal-data.component.css ***!
+      \************************************************************************/
+
+    /*! exports provided: default */
+
+    /***/
+    function XDmx(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony default export */
+
+
+      __webpack_exports__["default"] = ".modalHeading{\r\n    text-align: center;\r\n    margin-bottom:10px;\r\n    font:2em calibri;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImxlYXZlLW1vZGFsLWRhdGEuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGtCQUFrQjtJQUNsQixrQkFBa0I7SUFDbEIsZ0JBQWdCO0FBQ3BCIiwiZmlsZSI6ImxlYXZlLW1vZGFsLWRhdGEuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tb2RhbEhlYWRpbmd7XHJcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbiAgICBtYXJnaW4tYm90dG9tOjEwcHg7XHJcbiAgICBmb250OjJlbSBjYWxpYnJpO1xyXG59Il19 */";
       /***/
     },
 
@@ -21422,7 +21729,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Leave'\" [icon]=\"'fa-plus'\"></app-page-header>\n    <div>\n        <form [formGroup]=\"createleave\">\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Category</mat-label>\n                <input matInput placeholder=\"Category\" formControlName=\"category\" required>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Designation</mat-label>\n                <input matInput placeholder=\"Designation\" formControlName=\"designation\" required>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <!-- <mat-label>Employee Name</mat-label>\n                <input matInput placeholder=\"Employee Name\" formControlName=\"emp_name\" required> -->\n\n                <mat-label>Employee Name</mat-label>\n                <mat-select formControlName=\"employees_id\">\n                    <mat-option disabled>Select Employee</mat-option>\n                    <mat-option *ngFor=\"let item of employees\" [value]=\"item.id\">{{item.name}}</mat-option>\n                </mat-select>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Leave Type</mat-label>\n                <input matInput placeholder=\"Leave Type\" formControlName=\"leave_type\" required>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>From Date</mat-label>\n                <input matInput formControlName=\"from_date\" [matDatepicker]=\"picker\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker #picker></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>To Date</mat-label>\n                <input matInput formControlName=\"to_date\" [matDatepicker]=\"picker2\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n                <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n                <mat-label>Description</mat-label>\n                <textarea matInput placeholder=\"Reason for leave...\" formControlName=\"description\"></textarea>\n            </mat-form-field>\n\n            <div>\n                <button (click)=\"addLeave()\" mat-raised-button color=\"primary\">Add</button>&nbsp;\n                <button mat-raised-button color=\"primary\" id=\"cancel\" (click)=\"cancelBtn()\">Cancel</button>\n\n                <!-- <button [disabled]=\"createtask.invalid\" mat-stroked-button matStepperNext>Next</button> -->\n            </div>\n        </form>\n    </div>\n</div>";
+      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [subheading]=\"'Leave'\" [icon]=\"'fa-plus'\"></app-page-header>\n    <div class=\"btnadd\">\n        <button (click)=\"openDialog()\" mat-raised-button>Add Leave\n            <i class=\"fa fa-fw fa-plus\"></i>\n        </button>\n    </div>\n\n    <div class=\"row\">\n        <div class=\"col-md-12\" *ngIf=\"!isLoading\">\n\n            <table class=\"table mt-3\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Employee ID</th>\n                        <th scope=\"col\">Name</th>\n                        <th scope=\"col\">Status</th>\n                        <th scope=\"col\">Designation</th>\n                        <th scope=\"col\">Leave Type</th>\n                        <th scope=\"col\">From Date</th>\n                        <th scope=\"col\">To Date</th>\n                        <th scope=\"col\">Description</th>\n                        <th scope=\"col\">Action</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr *ngFor=\"let item of leaveData\">\n                        <td>{{item.employees_id}}</td>\n                        <td>{{item.employee.name}}</td>\n                        <td>{{item.status}}</td>\n                        <td>{{item.employee.designation}}</td>\n                        <td>{{item.leave_type}}</td>\n                        <td>{{item.from_date}}</td>\n                        <td>{{item.to_date}}</td>\n                        <td>{{item.description}}</td>\n                        <!-- <td><img src=\"{{item.current_photo}}\" /></td> -->\n                        <td>\n                            <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info btn-sm\" type=\"button\" data-bs-toggle=\"modal\"\n                        data-bs-target=\"#exampleModal\">\n                        <i class=\"fa fa-fw fa-edit\"></i>\n                    </button> -->\n\n                            <button (click)=\"changeStatus(item.id, 'Accepted')\" class=\"btn btn-info btn-sm\" type=\"button\">\n                                <i class=\"fa fa-fw fa-check\"></i>\n                            </button>\n\n                            <button (click)=\"changeStatus(item.id, 'Rejected')\" class=\"btn btn-danger mx-3 btn-sm\">\n                                <i class=\"fa fa-fw fa-times\"></i>\n                            </button>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n\n    <!-- <div>\n        <form [formGroup]=\"createleave\">\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Category</mat-label>\n                <input matInput placeholder=\"Category\" formControlName=\"category\">\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Designation</mat-label>\n                <input matInput placeholder=\"Designation\" formControlName=\"designation\">\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n\n                <mat-label>Employee Name</mat-label>\n                <mat-select formControlName=\"employees_id\">\n                    <mat-option disabled>Select Employee</mat-option>\n                    <mat-option *ngFor=\"let item of employees\" [value]=\"item.id\">{{item.name}}</mat-option>\n                </mat-select>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>Leave Type</mat-label>\n                <input matInput placeholder=\"Leave Type\" formControlName=\"leave_type\">\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>From Date</mat-label>\n                <input matInput formControlName=\"from_date\" [matDatepicker]=\"picker\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n                <mat-datepicker #picker></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n                <mat-label>To Date</mat-label>\n                <input matInput formControlName=\"to_date\" [matDatepicker]=\"picker2\">\n                <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n                <mat-datepicker #picker2></mat-datepicker>\n            </mat-form-field>\n\n            <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n                <mat-label>Description</mat-label>\n                <textarea matInput placeholder=\"Reason for leave...\" formControlName=\"description\"></textarea>\n            </mat-form-field>\n\n            <div>\n                <button (click)=\"addLeave()\" mat-raised-button color=\"primary\">Add</button>&nbsp;\n                <button mat-raised-button color=\"primary\" id=\"cancel\" (click)=\"cancelBtn()\">Cancel</button>\n            </div>\n        </form>\n    </div> -->\n\n\n</div>";
       /***/
     },
 
@@ -21542,16 +21849,16 @@
         _createClass(CompletedTaskComponent, [{
           key: "getallCompletedHITS",
           value: function getallCompletedHITS() {
-            var _this56 = this;
+            var _this59 = this;
 
             this.dataservice.fetchCompletedHits().subscribe(function (res) {
               res['data'].forEach(function (element) {
                 element['approved'] = parseInt(element['max_assignments']) - parseInt(element['assignments_remaining']);
               });
-              _this56.completedhits = res['data'];
-              _this56.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this56.completedhits);
+              _this59.completedhits = res['data'];
+              _this59.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this59.completedhits);
 
-              _this56.applyThis();
+              _this59.applyThis();
             });
           }
         }, {
@@ -21567,11 +21874,11 @@
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this57 = this;
+            var _this60 = this;
 
             this.getallCompletedHITS();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet == 'administration') _this57.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet == 'administration') _this60.outlet.deactivate();
             });
           }
         }, {
@@ -21583,7 +21890,7 @@
         }, {
           key: "openEdit",
           value: function openEdit(row) {
-            var _this58 = this;
+            var _this61 = this;
 
             this.selectedRow = row;
             var dialogRef = this.dialog.open(_existing_task_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_12__["ExistingtaskDetailsComponent"], {
@@ -21591,9 +21898,9 @@
             });
             dialogRef.afterClosed().subscribe(function (data) {
               if (data) {
-                _this58.dataservice.selectedTask = _this58.selectedRow;
+                _this61.dataservice.selectedTask = _this61.selectedRow;
 
-                _this58.router.navigate(['/newtask'], {
+                _this61.router.navigate(['/newtask'], {
                   queryParams: {
                     isPreDefined: true
                   }
@@ -21757,36 +22064,36 @@
         _createClass(AssignmentsComponent, [{
           key: "getAllTasks",
           value: function getAllTasks() {
-            var _this59 = this;
+            var _this62 = this;
 
             this.dataService.fetchAllHits().subscribe(function (res) {
-              _this59.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](res['data']);
+              _this62.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_7__["MatTableDataSource"](res['data']);
             });
           }
         }, {
           key: "openAssignmentsModal",
           value: function openAssignmentsModal(parent_id) {
-            var _this60 = this;
+            var _this63 = this;
 
             this.dataService.fetchAssignmentsForParent(parent_id).subscribe(function (res) {
-              var dialogRef = _this60.dialog.open(_assignments_dialog_assignments_dialog_component__WEBPACK_IMPORTED_MODULE_9__["AssignmentsDialogComponent"], {
+              var dialogRef = _this63.dialog.open(_assignments_dialog_assignments_dialog_component__WEBPACK_IMPORTED_MODULE_9__["AssignmentsDialogComponent"], {
                 minWidth: "400px",
                 data: res['data']
               });
 
               dialogRef.afterClosed().subscribe(function () {
-                _this60.getAllTasks();
+                _this63.getAllTasks();
               });
             });
           }
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this61 = this;
+            var _this64 = this;
 
             this.getAllTasks();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this61.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivationStart"] && e.snapshot.outlet === 'administration') _this64.outlet.deactivate();
             });
           }
         }]);
@@ -21877,7 +22184,7 @@
 
       var SidebarComponent = /*#__PURE__*/function () {
         function SidebarComponent(translate, router) {
-          var _this62 = this;
+          var _this65 = this;
 
           _classCallCheck(this, SidebarComponent);
 
@@ -21885,8 +22192,8 @@
           this.router = router;
           this.collapsedEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_3__["EventEmitter"]();
           this.router.events.subscribe(function (val) {
-            if (val instanceof _angular_router__WEBPACK_IMPORTED_MODULE_4__["NavigationEnd"] && window.innerWidth <= 992 && _this62.isToggled()) {
-              _this62.toggleSidebar();
+            if (val instanceof _angular_router__WEBPACK_IMPORTED_MODULE_4__["NavigationEnd"] && window.innerWidth <= 992 && _this65.isToggled()) {
+              _this65.toggleSidebar();
             }
           });
         }
@@ -23145,23 +23452,46 @@
       var _angular_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
       /*! @angular/common */
       "ofXK");
+      /* harmony import */
+
+
+      var _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
+      /*! @angular/material/dialog */
+      "0IaG");
+      /* harmony import */
+
+
+      var _leave_modal_data_leave_modal_data_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
+      /*! ../leave-modal-data/leave-modal-data.component */
+      "5E1g");
+      /* harmony import */
+
+
+      var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(
+      /*! @angular/material/snack-bar */
+      "dNgK");
 
       var LeaveComponent = /*#__PURE__*/function () {
-        function LeaveComponent(formbuilder, api) {
+        function LeaveComponent(formbuilder, api, dialog, _snackBar) {
           _classCallCheck(this, LeaveComponent);
 
           this.formbuilder = formbuilder;
           this.api = api;
+          this.dialog = dialog;
+          this._snackBar = _snackBar;
           this.leaveModelObj = new _leave_model__WEBPACK_IMPORTED_MODULE_8__["Leave"]();
           this.employeeModelObj = new _layout_employee_employee_model__WEBPACK_IMPORTED_MODULE_5__["EmployeeModel"]();
+          this.ToastText = '';
+          this.isLoading = true;
         }
 
         _createClass(LeaveComponent, [{
           key: "ngOnInit",
           value: function ngOnInit() {
+            this.getAllLeaves();
             this.getAllEmployee();
             this.createleave = this.formbuilder.group({
-              category: [''],
+              status: [''],
               designation: [''],
               leave_type: [''],
               from_date: [''],
@@ -23178,10 +23508,11 @@
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this63 = this;
+            var _this66 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this63.employees = res;
+              _this66.employees = res;
+              _this66.isLoading = false;
             });
           }
         }, {
@@ -23189,11 +23520,10 @@
           value: function addLeave() {
             var fromDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_9__["formatDate"])(this.createleave.value.from_date, 'yyyy-MM-dd', 'en-US');
             var toDate = Object(_angular_common__WEBPACK_IMPORTED_MODULE_9__["formatDate"])(this.createleave.value.to_date, 'yyyy-MM-dd', 'en-US');
-            this.leaveModelObj.category = this.createleave.value.category;
-            this.leaveModelObj.designation = this.createleave.value.designation;
             this.leaveModelObj.leave_type = this.createleave.value.leave_type;
             this.leaveModelObj.from_date = fromDate;
             this.leaveModelObj.to_date = toDate;
+            this.leaveModelObj.description = this.createleave.value.description;
             this.leaveModelObj.employees_id = this.createleave.value.employees_id; // console.log(this.leaveModelObj);
 
             this.api.postLeave(this.leaveModelObj).subscribe(function (res) {
@@ -23210,6 +23540,87 @@
             ref === null || ref === void 0 ? void 0 : ref.click();
             this.createleave.reset();
           }
+        }, {
+          key: "openDialog",
+          value: function openDialog() {
+            var _this67 = this;
+
+            var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialogConfig"]();
+            dialogConfig.disableClose = true;
+            dialogConfig.autoFocus = true;
+            this.dialog.afterAllClosed.subscribe(function (data) {
+              return _this67.myLoadingFunction();
+            });
+            dialogConfig.data = {
+              type: 'add'
+            };
+            this.dialog.open(_leave_modal_data_leave_modal_data_component__WEBPACK_IMPORTED_MODULE_11__["LeaveModalDataComponent"], dialogConfig);
+          }
+        }, {
+          key: "getAllLeaves",
+          value: function getAllLeaves() {
+            var _this68 = this;
+
+            this.api.getAllLeave().subscribe(function (res) {
+              _this68.leaveData = res;
+              console.log(_this68.leaveData);
+            });
+          }
+        }, {
+          key: "onEdit",
+          value: function onEdit(item) {
+            var _this69 = this;
+
+            var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialogConfig"]();
+            dialogConfig.disableClose = true;
+            dialogConfig.autoFocus = true;
+            this.dialog.afterAllClosed.subscribe(function (data) {
+              return _this69.myLoadingFunction();
+            });
+            dialogConfig.data = {
+              type: 'edit',
+              id: item.id,
+              employees_id: item.employees_id,
+              name: item.employee.name,
+              status: item.status,
+              designation: item.employee.designation,
+              leave_type: item.leave_type,
+              from_date: item.from_date,
+              to_date: item.to_date,
+              description: item.description
+            };
+            console.log(dialogConfig.data);
+            this.dialog.open(_leave_modal_data_leave_modal_data_component__WEBPACK_IMPORTED_MODULE_11__["LeaveModalDataComponent"], dialogConfig);
+          }
+        }, {
+          key: "myLoadingFunction",
+          value: function myLoadingFunction() {
+            this.ngOnInit();
+          }
+        }, {
+          key: "ToastMsg",
+          value: function ToastMsg(msg) {
+            this._snackBar.open(msg, '', {
+              duration: 2000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom'
+            });
+          }
+        }, {
+          key: "changeStatus",
+          value: function changeStatus(id, status) {
+            var _this70 = this;
+
+            console.log(id, status);
+            this.api.updateLeaveStatus(status, id).subscribe(function (res) {
+              console.log(status);
+              _this70.ToastText = 'Accepted';
+
+              _this70.ToastMsg(_this70.ToastText);
+
+              _this70.getAllLeaves();
+            });
+          }
         }]);
 
         return LeaveComponent;
@@ -23220,6 +23631,10 @@
           type: _angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"]
         }, {
           type: _shared_api_service__WEBPACK_IMPORTED_MODULE_6__["ApiService"]
+        }, {
+          type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialog"]
+        }, {
+          type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_12__["MatSnackBar"]
         }];
       };
 
@@ -23228,7 +23643,7 @@
         template: _raw_loader_leave_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
         animations: [Object(_router_animations__WEBPACK_IMPORTED_MODULE_7__["routerTransition"])()],
         styles: [_leave_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
-      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_6__["ApiService"]])], LeaveComponent);
+      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_6__["ApiService"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_10__["MatDialog"], _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_12__["MatSnackBar"]])], LeaveComponent);
       /***/
     },
 
@@ -23306,12 +23721,12 @@
         _createClass(AssignmentsDialogComponent, [{
           key: "approveAssignment",
           value: function approveAssignment(row) {
-            var _this64 = this;
+            var _this71 = this;
 
             this.dataService.approveAssigment(row.id, row.parent_id).subscribe(function (res) {
               row.assignment_status = true;
 
-              _this64._snackBar.open('Assignment Approved', 'Close', {
+              _this71._snackBar.open('Assignment Approved', 'Close', {
                 duration: 3000
               });
             });
@@ -23449,7 +23864,27 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n    <div class=\"btnadd\">\n        <button (click)=\"openDialog()\" mat-raised-button>Add Payroll\n            <i class=\"fa fa-fw fa-plus\"></i>\n        </button>\n        \n\n\n    </div>\n\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n\n            <table class=\"table mt-3\">\n                <thead>\n                  <tr>\n                    <th scope=\"col\">Employee ID</th>\n                    <th scope=\"col\">Name</th>\n                    <th scope=\"col\">Basic Pay</th>\n                    <th scope=\"col\">Allowance</th>\n                    <th scope=\"col\">Current Salary</th>\n                    <th scope=\"col\">Last Increment</th>\n                    <th scope=\"col\">Last Increment Date</th>\n                    <th scope=\"col\">Last Salary Release Date</th>\n                    <th scope=\"col\">Action</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let item of payrollData\">\n                    <td>{{item.id}}</td>\n                    <td>{{item.employee.name}}</td>\n                    <td>{{item.basic_pay}}</td>\n                    <td>{{item.allowance}}</td>\n                    <td>{{item.current_salary}}</td>\n                    <td>{{item.last_increment}}</td>\n                    <td>{{item.last_increment_date}}</td>\n                    <td>{{item.last_salary_release_date}}</td>\n                    <!-- <td><img src=\"{{item.current_photo}}\" /></td> -->\n                    <td>\n                      <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\"\n                        data-bs-target=\"#exampleModal\">\n                        <i class=\"fa fa-fw fa-edit\"></i>\n                    \n                    </button>\n                      <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">\n                          <i class=\"fa fa-fw fa-times\"></i>\n                      </button>\n                    </td>\n                  </tr>\n                </tbody>\n              </table>\n            <!-- <div class=\"mat-elevation-z8\">\n                <table mat-table *ngFor=\"let item of payrollData\">\n\n                    <ng-container matColumnDef=\"Emp Name\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Basic Pay\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Allowance\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Current Salary\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Last Increment\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n                    </ng-container>\n                    <ng-container matColumnDef=\"Last Increment Date\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Last Salary Release Date\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Action\">\n                        <th mat-header-cell *matHeaderCellDef>Action</th>\n                        <td mat-cell *matCellDef=\"let row\">\n\n                            <a (click)=\"openEdit(row)\">\n                                <mat-icon>edit</mat-icon>\n                            </a>&nbsp;\n                            <a (click)=\"openEdit(row)\">\n                                <mat-icon>delete</mat-icon>\n                            </a>\n                            <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n                            <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n\n                        <!-- </td>\n                    </ng-container>\n\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr> -->\n\n                    <!-- Row shown when there is no matching data. -->\n                    <!-- <tr class=\"mat-row\" *matNoDataRow>\n                        <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n                    </tr>\n                </table> -->\n\n                <!-- <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n            </div> --> \n\n        </div>\n    </div>\n</div>";
+      __webpack_exports__["default"] = "<div [@routerTransition]>\n    <app-page-header [heading]=\"'EMS'\" [subheading]=\"'Payroll'\" [icon]=\"'fa-tasks'\"></app-page-header>\n    <div class=\"btnadd\">\n        <button (click)=\"openDialog()\" mat-raised-button>Add Payroll\n            <i class=\"fa fa-fw fa-plus\"></i>\n        </button>\n    </div>\n\n\n    <div class=\"row\">\n        <div class=\"col-md-12\">\n\n            <table class=\"table mt-3\" *ngIf=\"!isLoading\">\n                <thead>\n                    <tr>\n                        <th scope=\"col\">Employee ID</th>\n                        <th scope=\"col\">Name</th>\n                        <th scope=\"col\">Basic Pay</th>\n                        <th scope=\"col\">Allowance</th>\n                        <th scope=\"col\">Current Salary</th>\n                        <th scope=\"col\">Last Increment</th>\n                        <th scope=\"col\">Last Increment Date</th>\n                        <th scope=\"col\">Last Salary Release Date</th>\n                        <th scope=\"col\">Action</th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr *ngFor=\"let item of payrollData\">\n                        <td>{{item.employees_id}}</td>\n                        <td>{{item.employee.name}}</td>\n                        <td>{{item.employee.basic_pay}}</td>\n                        <td>{{item.allowance}}</td>\n                        <td>{{item.current_salary}}</td>\n                        <td>{{item.last_increment}}</td>\n                        <td>{{item.last_increment_date}}</td>\n                        <td>{{item.last_salary_release_date}}</td>\n                        <!-- <td><img src=\"{{item.current_photo}}\" /></td> -->\n                        <td>\n                            <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\"\n                                data-bs-target=\"#exampleModal\">\n                                <i class=\"fa fa-fw fa-edit\"></i>\n                            </button>\n                            <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">\n                          <i class=\"fa fa-fw fa-times\"></i>\n                      </button> -->\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n            <!-- <div class=\"mat-elevation-z8\">\n                <table mat-table *ngFor=\"let item of payrollData\">\n\n                    <ng-container matColumnDef=\"Emp Name\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Emp Name </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.employee.name}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Basic Pay\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Basic Pay </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.basic_pay}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Allowance\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Alowance </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.allowance}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Current Salary\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Current Salary </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.current_salary}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Last Increment\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_increment}} </td>\n                    </ng-container>\n                    <ng-container matColumnDef=\"Last Increment Date\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Increment Date </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_increment_date | date:'medium'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Last Salary Release Date\">\n                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Salary Release Date </th>\n                        <td mat-cell *matCellDef=\"let row\"> {{row.last_salary_release_date | date:'medium'}} </td>\n                    </ng-container>\n\n                    <ng-container matColumnDef=\"Action\">\n                        <th mat-header-cell *matHeaderCellDef>Action</th>\n                        <td mat-cell *matCellDef=\"let row\">\n\n                            <a (click)=\"openEdit(row)\">\n                                <mat-icon>edit</mat-icon>\n                            </a>&nbsp;\n                            <a (click)=\"openEdit(row)\">\n                                <mat-icon>delete</mat-icon>\n                            </a>\n                            <!-- <button (click)=\"onEdit(item)\" class=\"btn btn-info\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">Edit</button> -->\n            <!-- <button (click)=\"deleteEmployee(item)\" class=\"btn btn-danger mx-3\">Delete</button> -->\n\n            <!-- </td>\n                    </ng-container>\n\n                    <tr mat-header-row *matHeaderRowDef=\"displayedColumns\"></tr>\n                    <tr mat-row *matRowDef=\"let row; columns: displayedColumns;\"></tr> -->\n\n            <!-- Row shown when there is no matching data. -->\n            <!-- <tr class=\"mat-row\" *matNoDataRow>\n                        <td class=\"mat-cell\" colspan=\"4\">No data matching the filter \"{{input.value}}\"</td>\n                    </tr>\n                </table> -->\n\n            <!-- <mat-paginator [pageSizeOptions]=\"[5, 10, 25, 100]\"></mat-paginator>\n            </div> -->\n\n        </div>\n    </div>\n</div>";
+      /***/
+    },
+
+    /***/
+    "oIPp":
+    /*!***************************************************************************************************************!*\
+      !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/layout/leave-modal-data/leave-modal-data.component.html ***!
+      \***************************************************************************************************************/
+
+    /*! exports provided: default */
+
+    /***/
+    function oIPp(module, __webpack_exports__, __webpack_require__) {
+      "use strict";
+
+      __webpack_require__.r(__webpack_exports__);
+      /* harmony default export */
+
+
+      __webpack_exports__["default"] = "<div>\n    <h1 class=\"modalHeading\">Add Leave</h1>\n    <form [formGroup]=\"createleave\">\n        <!-- <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n            <mat-label>Status</mat-label>\n            <input matInput formControlName=\"status\">\n        </mat-form-field> -->\n\n        <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n            <!-- <mat-label>Employee Name</mat-label>\n            <input matInput placeholder=\"Employee Name\" formControlName=\"emp_name\" required> -->\n\n            <mat-label>Employee Name</mat-label>\n            <mat-select formControlName=\"employees_id\">\n                <mat-option disabled>Select Employee</mat-option>\n                <mat-option *ngFor=\"let item of employees\" [value]=\"item.id\">{{item.name}}</mat-option>\n            </mat-select>\n        </mat-form-field>\n\n        <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n            <mat-label>Leave Type</mat-label>\n            <!-- <input matInput formControlName=\"leave_type\"> -->\n            <mat-select formControlName=\"leave_type\">\n                <mat-option disabled>Select</mat-option>\n                <mat-option *ngFor=\"let item of leaveType\" [value]=\"item\">{{item}}</mat-option>\n            </mat-select>\n        </mat-form-field>\n\n        <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n            <mat-label>From Date</mat-label>\n            <input matInput formControlName=\"from_date\" [matDatepicker]=\"picker\">\n            <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\n            <mat-datepicker #picker></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n            <mat-label>To Date</mat-label>\n            <input matInput formControlName=\"to_date\" [matDatepicker]=\"picker2\">\n            <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n            <mat-datepicker #picker2></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"col-md-12\" appearance=\"outline\">\n            <mat-label>Description</mat-label>\n            <textarea matInput formControlName=\"description\"></textarea>\n        </mat-form-field>\n\n        <div>\n            <button *ngIf=\"showAdd\" (click)=\"addLeave()\" mat-raised-button color=\"primary\">Add</button>&nbsp;\n            <button *ngIf=\"showUpdate\" (click)=\"update()\" mat-raised-button color=\"primary\">Update</button>&nbsp;\n            <button mat-button mat-dialog-close (click)=\"refresh()\">Close</button>\n            <!-- <button [disabled]=\"createtask.invalid\" mat-stroked-button matStepperNext>Next</button> -->\n        </div>\n    </form>\n</div>";
       /***/
     },
 
@@ -23523,9 +23958,9 @@
       /* harmony import */
 
 
-      var _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
-      /*! ../payroll/payroll.model */
-      "yGEY");
+      var _modal_test_payroll_model__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
+      /*! ../modal-test/payroll.model */
+      "MwDE");
 
       var PayrollDialogComponent = /*#__PURE__*/function () {
         function PayrollDialogComponent(formbuilder, api, // private dialogRef: MatDialogRef<PayrollDialogComponent>,
@@ -23534,7 +23969,7 @@
 
           this.formbuilder = formbuilder;
           this.api = api;
-          this.payrollModelObj = new _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_8__["Payroll"]();
+          this.payrollModelObj = new _modal_test_payroll_model__WEBPACK_IMPORTED_MODULE_8__["Payroll"]();
           this.basic_pay = data.basic_pay;
         }
 
@@ -23555,10 +23990,10 @@
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this65 = this;
+            var _this72 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this65.employees = res;
+              _this72.employees = res;
             });
           } // save() {
           //   this.dialogRef.close(this.createPayroll.value);
@@ -23765,9 +24200,9 @@
       /* harmony import */
 
 
-      var _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
-      /*! ../payroll/payroll.model */
-      "yGEY");
+      var _modal_test_payroll_model__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
+      /*! ../modal-test/payroll.model */
+      "MwDE");
       /* harmony import */
 
 
@@ -23788,7 +24223,7 @@
           this.formbuilder = formbuilder;
           this.api = api;
           this.data = data;
-          this.payrollModelObj = new _payroll_payroll_model__WEBPACK_IMPORTED_MODULE_6__["Payroll"]();
+          this.payrollModelObj = new _modal_test_payroll_model__WEBPACK_IMPORTED_MODULE_6__["Payroll"]();
           this.isEdit = false;
 
           if (data['type'] == 'edit') {
@@ -23808,7 +24243,7 @@
               last_salary_release_date: [''],
               employees_id: ['']
             });
-            this.getAllEmployee();
+            this.getAllActiveEmployees();
 
             if (this.isEdit) {
               console.log("I am here");
@@ -23824,12 +24259,12 @@
             }
           }
         }, {
-          key: "getAllEmployee",
-          value: function getAllEmployee() {
-            var _this66 = this;
+          key: "getAllActiveEmployees",
+          value: function getAllActiveEmployees() {
+            var _this73 = this;
 
-            this.api.getAllEmployee().subscribe(function (res) {
-              _this66.employees = res;
+            this.api.getAllActiveEmployee().subscribe(function (res) {
+              _this73.employees = res;
             });
           }
         }, {
@@ -24016,16 +24451,16 @@
         _createClass(ExistingTaskComponent, [{
           key: "getallExists",
           value: function getallExists() {
-            var _this67 = this;
+            var _this74 = this;
 
             this.dataservice.fetchExistingHits().subscribe(function (res) {
               res['data'].forEach(function (element) {
                 element['approved'] = parseInt(element['max_assignments']) - parseInt(element['assignments_remaining']);
               });
-              _this67.existslist = res['data'];
-              _this67.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this67.existslist);
+              _this74.existslist = res['data'];
+              _this74.dataSource = new _angular_material_table__WEBPACK_IMPORTED_MODULE_10__["MatTableDataSource"](_this74.existslist);
 
-              _this67.applyThis();
+              _this74.applyThis();
             });
           }
         }, {
@@ -24041,7 +24476,7 @@
         }, {
           key: "openEdit",
           value: function openEdit(row) {
-            var _this68 = this;
+            var _this75 = this;
 
             this.selectedRow = row;
             var dialogRef = this.dialog.open(_existingtask_details_existingtask_details_component__WEBPACK_IMPORTED_MODULE_12__["ExistingtaskDetailsComponent"], {
@@ -24049,9 +24484,9 @@
             });
             dialogRef.afterClosed().subscribe(function (data) {
               if (data) {
-                _this68.dataservice.selectedTask = _this68.selectedRow;
+                _this75.dataservice.selectedTask = _this75.selectedRow;
 
-                _this68.router.navigate(['/newtask'], {
+                _this75.router.navigate(['/newtask'], {
                   queryParams: {
                     isPreDefined: true
                   }
@@ -24068,20 +24503,20 @@
         }, {
           key: "cancel",
           value: function cancel(row) {
-            var _this69 = this;
+            var _this76 = this;
 
             this.dataservice["delete"](row.active_child).subscribe(function (res) {
-              _this69.getallExists();
+              _this76.getallExists();
             });
           }
         }, {
           key: "ngOnInit",
           value: function ngOnInit() {
-            var _this70 = this;
+            var _this77 = this;
 
             this.getallExists();
             this.router.events.subscribe(function (e) {
-              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet === 'administration') _this70.outlet.deactivate();
+              if (e instanceof _angular_router__WEBPACK_IMPORTED_MODULE_7__["ActivationStart"] && e.snapshot.outlet === 'administration') _this77.outlet.deactivate();
             });
           }
         }, {
@@ -24200,6 +24635,12 @@
       var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(
       /*! @angular/common */
       "ofXK");
+      /* harmony import */
+
+
+      var _modal_test_payroll_model__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(
+      /*! ../modal-test/payroll.model */
+      "MwDE");
 
       var URL = 'https://em-system-heroku.herokuapp.com/uploads';
 
@@ -24211,6 +24652,8 @@
           this.formbuilder = formbuilder;
           this.api = api;
           this.employeeModelObj = new _layout_employee_employee_model__WEBPACK_IMPORTED_MODULE_6__["EmployeeModel"]();
+          this.payrollModelObj = new _modal_test_payroll_model__WEBPACK_IMPORTED_MODULE_9__["Payroll"]();
+          this.allowance = 0;
           this.employees = ['abc', 'efg', 'hij'];
           this.fileAttr = 'Choose File';
           this.selectedFile = null;
@@ -24230,7 +24673,7 @@
               current_photo: [''],
               contact_no: [''],
               email: [''],
-              salary: ['']
+              basic_pay: ['']
             }); // this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
             // this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
             //      console.log('ImageUpload:uploaded:', item, status, response);
@@ -24240,13 +24683,13 @@
         }, {
           key: "uploadFileEvt",
           value: function uploadFileEvt(imgFile) {
-            var _this71 = this;
+            var _this78 = this;
 
             if (imgFile.target.files && imgFile.target.files[0]) {
               this.fileAttr = '';
               Array.from(imgFile.target.files).forEach(function (file) {
-                _this71.fileAttr += file.name;
-                console.log(_this71.fileAttr);
+                _this78.fileAttr += file.name;
+                console.log(_this78.fileAttr);
               }); // HTML5 FileReader API
 
               var reader = new FileReader();
@@ -24254,7 +24697,7 @@
               reader.onload = function (e) {
                 var image = new Image();
                 image.src = e.target.result;
-                _this71.dataimage = image.src;
+                _this78.dataimage = image.src;
                 console.log("image.src", image.src);
 
                 image.onload = function (rs) {
@@ -24295,6 +24738,8 @@
         }, {
           key: "addEmployee",
           value: function addEmployee() {
+            var _this79 = this;
+
             // if (!this.createEmployee.get('current_photo').value) {
             //   alert('Please fill valid details!');
             //   return false;
@@ -24304,6 +24749,7 @@
             // formData.append('agentId', '007');
             var dob = Object(_angular_common__WEBPACK_IMPORTED_MODULE_8__["formatDate"])(this.createEmployee.value.dob, 'yyyy-MM-dd', 'en-US');
             var doj = Object(_angular_common__WEBPACK_IMPORTED_MODULE_8__["formatDate"])(this.createEmployee.value.doj, 'yyyy-MM-dd', 'en-US');
+            this.current_salary = this.createEmployee.value.basic_pay + this.allowance;
             this.employeeModelObj.name = this.createEmployee.value.name;
             this.employeeModelObj.father_name = this.createEmployee.value.father_name;
             this.employeeModelObj.dob = dob;
@@ -24314,11 +24760,29 @@
             this.employeeModelObj.current_photo = this.dataimage;
             this.employeeModelObj.contact_no = this.createEmployee.value.contact_no;
             this.employeeModelObj.email = this.createEmployee.value.email;
-            this.employeeModelObj.salary = this.createEmployee.value.salary;
+            this.employeeModelObj.is_active = 'true';
+            this.employeeModelObj.basic_pay = this.createEmployee.value.basic_pay; // this.payrollModelObj.allowance = 0;
+            // this.payrollModelObj.current_salary = current_salary;
+            // this.payrollModelObj.last_increment = 0;
+            // this.payrollModelObj.last_increment_date = null;
+            // this.payrollModelObj.last_salary_release_date = null;
+
             console.log(this.createEmployee);
             this.api.postEmployee(this.employeeModelObj).subscribe(function (res) {
-              console.log(res);
-              alert("Add successfully");
+              _this79.payrollModelObj.allowance = 0;
+              _this79.payrollModelObj.current_salary = _this79.current_salary;
+              _this79.payrollModelObj.last_increment = 0;
+              _this79.payrollModelObj.last_increment_date = null;
+              _this79.payrollModelObj.last_salary_release_date = null;
+              _this79.payrollModelObj.employees_id = res.id;
+              console.log(_this79.payrollModelObj);
+
+              _this79.api.postPayroll(_this79.payrollModelObj).subscribe(function (res) {
+                console.log(res);
+                alert("Add successfully emp and payroll");
+              }, function (err) {
+                alert("something wrong");
+              });
             }, function (err) {
               console.log(err); // alert("something wrong");
             });
@@ -24375,7 +24839,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "table {\r\n    width: 100%;\r\n  }\r\n\r\n  .mat-form-field {\r\n    font-size: 14px;\r\n    width: 100%;\r\n  }\r\n\r\n  .btnadd{\r\n    text-align: right;\r\n    margin-bottom: 10px;\r\n  }\r\n\r\n  th{\r\n  font: 1em calibri;\r\n}\r\n\r\n  td{\r\n  font: 1em calibri;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1vZGFsLXRlc3QuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7RUFDYjs7RUFFQTtJQUNFLGVBQWU7SUFDZixXQUFXO0VBQ2I7O0VBQ0E7SUFDRSxpQkFBaUI7SUFDakIsbUJBQW1CO0VBQ3JCOztFQUVBO0VBQ0EsaUJBQWlCO0FBQ25COztFQUVBO0VBQ0UsaUJBQWlCO0FBQ25CIiwiZmlsZSI6Im1vZGFsLXRlc3QuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuXHJcbiAgLm1hdC1mb3JtLWZpZWxkIHtcclxuICAgIGZvbnQtc2l6ZTogMTRweDtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuICAuYnRuYWRke1xyXG4gICAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xyXG4gIH1cclxuXHJcbiAgdGh7XHJcbiAgZm9udDogMWVtIGNhbGlicmk7XHJcbn1cclxuXHJcbnRke1xyXG4gIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG59Il19 */";
+      __webpack_exports__["default"] = "table {\r\n    width: 100%;\r\n  }\r\n  \r\n  th{\r\n    font: 1em calibri;\r\n  }\r\n  \r\n  td{\r\n    font: 1em calibri;\r\n  }\r\n  \r\n  .mat-form-field {\r\n    font-size: 14px;\r\n    width: 100%;\r\n  }\r\n  \r\n  .btnadd{\r\n    text-align: right;\r\n    margin-bottom: 10px;\r\n  }\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1vZGFsLXRlc3QuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLFdBQVc7RUFDYjs7RUFFQTtJQUNFLGlCQUFpQjtFQUNuQjs7RUFFQTtJQUNFLGlCQUFpQjtFQUNuQjs7RUFFQTtJQUNFLGVBQWU7SUFDZixXQUFXO0VBQ2I7O0VBQ0E7SUFDRSxpQkFBaUI7SUFDakIsbUJBQW1CO0VBQ3JCIiwiZmlsZSI6Im1vZGFsLXRlc3QuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbInRhYmxlIHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuICBcclxuICB0aHtcclxuICAgIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG4gIH1cclxuICBcclxuICB0ZHtcclxuICAgIGZvbnQ6IDFlbSBjYWxpYnJpO1xyXG4gIH1cclxuXHJcbiAgLm1hdC1mb3JtLWZpZWxkIHtcclxuICAgIGZvbnQtc2l6ZTogMTRweDtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gIH1cclxuICAuYnRuYWRke1xyXG4gICAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xyXG4gIH1cclxuIl19 */";
       /***/
     },
 
@@ -24511,7 +24975,7 @@
         }, {
           key: "update",
           value: function update() {
-            var _this72 = this;
+            var _this80 = this;
 
             this.employeeModelObj.name = this.formValue.value.name;
             this.employeeModelObj.father_name = this.formValue.value.fathername;
@@ -24522,7 +24986,7 @@
             this.employeeModelObj.permanent_add = this.formValue.value.permanent_add;
             this.employeeModelObj.contact_no = this.formValue.value.contact_no;
             this.employeeModelObj.email = this.formValue.value.email;
-            this.employeeModelObj.salary = this.formValue.value.salary;
+            this.employeeModelObj.basic_pay = this.formValue.value.basic_pay;
             this.employeeModelObj.id = this.id;
             console.log(this.employeeModelObj);
             this.api.updateEmployee(this.employeeModelObj, this.employeeModelObj.id).subscribe(function (res) {
@@ -24530,18 +24994,18 @@
               var ref = document.getElementById('cancel');
               ref === null || ref === void 0 ? void 0 : ref.click();
 
-              _this72.formValue.reset();
+              _this80.formValue.reset();
 
-              _this72.getAllEmployee();
+              _this80.getAllEmployee();
             });
           }
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this73 = this;
+            var _this81 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this73.employeeData = res;
+              _this81.employeeData = res;
             });
           }
         }, {
@@ -24682,12 +25146,18 @@
 
       var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(
       /*! @ng-bootstrap/ng-bootstrap */
-      "1kSV"); // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+      "1kSV");
+      /* harmony import */
+
+
+      var _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(
+      /*! @angular/material/snack-bar */
+      "dNgK"); // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
       var DashboardComponent = /*#__PURE__*/function () {
-        function DashboardComponent(formbuilder, api, router, dialog, modalService) {
-          var _this74 = this;
+        function DashboardComponent(formbuilder, api, router, dialog, modalService, _snackBar) {
+          var _this82 = this;
 
           _classCallCheck(this, DashboardComponent);
 
@@ -24696,13 +25166,15 @@
           this.router = router;
           this.dialog = dialog;
           this.modalService = modalService;
+          this._snackBar = _snackBar;
           this.employeeModelObj = new _employee_employee_model__WEBPACK_IMPORTED_MODULE_9__["EmployeeModel"]();
           this.name = '';
+          this.ToastText = '';
           this.baseurl = "https://em-system-heroku.herokuapp.com/";
           this.api.getusername().subscribe(function (data) {
-            return _this74.name = data.toString();
+            return _this82.name = data.toString();
           }, function (error) {
-            return _this74.router.navigate(['/login']);
+            return _this82.router.navigate(['/login']);
           });
         }
 
@@ -24741,50 +25213,39 @@
         }, {
           key: "getAllEmployee",
           value: function getAllEmployee() {
-            var _this75 = this;
+            var _this83 = this;
 
             this.api.getAllEmployee().subscribe(function (res) {
-              _this75.employeeData = res;
-              _this75.totalEmployees = res.length;
+              _this83.employeeData = res;
+              _this83.totalEmployees = res.length;
             });
           }
         }, {
           key: "getAllAttendance",
           value: function getAllAttendance() {
-            var _this76 = this;
+            var _this84 = this;
 
             this.api.getAllAttendance().subscribe(function (res) {
-              _this76.totalAttendance = res.length;
+              _this84.totalAttendance = res.length;
             });
           }
         }, {
           key: "getAllLeave",
           value: function getAllLeave() {
-            var _this77 = this;
+            var _this85 = this;
 
             this.api.getAllLeave().subscribe(function (res) {
-              _this77.totalLeave = res.length;
+              _this85.totalLeave = res.length;
             });
           }
         }, {
           key: "getAllActiveEmployee",
           value: function getAllActiveEmployee() {
-            var _this78 = this;
+            var _this86 = this;
 
             this.api.getAllActiveEmployee().subscribe(function (res) {
-              _this78.activeEmployeeData = res;
-              _this78.totalActiveEmployees = res.length;
-            });
-          }
-        }, {
-          key: "deleteEmployee",
-          value: function deleteEmployee(item) {
-            var _this79 = this;
-
-            this.api.deleteEmployee(item.id).subscribe(function (res) {
-              alert("deleted!");
-
-              _this79.getAllActiveEmployee();
+              _this86.activeEmployeeData = res;
+              _this86.totalActiveEmployees = res.length;
             });
           }
         }, {
@@ -24821,14 +25282,14 @@
         }, {
           key: "triggerModal",
           value: function triggerModal(content) {
-            var _this80 = this;
+            var _this87 = this;
 
             this.modalService.open(content, {
               ariaLabelledBy: 'modal-basic-title'
             }).result.then(function (res) {
-              _this80.closeModal = "Closed with: ".concat(res);
+              _this87.closeModal = "Closed with: ".concat(res);
             }, function (res) {
-              _this80.closeModal = "Dismissed ".concat(_this80.getDismissReason(res));
+              _this87.closeModal = "Dismissed ".concat(_this87.getDismissReason(res));
             });
           }
         }, {
@@ -24841,6 +25302,29 @@
             } else {
               return "with: ".concat(reason);
             }
+          }
+        }, {
+          key: "ToastMsg",
+          value: function ToastMsg(msg) {
+            this._snackBar.open(msg, '', {
+              duration: 2000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom'
+            });
+          }
+        }, {
+          key: "deleteEmployee",
+          value: function deleteEmployee(item) {
+            var _this88 = this;
+
+            var is_active = false;
+            this.api.deleteEmployee(is_active, item.id).subscribe(function (res) {
+              _this88.ToastText = 'Deleted Successfully';
+
+              _this88.ToastMsg(_this88.ToastText);
+
+              _this88.getAllActiveEmployee();
+            });
           }
         }]);
 
@@ -24858,6 +25342,8 @@
           type: _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"]
         }, {
           type: _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_10__["NgbModal"]
+        }, {
+          type: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_11__["MatSnackBar"]
         }];
       };
 
@@ -24865,7 +25351,7 @@
         selector: 'app-dashboard',
         template: _raw_loader_dashboard_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
         styles: [_dashboard_component_css__WEBPACK_IMPORTED_MODULE_2__["default"]]
-      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_10__["NgbModal"]])], DashboardComponent);
+      }), Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["FormBuilder"], _shared_api_service__WEBPACK_IMPORTED_MODULE_7__["ApiService"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"], _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_10__["NgbModal"], _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_11__["MatSnackBar"]])], DashboardComponent);
       /***/
     },
 
@@ -25055,7 +25541,7 @@
         }, {
           key: "createhit",
           value: function createhit() {
-            var _this81 = this;
+            var _this89 = this;
 
             this.isDisabled = true;
             var data = {};
@@ -25082,7 +25568,7 @@
             }
 
             this.dataservice.createTask(data).subscribe(function (result) {
-              _this81.isDisabled = false;
+              _this89.isDisabled = false;
               var text = '';
 
               if (result['error']) {
@@ -25091,16 +25577,16 @@
                 text = ' Create Successfully !';
               }
 
-              _this81._snackBar.open(text, 'Close', {
+              _this89._snackBar.open(text, 'Close', {
                 duration: 2000,
                 horizontalPosition: 'left',
                 verticalPosition: 'bottom'
               });
 
-              _this81.alert = true;
+              _this89.alert = true;
 
               if (result['error']) {} else {
-                _this81.router.navigate(["/existingtask"]);
+                _this89.router.navigate(["/existingtask"]);
               }
             });
           }
@@ -25261,33 +25747,6 @@
 
       __webpack_exports__["default"] = ".center{\n    text-align: center;\n    align-self: center;\n}\n\n.mat-stepper-horizontal {\n    margin-top: 8px;\n  }\n\n::ng-deep.mat-form-field-prefix{\n      top: 0 !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm5ldy10YXNrLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxrQkFBa0I7SUFDbEIsa0JBQWtCO0FBQ3RCOztBQUVBO0lBQ0ksZUFBZTtFQUNqQjs7QUFFRjtNQUNNLGlCQUFpQjtBQUN2QiIsImZpbGUiOiJuZXctdGFzay5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLmNlbnRlcntcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgYWxpZ24tc2VsZjogY2VudGVyO1xufVxuXG4ubWF0LXN0ZXBwZXItaG9yaXpvbnRhbCB7XG4gICAgbWFyZ2luLXRvcDogOHB4O1xuICB9XG5cbjo6bmctZGVlcC5tYXQtZm9ybS1maWVsZC1wcmVmaXh7XG4gICAgICB0b3A6IDAgIWltcG9ydGFudDtcbn0iXX0= */";
       /***/
-    },
-
-    /***/
-    "yGEY":
-    /*!*************************************************!*\
-      !*** ./src/app/layout/payroll/payroll.model.ts ***!
-      \*************************************************/
-
-    /*! exports provided: Payroll */
-
-    /***/
-    function yGEY(module, __webpack_exports__, __webpack_require__) {
-      "use strict";
-
-      __webpack_require__.r(__webpack_exports__);
-      /* harmony export (binding) */
-
-
-      __webpack_require__.d(__webpack_exports__, "Payroll", function () {
-        return Payroll;
-      });
-
-      var Payroll = function Payroll() {
-        _classCallCheck(this, Payroll);
-      };
-      /***/
-
     },
 
     /***/

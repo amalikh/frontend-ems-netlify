@@ -98,11 +98,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../environments/environment */ "AytR");
 
 
 
 
-// import { forkJoin } from "rxjs/observable/forkJoin";
+
 
 const HEADERS = {
     headers: {
@@ -113,7 +114,7 @@ const HEADERS = {
 let ApiService = class ApiService {
     constructor(http) {
         this.http = http;
-        this.base_url = "https://em-system-heroku.herokuapp.com/";
+        this.base_url = _environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].BASE_URL;
     }
     getAllEmployee() {
         return this.http.get(this.base_url + "employee/all")
@@ -131,8 +132,8 @@ let ApiService = class ApiService {
         return this.http.post(this.base_url + "user/signup", data)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => { return res; }));
     }
-    deleteEmployee(id) {
-        return this.http.delete(this.base_url + "user/" + id)
+    deleteEmployee(data, id) {
+        return this.http.put(this.base_url + "employee/delete/" + id, data)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => {
             return res;
         }));
@@ -173,7 +174,7 @@ let ApiService = class ApiService {
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => { return res; }));
     }
     getPayrolls() {
-        return this.http.get(this.base_url + "payroll/all")
+        return this.http.get(this.base_url + "payroll/alll")
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => { return res; }));
     }
     getAllAttendance() {
@@ -195,6 +196,24 @@ let ApiService = class ApiService {
         // let response3 = this.http.get(requestUrl3);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["forkJoin"])([response1, response2]);
+    }
+    updateLeave(data, id) {
+        return this.http.put(this.base_url + "leave/update/" + id, data)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => {
+            return res;
+        }));
+    }
+    deleteLeave(id) {
+        return this.http.delete(this.base_url + "leave/" + id)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => {
+            return res;
+        }));
+    }
+    updateLeaveStatus(status, id) {
+        return this.http.put(this.base_url + "leave/status/" + id, { status })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((res) => {
+            return res;
+        }));
     }
 };
 ApiService.ctorParameters = () => [

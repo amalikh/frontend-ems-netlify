@@ -169,8 +169,13 @@
 
       var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
       /*! rxjs */
-      "qCKp"); // import { forkJoin } from "rxjs/observable/forkJoin";
+      "qCKp");
+      /* harmony import */
 
+
+      var _environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
+      /*! ../../environments/environment */
+      "AytR");
 
       var HEADERS = {
         headers: {
@@ -184,7 +189,7 @@
           _classCallCheck(this, ApiService);
 
           this.http = http;
-          this.base_url = "https://em-system-heroku.herokuapp.com/";
+          this.base_url = _environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].BASE_URL;
         }
 
         _createClass(ApiService, [{
@@ -210,8 +215,8 @@
           }
         }, {
           key: "deleteEmployee",
-          value: function deleteEmployee(id) {
-            return this.http["delete"](this.base_url + "user/" + id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+          value: function deleteEmployee(data, id) {
+            return this.http.put(this.base_url + "employee/delete/" + id, data).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res;
             }));
           }
@@ -269,7 +274,7 @@
         }, {
           key: "getPayrolls",
           value: function getPayrolls() {
-            return this.http.get(this.base_url + "payroll/all").pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+            return this.http.get(this.base_url + "payroll/alll").pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
               return res;
             }));
           }
@@ -303,6 +308,29 @@
             // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
 
             return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["forkJoin"])([response1, response2]);
+          }
+        }, {
+          key: "updateLeave",
+          value: function updateLeave(data, id) {
+            return this.http.put(this.base_url + "leave/update/" + id, data).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res;
+            }));
+          }
+        }, {
+          key: "deleteLeave",
+          value: function deleteLeave(id) {
+            return this.http["delete"](this.base_url + "leave/" + id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res;
+            }));
+          }
+        }, {
+          key: "updateLeaveStatus",
+          value: function updateLeaveStatus(status, id) {
+            return this.http.put(this.base_url + "leave/status/" + id, {
+              status: status
+            }).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (res) {
+              return res;
+            }));
           }
         }]);
 
