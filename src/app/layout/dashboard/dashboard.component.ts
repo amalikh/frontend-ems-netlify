@@ -9,6 +9,7 @@ import { EmployeeEditDialogComponent } from '../employee-edit-dialog/employee-ed
 // import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeModel } from '../employee/employee.model';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -26,13 +27,16 @@ export class DashboardComponent implements OnInit {
   showAdd: boolean;
   showUpdate: boolean;
   name = '';
+  ToastText = '';
+
   baseurl = "https://em-system-heroku.herokuapp.com/"
   constructor(
     private formbuilder: FormBuilder,
     private api: ApiService,
     public router: Router,
     private dialog: MatDialog,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private _snackBar: MatSnackBar
 
   ) {
     this.api.getusername()
@@ -100,14 +104,6 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  deleteEmployee(item: any) {
-    this.api.deleteEmployee(item.id)
-      .subscribe(res => {
-        alert("deleted!");
-        this.getAllActiveEmployee();
-      })
-  }
-
   onEdit(item: any) {
     this.showAdd = false;
     this.showUpdate = true;
@@ -161,5 +157,22 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  ToastMsg(msg:any){
+    this._snackBar.open(msg, '', {
+      duration: 2000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
+    }
+
+  deleteEmployee(item: any) {
+    let is_active = false;
+    this.api.deleteEmployee(is_active,item.id)
+      .subscribe(res => {
+        this.ToastText = 'Deleted Successfully'
+        this.ToastMsg(this.ToastText);
+        this.getAllActiveEmployee();
+      })
+  }
 
 }

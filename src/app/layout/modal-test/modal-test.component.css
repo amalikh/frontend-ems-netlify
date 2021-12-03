@@ -1,6 +1,14 @@
 table {
     width: 100%;
   }
+  
+  th{
+    font: 1em calibri;
+  }
+  
+  td{
+    font: 1em calibri;
+  }
 
   .mat-form-field {
     font-size: 14px;
@@ -10,11 +18,3 @@ table {
     text-align: right;
     margin-bottom: 10px;
   }
-
-  th{
-  font: 1em calibri;
-}
-
-td{
-  font: 1em calibri;
-}

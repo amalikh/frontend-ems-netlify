@@ -88,7 +88,7 @@ export class AttendanceComponent implements OnInit {
   ngOnInit(): void {
     // this.getAllEmployee();
     // this.getAllAttendanceOfCurrentDate();
-
+console.log("combine function");
     this.combine();
     this.router.events.subscribe(e => {
       if (e instanceof ActivationStart && e.snapshot.outlet === 'administration')
@@ -142,12 +142,12 @@ export class AttendanceComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  cancel(row) {
-    this.api.deleteEmployee(row.active_child)
-      .subscribe(res => {
-        this.getAllActiveEmployee();
-      })
-  }
+  // cancel(row) {
+  //   this.api.deleteEmployee(row.active_child)
+  //     .subscribe(res => {
+  //       this.getAllActiveEmployee();
+  //     })
+  // }
 
   refresh() {
     this.getAllActiveEmployee();

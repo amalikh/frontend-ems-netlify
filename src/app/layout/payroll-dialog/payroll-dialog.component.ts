@@ -3,7 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ApiService } from '../../shared/api.service';
-import { Payroll } from '../payroll/payroll.model';
+import { Payroll } from '../modal-test/payroll.model';
 
 
 @Component({

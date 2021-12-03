@@ -63,7 +63,7 @@ export class EmployeeEditDialogComponent implements OnInit {
     this.employeeModelObj.permanent_add = this.formValue.value.permanent_add;
     this.employeeModelObj.contact_no = this.formValue.value.contact_no;
     this.employeeModelObj.email = this.formValue.value.email;
-    this.employeeModelObj.salary = this.formValue.value.salary;
+    this.employeeModelObj.basic_pay = this.formValue.value.basic_pay;
     this.employeeModelObj.id = this.id;
     console.log(this.employeeModelObj);
     this.api.updateEmployee(this.employeeModelObj, this.employeeModelObj.id)

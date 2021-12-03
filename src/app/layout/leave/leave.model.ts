@@ -1,8 +1,7 @@
 export class Leave {
     id: number;
-    category: string;
-    designation: string;
-    employees_id: string;
+    status: string;
+    employees_id: number;
     leave_type: string;
     from_date: string;
     to_date: string;

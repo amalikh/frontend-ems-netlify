@@ -9,6 +9,7 @@ import { formatDate } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploader } from 'ng2-file-upload';
 import { Console } from 'console';
+import { Payroll } from '../modal-test/payroll.model';
 
 const URL = 'https://em-system-heroku.herokuapp.com/uploads';
 
@@ -26,13 +27,16 @@ export class EmployeeComponent implements OnInit {
 
   createEmployee: FormGroup;
   employeeModelObj: EmployeeModel = new EmployeeModel();
+  payrollModelObj: Payroll = new Payroll();
+  current_salary: number;
+  allowance: number = 0;
   employees: string[] = ['abc', 'efg', 'hij'];
   fileAttr = 'Choose File';
   selectedFile: File = null;
   dataimage: any;
-  imgBase64Path:any;
+  imgBase64Path: any;
   // public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'current_photo' });
-  
+
   constructor(
     private formbuilder: FormBuilder,
     private api: ApiService,
@@ -50,7 +54,7 @@ export class EmployeeComponent implements OnInit {
       current_photo: [''],
       contact_no: [''],
       email: [''],
-      salary: ['']
+      basic_pay: ['']
 
     })
 
@@ -87,7 +91,7 @@ export class EmployeeComponent implements OnInit {
       console.log("imgFile.target.files[0]", imgFile.target.files[0])
       console.log(this.fileInput.nativeElement.value)
       // this.dataimage = this.fileInput.nativeElement.value;
-      
+
       // Reset if duplicate image uploaded again
       this.fileInput.nativeElement.value = "";
 
@@ -128,6 +132,8 @@ export class EmployeeComponent implements OnInit {
     const dob = formatDate(this.createEmployee.value.dob, 'yyyy-MM-dd', 'en-US');
     const doj = formatDate(this.createEmployee.value.doj, 'yyyy-MM-dd', 'en-US');
 
+    this.current_salary = this.createEmployee.value.basic_pay + this.allowance;
+
     this.employeeModelObj.name = this.createEmployee.value.name;
     this.employeeModelObj.father_name = this.createEmployee.value.father_name;
     this.employeeModelObj.dob = dob;
@@ -138,13 +144,32 @@ export class EmployeeComponent implements OnInit {
     this.employeeModelObj.current_photo = this.dataimage;
     this.employeeModelObj.contact_no = this.createEmployee.value.contact_no;
     this.employeeModelObj.email = this.createEmployee.value.email;
-    this.employeeModelObj.salary = this.createEmployee.value.salary;
+    this.employeeModelObj.is_active = 'true';
+    this.employeeModelObj.basic_pay = this.createEmployee.value.basic_pay;
+    // this.payrollModelObj.allowance = 0;
+    // this.payrollModelObj.current_salary = current_salary;
+    // this.payrollModelObj.last_increment = 0;
+    // this.payrollModelObj.last_increment_date = null;
+    // this.payrollModelObj.last_salary_release_date = null;
+
 
     console.log(this.createEmployee);
     this.api.postEmployee(this.employeeModelObj)
       .subscribe(res => {
-        console.log(res);
-        alert("Add successfully");
+        this.payrollModelObj.allowance = 0;
+        this.payrollModelObj.current_salary = this.current_salary;
+        this.payrollModelObj.last_increment = 0;
+        this.payrollModelObj.last_increment_date = null;
+        this.payrollModelObj.last_salary_release_date = null;
+        this.payrollModelObj.employees_id = res.id
+        console.log(this.payrollModelObj);
+
+        this.api.postPayroll(this.payrollModelObj)
+          .subscribe(res => {
+            console.log(res)
+            alert("Add successfully emp and payroll");
+          },
+            err => {  alert("something wrong"); })
       },
         err => {
           console.log(err)

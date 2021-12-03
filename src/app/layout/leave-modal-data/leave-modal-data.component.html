@@ -1,0 +1,55 @@
+<div>
+    <h1 class="modalHeading">Add Leave</h1>
+    <form [formGroup]="createleave">
+        <!-- <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Status</mat-label>
+            <input matInput formControlName="status">
+        </mat-form-field> -->
+
+        <mat-form-field class="col-md-6" appearance="outline">
+            <!-- <mat-label>Employee Name</mat-label>
+            <input matInput placeholder="Employee Name" formControlName="emp_name" required> -->
+
+            <mat-label>Employee Name</mat-label>
+            <mat-select formControlName="employees_id">
+                <mat-option disabled>Select Employee</mat-option>
+                <mat-option *ngFor="let item of employees" [value]="item.id">{{item.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>Leave Type</mat-label>
+            <!-- <input matInput formControlName="leave_type"> -->
+            <mat-select formControlName="leave_type">
+                <mat-option disabled>Select</mat-option>
+                <mat-option *ngFor="let item of leaveType" [value]="item">{{item}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>From Date</mat-label>
+            <input matInput formControlName="from_date" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-6" appearance="outline">
+            <mat-label>To Date</mat-label>
+            <input matInput formControlName="to_date" [matDatepicker]="picker2">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="col-md-12" appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <div>
+            <button *ngIf="showAdd" (click)="addLeave()" mat-raised-button color="primary">Add</button>&nbsp;
+            <button *ngIf="showUpdate" (click)="update()" mat-raised-button color="primary">Update</button>&nbsp;
+            <button mat-button mat-dialog-close (click)="refresh()">Close</button>
+            <!-- <button [disabled]="createtask.invalid" mat-stroked-button matStepperNext>Next</button> -->
+        </div>
+    </form>
+</div>

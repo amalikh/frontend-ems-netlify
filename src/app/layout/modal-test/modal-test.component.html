@@ -4,53 +4,49 @@
         <button (click)="openDialog()" mat-raised-button>Add Payroll
             <i class="fa fa-fw fa-plus"></i>
         </button>
-        
-
-
     </div>
 
 
     <div class="row">
         <div class="col-md-12">
 
-            <table class="table mt-3">
+            <table class="table mt-3" *ngIf="!isLoading">
                 <thead>
-                  <tr>
-                    <th scope="col">Employee ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Basic Pay</th>
-                    <th scope="col">Allowance</th>
-                    <th scope="col">Current Salary</th>
-                    <th scope="col">Last Increment</th>
-                    <th scope="col">Last Increment Date</th>
-                    <th scope="col">Last Salary Release Date</th>
-                    <th scope="col">Action</th>
-                  </tr>
+                    <tr>
+                        <th scope="col">Employee ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Basic Pay</th>
+                        <th scope="col">Allowance</th>
+                        <th scope="col">Current Salary</th>
+                        <th scope="col">Last Increment</th>
+                        <th scope="col">Last Increment Date</th>
+                        <th scope="col">Last Salary Release Date</th>
+                        <th scope="col">Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of payrollData">
-                    <td>{{item.id}}</td>
-                    <td>{{item.employee.name}}</td>
-                    <td>{{item.basic_pay}}</td>
-                    <td>{{item.allowance}}</td>
-                    <td>{{item.current_salary}}</td>
-                    <td>{{item.last_increment}}</td>
-                    <td>{{item.last_increment_date}}</td>
-                    <td>{{item.last_salary_release_date}}</td>
-                    <!-- <td><img src="{{item.current_photo}}" /></td> -->
-                    <td>
-                      <button (click)="onEdit(item)" class="btn btn-info" type="button" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        <i class="fa fa-fw fa-edit"></i>
-                    
-                    </button>
-                      <button (click)="deleteEmployee(item)" class="btn btn-danger mx-3">
+                    <tr *ngFor="let item of payrollData">
+                        <td>{{item.employees_id}}</td>
+                        <td>{{item.employee.name}}</td>
+                        <td>{{item.employee.basic_pay}}</td>
+                        <td>{{item.allowance}}</td>
+                        <td>{{item.current_salary}}</td>
+                        <td>{{item.last_increment}}</td>
+                        <td>{{item.last_increment_date}}</td>
+                        <td>{{item.last_salary_release_date}}</td>
+                        <!-- <td><img src="{{item.current_photo}}" /></td> -->
+                        <td>
+                            <button (click)="onEdit(item)" class="btn btn-info" type="button" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                                <i class="fa fa-fw fa-edit"></i>
+                            </button>
+                            <!-- <button (click)="deleteEmployee(item)" class="btn btn-danger mx-3">
                           <i class="fa fa-fw fa-times"></i>
-                      </button>
-                    </td>
-                  </tr>
+                      </button> -->
+                        </td>
+                    </tr>
                 </tbody>
-              </table>
+            </table>
             <!-- <div class="mat-elevation-z8">
                 <table mat-table *ngFor="let item of payrollData">
 
@@ -99,22 +95,22 @@
                                 <mat-icon>delete</mat-icon>
                             </a>
                             <!-- <button (click)="onEdit(item)" class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button> -->
-                            <!-- <button (click)="deleteEmployee(item)" class="btn btn-danger mx-3">Delete</button> -->
+            <!-- <button (click)="deleteEmployee(item)" class="btn btn-danger mx-3">Delete</button> -->
 
-                        <!-- </td>
+            <!-- </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
 
-                    <!-- Row shown when there is no matching data. -->
-                    <!-- <tr class="mat-row" *matNoDataRow>
+            <!-- Row shown when there is no matching data. -->
+            <!-- <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                     </tr>
                 </table> -->
 
-                <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-            </div> --> 
+            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div> -->
 
         </div>
     </div>

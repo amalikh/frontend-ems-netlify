@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Payroll } from '../payroll/payroll.model';
+import { Payroll } from '../modal-test/payroll.model';
 import { ApiService } from '../../shared/api.service';
 import { formatDate } from '@angular/common';
 
@@ -35,7 +35,7 @@ export class ModalDataComponent implements OnInit {
       employees_id: ['']
     });
 
-    this.getAllEmployee();
+    this.getAllActiveEmployees();
 
     if (this.isEdit) {
       console.log("I am here")
@@ -51,8 +51,8 @@ export class ModalDataComponent implements OnInit {
     }
   }
 
-  getAllEmployee() {
-    this.api.getAllEmployee()
+  getAllActiveEmployees() {
+    this.api.getAllActiveEmployee()
       .subscribe(res => {
         this.employees = res;
       })

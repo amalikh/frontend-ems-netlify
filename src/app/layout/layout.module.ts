@@ -28,6 +28,7 @@ import { EmployeeEditDialogComponent } from './employee-edit-dialog/employee-edi
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalTestComponent } from './modal-test/modal-test.component';
 import { ModalDataComponent } from './modal-data/modal-data.component';
+import { LeaveModalDataComponent } from './leave-modal-data/leave-modal-data.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { ModalDataComponent } from './modal-data/modal-data.component';
         PayrollDialogComponent,
         EmployeeEditDialogComponent,
         ModalTestComponent,
-        ModalDataComponent
+        ModalDataComponent,
+        LeaveModalDataComponent
     ],
     entryComponents: [PayrollDialogComponent],
     bootstrap: [DashboardComponent]

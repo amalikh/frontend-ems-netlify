@@ -10,5 +10,6 @@ export class EmployeeModel {
     current_photo: string;
     contact_no: number;
     email: string;
-    salary: number;
+    basic_pay: number;
+    is_active: string;
 }

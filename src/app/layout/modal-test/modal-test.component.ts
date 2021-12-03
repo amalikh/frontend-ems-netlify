@@ -30,7 +30,7 @@ export interface PayrollData {
 export class ModalTestComponent implements OnInit {
 
   payrollData: any;
-
+  combineData: any;
   displayedColumns: string[] = [
     'Emp Name',
     'Basic Pay',
@@ -41,6 +41,7 @@ export class ModalTestComponent implements OnInit {
     'Last Salary Release Date',
     'Action'
   ];
+  isLoading: Boolean = true;
   // dataSource: MatTableDataSource<PayrollData>;
   constructor(public dialog: MatDialog,
     private formbuilder: FormBuilder,
@@ -48,6 +49,7 @@ export class ModalTestComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllPayrolls();
+    // this.combine();
   }
 
   openDialog() {
@@ -61,6 +63,7 @@ export class ModalTestComponent implements OnInit {
   getAllPayrolls() {
     this.api.getPayrolls()
       .subscribe(res => {
+        this.isLoading = false
         this.payrollData = res;
         console.log(this.payrollData);
       })
@@ -69,8 +72,6 @@ export class ModalTestComponent implements OnInit {
   onEdit(item: any) {
     // this.showAdd = false;
     // this.showUpdate = true;
-
-
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -78,7 +79,7 @@ export class ModalTestComponent implements OnInit {
       type: 'edit',
       id: item.employees_id,
       name: item.employee.name,
-      basic_pay: item.basic_pay,
+      basic_pay: item.employee.basic_pay,
       allowance: item.allowance,
       current_salary: item.current_salary,
       last_increment: item.last_increment,
@@ -87,8 +88,6 @@ export class ModalTestComponent implements OnInit {
     };
     console.log(dialogConfig.data)
     this.dialog.open(ModalDataComponent, dialogConfig);
-
-
   }
 
 }

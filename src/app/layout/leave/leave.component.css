@@ -2,3 +2,18 @@
     text-align: center;
     align-self: center;
 }
+.btnadd{
+    text-align: right;
+    margin-bottom: 10px;
+  }
+  table {
+    width: 100%;
+  }
+  
+  th{
+    font: 1em calibri;
+  }
+  
+  td{
+    font: 1em calibri;
+  }
