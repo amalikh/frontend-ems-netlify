@@ -112,6 +112,7 @@ export class DashboardComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    this.dialog.afterAllClosed.subscribe(data => this.myLoadingFunction())
     dialogConfig.data = {
       id:item.id,
       name: item.name,
@@ -123,7 +124,7 @@ export class DashboardComponent implements OnInit {
       permanent_add: item.permanent_add,
       contact_no: item.contact_no,
       email: item.email,
-      salary: item.salary,
+      basic_pay: item.basic_pay,
     };
     // console.log(dialogConfig.data)
     this.dialog.open(EmployeeEditDialogComponent, dialogConfig);
@@ -131,7 +132,9 @@ export class DashboardComponent implements OnInit {
 
   }
 
-
+  myLoadingFunction(){
+    this.ngOnInit()
+  }
   onLogout() {
     localStorage.removeItem('isLoggedin');
     localStorage.removeItem('token');

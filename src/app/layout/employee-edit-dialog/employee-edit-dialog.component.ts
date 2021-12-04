@@ -37,7 +37,7 @@ export class EmployeeEditDialogComponent implements OnInit {
       permanent_add: [''],
       contact_no: [''],
       email: [''],
-      salary: ['']
+      basic_pay: ['']
     })
     this.formValue.setValue({
       name:this.data.name,
@@ -49,7 +49,7 @@ export class EmployeeEditDialogComponent implements OnInit {
       permanent_add: this.data.permanent_add,
       contact_no: this.data.contact_no,
       email: this.data.email,
-      salary: this.data.salary
+      basic_pay: this.data.basic_pay
     });
   }
   
@@ -69,8 +69,8 @@ export class EmployeeEditDialogComponent implements OnInit {
     this.api.updateEmployee(this.employeeModelObj, this.employeeModelObj.id)
       .subscribe(res => {
         alert("Updated!");
-        let ref = document.getElementById('cancel')
-        ref?.click();
+        // let ref = document.getElementById('cancel')
+        // ref?.click();
         this.formValue.reset();
         this.getAllEmployee();
       })

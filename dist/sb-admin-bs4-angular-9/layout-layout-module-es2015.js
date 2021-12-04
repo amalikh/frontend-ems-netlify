@@ -11571,7 +11571,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<h2 mat-dialog-title>Edit Details of Employee [{{data.id}}]</h2>\n\n<!-- <mat-dialog-content> -->\n    <form [formGroup]=\"formValue\">\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Name</mat-label>\n        <input matInput placeholder=\"Emp Name\" formControlName=\"name\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Father Name</mat-label>\n        <input matInput placeholder=\"Father name\" formControlName=\"father_name\">\n    </mat-form-field>\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOB\" [matDatepicker]=\"picker1\" formControlName=\"dob\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOJ\" [matDatepicker]=\"picker2\" formControlName=\"doj\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Designation\" formControlName=\"designation\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Communication Add\" formControlName=\"communication_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Permanent Address\" type=\"text\"\n            formControlName=\"permanent_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Contact No\" type=\"number\" formControlName=\"contact_no\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Email ID\"  type=\"text\" formControlName=\"email\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Salary\" type=\"number\" formControlName=\"salary\">\n    </mat-form-field>\n    </form>\n<!-- </mat-dialog-content> -->\n<div class=\"centerbtns\">\n    <mat-dialog-actions>\n\n        <button class=\"mat-raised-button\" (click)=\"close()\">Close</button>\n        <button class=\"mat-raised-button mat-primary\" (click)=\"update()\">Save</button>\n    </mat-dialog-actions>\n\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<h2 mat-dialog-title>Edit Details of Employee [{{data.id}}]</h2>\n\n<!-- <mat-dialog-content> -->\n    <form [formGroup]=\"formValue\">\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Name</mat-label>\n        <input matInput placeholder=\"Emp Name\" formControlName=\"name\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Father Name</mat-label>\n        <input matInput placeholder=\"Father name\" formControlName=\"father_name\">\n    </mat-form-field>\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOB\" [matDatepicker]=\"picker1\" formControlName=\"dob\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOJ\" [matDatepicker]=\"picker2\" formControlName=\"doj\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Designation\" formControlName=\"designation\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Communication Add\" formControlName=\"communication_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Permanent Address\" type=\"text\"\n            formControlName=\"permanent_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Contact No\" type=\"number\" formControlName=\"contact_no\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Email ID\"  type=\"text\" formControlName=\"email\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Salary\" type=\"number\" formControlName=\"basic_pay\">\n    </mat-form-field>\n    </form>\n<!-- </mat-dialog-content> -->\n<div class=\"centerbtns\">\n    <mat-dialog-actions>\n\n        <button class=\"mat-raised-button\" (click)=\"close()\">Close</button>\n        <button class=\"mat-raised-button mat-primary\" (click)=\"update()\">Save</button>\n    </mat-dialog-actions>\n\n</div>");
 
 /***/ }),
 
@@ -14011,7 +14011,7 @@ let EmployeeEditDialogComponent = class EmployeeEditDialogComponent {
             permanent_add: [''],
             contact_no: [''],
             email: [''],
-            salary: ['']
+            basic_pay: ['']
         });
         this.formValue.setValue({
             name: this.data.name,
@@ -14023,7 +14023,7 @@ let EmployeeEditDialogComponent = class EmployeeEditDialogComponent {
             permanent_add: this.data.permanent_add,
             contact_no: this.data.contact_no,
             email: this.data.email,
-            salary: this.data.salary
+            basic_pay: this.data.basic_pay
         });
     }
     update() {
@@ -14042,8 +14042,8 @@ let EmployeeEditDialogComponent = class EmployeeEditDialogComponent {
         this.api.updateEmployee(this.employeeModelObj, this.employeeModelObj.id)
             .subscribe(res => {
             alert("Updated!");
-            let ref = document.getElementById('cancel');
-            ref === null || ref === void 0 ? void 0 : ref.click();
+            // let ref = document.getElementById('cancel')
+            // ref?.click();
             this.formValue.reset();
             this.getAllEmployee();
         });
@@ -14202,6 +14202,7 @@ let DashboardComponent = class DashboardComponent {
         const dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialogConfig"]();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        this.dialog.afterAllClosed.subscribe(data => this.myLoadingFunction());
         dialogConfig.data = {
             id: item.id,
             name: item.name,
@@ -14213,10 +14214,13 @@ let DashboardComponent = class DashboardComponent {
             permanent_add: item.permanent_add,
             contact_no: item.contact_no,
             email: item.email,
-            salary: item.salary,
+            basic_pay: item.basic_pay,
         };
         // console.log(dialogConfig.data)
         this.dialog.open(_employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_8__["EmployeeEditDialogComponent"], dialogConfig);
+    }
+    myLoadingFunction() {
+        this.ngOnInit();
     }
     onLogout() {
         localStorage.removeItem('isLoggedin');

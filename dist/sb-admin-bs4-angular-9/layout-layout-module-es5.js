@@ -20603,7 +20603,7 @@
       /* harmony default export */
 
 
-      __webpack_exports__["default"] = "<h2 mat-dialog-title>Edit Details of Employee [{{data.id}}]</h2>\n\n<!-- <mat-dialog-content> -->\n    <form [formGroup]=\"formValue\">\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Name</mat-label>\n        <input matInput placeholder=\"Emp Name\" formControlName=\"name\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Father Name</mat-label>\n        <input matInput placeholder=\"Father name\" formControlName=\"father_name\">\n    </mat-form-field>\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOB\" [matDatepicker]=\"picker1\" formControlName=\"dob\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOJ\" [matDatepicker]=\"picker2\" formControlName=\"doj\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Designation\" formControlName=\"designation\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Communication Add\" formControlName=\"communication_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Permanent Address\" type=\"text\"\n            formControlName=\"permanent_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Contact No\" type=\"number\" formControlName=\"contact_no\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Email ID\"  type=\"text\" formControlName=\"email\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Salary\" type=\"number\" formControlName=\"salary\">\n    </mat-form-field>\n    </form>\n<!-- </mat-dialog-content> -->\n<div class=\"centerbtns\">\n    <mat-dialog-actions>\n\n        <button class=\"mat-raised-button\" (click)=\"close()\">Close</button>\n        <button class=\"mat-raised-button mat-primary\" (click)=\"update()\">Save</button>\n    </mat-dialog-actions>\n\n</div>";
+      __webpack_exports__["default"] = "<h2 mat-dialog-title>Edit Details of Employee [{{data.id}}]</h2>\n\n<!-- <mat-dialog-content> -->\n    <form [formGroup]=\"formValue\">\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Name</mat-label>\n        <input matInput placeholder=\"Emp Name\" formControlName=\"name\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <mat-label>Father Name</mat-label>\n        <input matInput placeholder=\"Father name\" formControlName=\"father_name\">\n    </mat-form-field>\n\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOB\" [matDatepicker]=\"picker1\" formControlName=\"dob\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker1\"></mat-datepicker-toggle>\n        <mat-datepicker #picker1></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"DOJ\" [matDatepicker]=\"picker2\" formControlName=\"doj\">\n        <mat-datepicker-toggle matSuffix [for]=\"picker2\"></mat-datepicker-toggle>\n        <mat-datepicker #picker2></mat-datepicker>\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Designation\" formControlName=\"designation\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Communication Add\" formControlName=\"communication_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Permanent Address\" type=\"text\"\n            formControlName=\"permanent_add\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Contact No\" type=\"number\" formControlName=\"contact_no\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Email ID\"  type=\"text\" formControlName=\"email\">\n    </mat-form-field>\n\n    <mat-form-field class=\"col-md-6\" appearance=\"outline\">\n        <input matInput placeholder=\"Salary\" type=\"number\" formControlName=\"basic_pay\">\n    </mat-form-field>\n    </form>\n<!-- </mat-dialog-content> -->\n<div class=\"centerbtns\">\n    <mat-dialog-actions>\n\n        <button class=\"mat-raised-button\" (click)=\"close()\">Close</button>\n        <button class=\"mat-raised-button mat-primary\" (click)=\"update()\">Save</button>\n    </mat-dialog-actions>\n\n</div>";
       /***/
     },
 
@@ -24957,7 +24957,7 @@
               permanent_add: [''],
               contact_no: [''],
               email: [''],
-              salary: ['']
+              basic_pay: ['']
             });
             this.formValue.setValue({
               name: this.data.name,
@@ -24969,7 +24969,7 @@
               permanent_add: this.data.permanent_add,
               contact_no: this.data.contact_no,
               email: this.data.email,
-              salary: this.data.salary
+              basic_pay: this.data.basic_pay
             });
           }
         }, {
@@ -24990,9 +24990,8 @@
             this.employeeModelObj.id = this.id;
             console.log(this.employeeModelObj);
             this.api.updateEmployee(this.employeeModelObj, this.employeeModelObj.id).subscribe(function (res) {
-              alert("Updated!");
-              var ref = document.getElementById('cancel');
-              ref === null || ref === void 0 ? void 0 : ref.click();
+              alert("Updated!"); // let ref = document.getElementById('cancel')
+              // ref?.click();
 
               _this80.formValue.reset();
 
@@ -25251,11 +25250,16 @@
         }, {
           key: "onEdit",
           value: function onEdit(item) {
+            var _this87 = this;
+
             this.showAdd = false;
             this.showUpdate = true;
             var dialogConfig = new _angular_material_dialog__WEBPACK_IMPORTED_MODULE_5__["MatDialogConfig"]();
             dialogConfig.disableClose = true;
             dialogConfig.autoFocus = true;
+            this.dialog.afterAllClosed.subscribe(function (data) {
+              return _this87.myLoadingFunction();
+            });
             dialogConfig.data = {
               id: item.id,
               name: item.name,
@@ -25267,10 +25271,15 @@
               permanent_add: item.permanent_add,
               contact_no: item.contact_no,
               email: item.email,
-              salary: item.salary
+              basic_pay: item.basic_pay
             }; // console.log(dialogConfig.data)
 
             this.dialog.open(_employee_edit_dialog_employee_edit_dialog_component__WEBPACK_IMPORTED_MODULE_8__["EmployeeEditDialogComponent"], dialogConfig);
+          }
+        }, {
+          key: "myLoadingFunction",
+          value: function myLoadingFunction() {
+            this.ngOnInit();
           }
         }, {
           key: "onLogout",
@@ -25282,14 +25291,14 @@
         }, {
           key: "triggerModal",
           value: function triggerModal(content) {
-            var _this87 = this;
+            var _this88 = this;
 
             this.modalService.open(content, {
               ariaLabelledBy: 'modal-basic-title'
             }).result.then(function (res) {
-              _this87.closeModal = "Closed with: ".concat(res);
+              _this88.closeModal = "Closed with: ".concat(res);
             }, function (res) {
-              _this87.closeModal = "Dismissed ".concat(_this87.getDismissReason(res));
+              _this88.closeModal = "Dismissed ".concat(_this88.getDismissReason(res));
             });
           }
         }, {
@@ -25315,15 +25324,15 @@
         }, {
           key: "deleteEmployee",
           value: function deleteEmployee(item) {
-            var _this88 = this;
+            var _this89 = this;
 
             var is_active = false;
             this.api.deleteEmployee(is_active, item.id).subscribe(function (res) {
-              _this88.ToastText = 'Deleted Successfully';
+              _this89.ToastText = 'Deleted Successfully';
 
-              _this88.ToastMsg(_this88.ToastText);
+              _this89.ToastMsg(_this89.ToastText);
 
-              _this88.getAllActiveEmployee();
+              _this89.getAllActiveEmployee();
             });
           }
         }]);
@@ -25541,7 +25550,7 @@
         }, {
           key: "createhit",
           value: function createhit() {
-            var _this89 = this;
+            var _this90 = this;
 
             this.isDisabled = true;
             var data = {};
@@ -25568,7 +25577,7 @@
             }
 
             this.dataservice.createTask(data).subscribe(function (result) {
-              _this89.isDisabled = false;
+              _this90.isDisabled = false;
               var text = '';
 
               if (result['error']) {
@@ -25577,16 +25586,16 @@
                 text = ' Create Successfully !';
               }
 
-              _this89._snackBar.open(text, 'Close', {
+              _this90._snackBar.open(text, 'Close', {
                 duration: 2000,
                 horizontalPosition: 'left',
                 verticalPosition: 'bottom'
               });
 
-              _this89.alert = true;
+              _this90.alert = true;
 
               if (result['error']) {} else {
-                _this89.router.navigate(["/existingtask"]);
+                _this90.router.navigate(["/existingtask"]);
               }
             });
           }
